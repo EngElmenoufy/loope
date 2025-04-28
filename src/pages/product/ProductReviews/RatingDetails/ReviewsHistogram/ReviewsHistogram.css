@@ -1,0 +1,27 @@
+.histogram {
+  position: relative;
+  width: 100px;
+  /* max-width: 200px; */
+  /* flex: 1; */
+  /* width: clamp(100px, 50%, 200px); */
+  /* width: minmax(100px, 200px); */
+  height: 17px;
+  border: 1px solid var(--primary-green);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+@media (min-width: 420px) {
+  .histogram {
+    width: 200px;
+  }
+}
+
+.histogram div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* width: 60%; */
+  height: 100%;
+  background-color: var(--primary-yellow);
+}

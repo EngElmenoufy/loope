@@ -1,0 +1,31 @@
+.product-specs {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) 2fr;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.spec-head {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.spec-head,
+.spec-value {
+  padding: 0.5rem 0;
+}
+
+@media screen and (max-width: 320px) {
+  .product-specs {
+    grid-template-columns: auto auto;
+  }
+
+  .spec-head {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .spec-value {
+    padding-top: 5px;
+  }
+}

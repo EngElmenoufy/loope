@@ -1,0 +1,12 @@
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  grid-area: 1/ 1 / 2 / 4;
+}
+
+@media screen and (min-width: 1024px) {
+  .product-header {
+    grid-area: 1/ 3 / 2 / 4;
+  }
+}

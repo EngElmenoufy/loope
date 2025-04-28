@@ -1,0 +1,32 @@
+.nav-item a {
+  color: #000;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: block;
+}
+.nav-item a:hover {
+  background-color: #eaeaea;
+}
+.skeleton {
+  background-color: #eaeaea;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+.featuured-sellers .stories img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.ad img {
+  border-radius: 50% 0 0 50%;
+}
+
+.btn {
+  padding: 0.2rem 0.7rem;
+  border-radius: 0.8rem;
+}
+
+.btn:hover {
+  background-color: #295448;
+}

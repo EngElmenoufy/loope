@@ -1,0 +1,80 @@
+/* input[type="text"],
+input[type="number"],
+textarea {
+  font-size: 40px;
+} */
+
+input[type="checkbox"] {
+  display: none;
+}
+
+/* Style the label to act as the custom checkbox */
+input[type="checkbox"] + label {
+  position: relative;
+  padding-left: 30px; /* Space for the custom checkbox */
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+}
+
+/* Create the custom checkbox box using ::before */
+input[type="checkbox"] + label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc; /* Border color of the checkbox */
+  background-color: #fff; /* Background color of the checkbox */
+  border-radius: 4px; /* Optional: rounded corners */
+}
+
+/* Style the checkmark using ::after when checked */
+input[type="checkbox"]:checked + label::after {
+  content: "✔"; /* Checkmark symbol (you can also use an SVG or image) */
+  position: absolute;
+  left: 4px;
+  top: 0;
+  font-size: 16px;
+  color: white; /* Color of the checkmark */
+}
+
+/* Change the background color of the checkbox when checked */
+input[type="checkbox"]:checked + label::before {
+  background-color: #17403b; /* Background color when checked */
+  border-color: #17403b; /* Border color when checked */
+}
+
+.select-value {
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: transparent;
+  padding: 8px;
+  cursor: pointer;
+  color: #414343;
+}
+
+.select-value:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* .select-value option {
+  background-color: #c3e6c3;
+  border-radius: 8px;
+  margin: 2px;
+} */
+
+select option {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+  background-color: #fffaf8; /* Light background for options */
+  padding: 10px; /* This may not work in all browsers */
+}
+
+select option:checked {
+  background-color: #e6f4ea !important; /* Light green background for selected option */
+  color: #333;
+}

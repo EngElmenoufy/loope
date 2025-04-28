@@ -1,0 +1,13 @@
+.main-picture {
+  width: 100%;
+  /* height: 100%; */
+  /* object-position: center center; */
+  object-fit: contain;
+  /* max-height: 37.5rem; */
+}
+
+@media screen and (min-width: 1024px) {
+  .main-picture {
+    height: 35rem;
+  }
+}

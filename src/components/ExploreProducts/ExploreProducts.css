@@ -1,0 +1,62 @@
+.explore-products {
+  padding: 0 0.5rem;
+  margin: 2rem 0;
+}
+
+@media screen and (min-width: 768px) {
+  .explore-products {
+    padding: 0 1rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .explore-products {
+    padding: 0 1.5rem;
+    margin: 3rem 0;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .explore-products {
+    padding: 0 2rem;
+  }
+}
+
+.title {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.8rem;
+  height: 100%;
+  background-color: #18403c;
+  border-radius: 0.2rem;
+}
+
+.title > span {
+  margin-left: 1.5rem;
+  color: #18403c;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .title span {
+    font-size: 0.8rem;
+  }
+
+  /* .header {
+    font-size: 1.3rem;
+  } */
+}

@@ -1,0 +1,19 @@
+.products-col {
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+.products-col::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+.arrows {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .arrows {
+    display: block;
+  }
+}

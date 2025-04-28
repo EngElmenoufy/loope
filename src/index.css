@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-green: #18403c;
+  --accent-green: #c3e6c3;
+  --slightly-green: #226a62;
+  --pastel-green: #a8d4a8;
+  --primary-black: #0e150e;
+  --accent-black: #584f41;
+  --dark-blue: #202229;
+  --primary-yellow: #faaf00;
+  --dark-blue: #202229;
+}
+
+body {
+  background-color: #fdf8f5;
+  font-family: "Inter", sans-serif;
+  color: var(--primary-black);
+}
+
+li {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  list-style: none; /* Remove bullets or numbers */
+}
+
+textarea:focus,
+input:focus {
+  outline: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 700;
+  /* margin-bottom: 1rem; */
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  /* font-size: 1.75rem; */
+  font-size: 1.5rem;
+}
+
+/* @media screen and (min-width: 1024px) {
+  .product-description {
+    grid-area: 2/ 3 / 4 / 4;
+  }
+} */
+
+h3 {
+  /* font-size: 1.5rem; */
+  font-size: 1.25rem;
+
+  /* margin-bottom: 1rem; */
+}
+
+h4 {
+  /* font-size: 1.25rem; */
+  font-size: 1rem;
+  /* line-height: normal;
+  font-weight: 600; */
+}
+
+h5 {
+  /* font-size: 1rem; */
+  font-size: 0.875rem;
+}
+
+h6 {
+  /* font-size: 0.75rem; */
+  font-size: 0.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+  }
+
+  h5 {
+    font-size: 1rem;
+  }
+
+  h6 {
+    font-size: 0.75rem;
+  }
+}
+
+/* h5 {
+  font-size: 0.8rem;
+  line-height: normal;
+  font-weight: 600;
+} */
+
+.icon {
+  width: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+main {
+  margin: 0 0.5rem;
+}
+
+.see-more-link {
+  cursor: pointer;
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.see-more-link:hover img.icon {
+  transform: translateX(4px);
+}
+
+@media screen and (min-width: 640px) {
+  main {
+    margin: 0 1rem;
+  }
+}
+@media screen and (min-width: 1024px) {
+  main {
+    margin: 0 2.5rem;
+  }
+}
+@media screen and (min-width: 1280px) {
+  main {
+    margin: 0 3.5rem;
+  }
+}
+
+/* Remove spinners for input type number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* a { */
+/* font-weight: 600; */
+/* color: #191919;
+  cursor: pointer;
+} */
+/*
+a:hover {
+  color: #707070;
+  text-decoration: underline;
+} */

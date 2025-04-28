@@ -1,0 +1,34 @@
+.main-button,
+.second-button {
+  text-transform: uppercase;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 1rem;
+  transition: background-color 0.3s ease;
+  width: 50%;
+}
+
+@media screen and (min-width: 1024px) {
+  .main-button,
+  .second-button {
+    width: 100%;
+  }
+}
+
+.main-button {
+  background-color: var(--primary-green);
+  color: var(--accent-green);
+}
+
+.main-button:hover {
+  background-color: var(--slightly-green);
+}
+
+.second-button {
+  background-color: var(--accent-green);
+  color: var(--primary-black);
+}
+
+.second-button:hover {
+  background-color: var(--pastel-green);
+}

@@ -1,0 +1,36 @@
+.rating-reviews-section {
+  padding: 0.5rem;
+  margin: 2rem 0;
+}
+
+@media screen and (min-width: 768px) {
+  .rating-reviews-section {
+    padding: 1rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .rating-reviews-section {
+    padding: 1.5rem;
+    margin: 3rem 0;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .rating-reviews-section {
+    padding: 2rem;
+  }
+}
+
+.rating-reviews {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .rating-reviews {
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+  }
+}
