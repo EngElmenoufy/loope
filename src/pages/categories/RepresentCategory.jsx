@@ -70,7 +70,11 @@ function RepresentCategory() {
 
         <div className="category-cards p-8 md:px-5">
           {categoryCards.map((card) => (
-            <CategoryCard imageSrc={card.src} title={card.title} />
+            <CategoryCard
+              key={card.title}
+              imageSrc={card.src}
+              title={card.title}
+            />
           ))}
         </div>
       </div>
