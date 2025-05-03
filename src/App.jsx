@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import SignUp from "./authentication/SignUp/SignUp";
-import Categories from "./pages/categories/CategoriesPage";
+import CategoryPage from "./pages/category/CategoryPage";
 import HomePage from "./pages/home/HomePage";
 import SignIpPage from "./authentication/SignIn/SignInPage";
 import ProductPage from "./pages/product/ProductPage";
@@ -9,6 +9,7 @@ import Footer from "./layout/Footer/Footer";
 import AddProductPage from "./pages/AddProduct/AddProductPage";
 import CartPage from "./pages/Cart/CartPage";
 import ForgotPassword from "./authentication/forgotPass/ForgotPasswordContainer";
+import CategoriesPage from "./pages/categories/CategoriesPage";
 
 function AppContent() {
   const location = useLocation();
@@ -22,7 +23,8 @@ function AppContent() {
       {!hideHeaderFooter && <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/categories" element={<Categories />} />
+        <Route path="/category" element={<CategoryPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIpPage />} />
         <Route path="/product" element={<ProductPage />} />
