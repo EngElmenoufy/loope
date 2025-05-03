@@ -52,7 +52,7 @@ function RepresentCategory() {
       <div className="relative mt-3 mb-8">
         <div className="header-content">
           <h3>Women’s Clothing</h3>
-          <div role="link" className="see-more-link">
+          {/* <div role="link" className="see-more-link">
             <span className="text-nowrap">see more</span>
             <span className="!w-8">
               <svg
@@ -65,7 +65,7 @@ function RepresentCategory() {
                 <path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z" />
               </svg>
             </span>
-          </div>
+          </div> */}
         </div>
 
         <div className="category-cards p-8 md:px-5">
