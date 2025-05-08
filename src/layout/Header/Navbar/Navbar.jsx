@@ -23,6 +23,10 @@ export default function Navbar() {
     setIsDropdownNotificationOpen(!isDropdownNotificationOpen);
   };
 
+  const handleCloseDropdownAccount = () => {
+    setIsDropdownAccountOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -109,7 +113,9 @@ export default function Navbar() {
             <div className="label w-36">Your account</div>
             {/* <span className="text-white max-md:hidden">Login</span> */}
           </button>
-          {isDropdownAccountOpen && <DropdownYourAccount />}
+          {isDropdownAccountOpen && (
+            <DropdownYourAccount onClose={handleCloseDropdownAccount} />
+          )}
         </div>
 
         <div className="relative">

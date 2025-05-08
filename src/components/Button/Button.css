@@ -1,9 +1,6 @@
 .main-button,
 .second-button {
   text-transform: uppercase;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border-radius: 1rem;
   transition: background-color 0.3s ease;
   width: 50%;
 }
@@ -17,11 +14,11 @@
 
 .main-button {
   background-color: var(--primary-green);
-  color: var(--accent-green);
+  color: #fff;
 }
 
 .main-button:hover {
-  background-color: var(--slightly-green);
+  background-color: #133330;
 }
 
 .second-button {

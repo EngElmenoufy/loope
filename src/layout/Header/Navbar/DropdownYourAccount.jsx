@@ -1,4 +1,13 @@
-function DropdownYourAccount() {
+import { useNavigate } from "react-router-dom";
+
+function DropdownYourAccount({ onClose }) {
+  const navigate = useNavigate();
+
+  const handleAccountSettingsClick = () => {
+    navigate("/account-settings");
+    onClose();
+  };
+
   return (
     <div className="absolute right-0 top-12 w-64 bg-white rounded-md shadow-lg border border-gray-200 z-50">
       <div
@@ -43,22 +52,13 @@ function DropdownYourAccount() {
           </svg>
           <span>My Purchases</span>
         </button>
-        <button className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#18403c"
-          >
-            <path d="M480-360q56 0 101-27.5t71-72.5q-35-29-79-44.5T480-520q-49 0-93 15.5T308-460q26 45 71 72.5T480-360Zm0-200q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0 480Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Z" />
-          </svg>
-          <span>Saved Addresses</span>
-        </button>
       </div>
 
       <div className="border-t border-gray-200 py-2">
-        <button className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
+        <button
+          className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100"
+          onClick={handleAccountSettingsClick}
+        >
           {/* <Settings size={18} className="mr-3" /> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"

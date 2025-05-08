@@ -152,7 +152,7 @@ const ResetPasswordForm = ({ onSubmit, onBack, error, setError }) => {
           htmlFor="confirmPassword"
           className="block text-sm font-medium text-gray-700"
         >
-          Confirm Password
+          Confirm New Password
         </label>
         <div className="relative">
           <input
