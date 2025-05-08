@@ -10,6 +10,7 @@ import AddProductPage from "./pages/AddProduct/AddProductPage";
 import CartPage from "./pages/Cart/CartPage";
 import ForgotPassword from "./authentication/forgotPass/ForgotPasswordContainer";
 import CategoriesPage from "./pages/categories/CategoriesPage";
+import AccountSettings from "./pages/AccountSettings/AccountSettings";
 
 function AppContent() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function AppContent() {
         <Route path="/add" element={<AddProductPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
+        <Route path="/account-settings" element={<AccountSettings />} />
       </Routes>
       {!hideHeaderFooter && <Footer />}
     </>
