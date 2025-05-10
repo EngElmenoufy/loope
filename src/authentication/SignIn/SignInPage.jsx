@@ -1,19 +1,38 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
 export default function SignInPage() {
+  const [formError, setFormError] = useState("");
   const [email, setEmail] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!errorEmail && !errorPassword) {
-      navigate("/");
+
+    if (!email) {
+      setErrorEmail("Please enter your email");
     }
+    if (!password) {
+      setErrorPassword("Please enter your password");
+      return;
+    }
+
+    if (!errorEmail && !errorPassword) {
+      setIsLoading(true);
+      setTimeout(() => {
+        navigate("/");
+        setIsLoading(false);
+      }, 5000);
+    }
+    // else if (!errorEmail && !errorPassword) {
+    //   setFormError("Please enter your email and password");
+    // }
   };
 
   const togglePasswordVisibility = () => {
@@ -71,6 +90,11 @@ export default function SignInPage() {
           <p className="text-gray-600 mb-4">Enter your details below</p>
 
           <form onSubmit={handleSubmit}>
+            {formError && (
+              <div className="mb-4 bg-red-50 p-2 rounded border border-red-200">
+                <p className="text-sm text-red-600">{formError}</p>
+              </div>
+            )}
             <div className={`mb-1 ${!errorEmail ? "pb-5" : ""}`}>
               <label
                 htmlFor="email"
@@ -79,7 +103,7 @@ export default function SignInPage() {
                 Email Address
               </label>
               <input
-                type="email"
+                type="text"
                 id="email"
                 value={email}
                 onChange={(e) => handleEmailChange(e)}
@@ -178,12 +202,11 @@ export default function SignInPage() {
             </div>
 
             <div className="flex items-center justify-between mb-5">
-              <button
-                type="submit"
-                className="bg-[#18403C] text-white py-2 px-8 rounded hover:bg-[#0e5b53] focus:outline-none"
-              >
-                Log In
-              </button>
+              <ButtonWithLoading
+                buttonName="Log In"
+                isLoading={isLoading}
+                otherClass="px-8 !py-2 !text-base w-32"
+              />
 
               <Link
                 to="/forgotpass"

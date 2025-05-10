@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
 const EmailForm = ({ onSubmit, error, setError }) => {
   const [email, setEmail] = useState("");
@@ -9,18 +10,28 @@ const EmailForm = ({ onSubmit, error, setError }) => {
     e.preventDefault();
     setError("");
 
-    setIsLoading(true);
+    if (!email) {
+      setErrorEmail("Please enter your email");
+      return;
+    }
 
-    try {
-      await onSubmit(email);
-    } catch (err) {
-      // Error is handled in the parent component
-    } finally {
-      setIsLoading(false);
+    if (!errorEmail) {
+      setIsLoading(true);
+
+      setTimeout(async () => {
+        try {
+          await onSubmit(email);
+        } catch (err) {
+          // Error is handled in the parent component
+        } finally {
+          setIsLoading(false);
+        }
+      }, 5000);
     }
   };
 
   const handleEmailChange = (e) => {
+    setError("");
     setErrorEmail("");
     setEmail(e.target.value);
   };
@@ -48,7 +59,7 @@ const EmailForm = ({ onSubmit, error, setError }) => {
           Email Address
         </label>
         <input
-          type="email"
+          type="text"
           id="email"
           value={email}
           onChange={(e) => handleEmailChange(e)}
@@ -79,13 +90,19 @@ const EmailForm = ({ onSubmit, error, setError }) => {
       </div>
 
       <div>
-        <button
+        {/* <button
           type="submit"
           disabled={isLoading}
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#18403C] hover:bg-[#0e5b53] focus:outline-none disabled:bg-blue-300"
         >
           {isLoading ? "Sending..." : "Send Verification Code"}
-        </button>
+        </button> */}
+
+        <ButtonWithLoading
+          buttonName="Send Verification Code"
+          isLoading={isLoading}
+          otherClass="w-full"
+        />
       </div>
     </form>
   );

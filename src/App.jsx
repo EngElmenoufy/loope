@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import SignUp from "./authentication/SignUp/SignUp";
 import CategoryPage from "./pages/category/CategoryPage";
 import HomePage from "./pages/home/HomePage";
 import SignIpPage from "./authentication/SignIn/SignInPage";
@@ -11,6 +10,7 @@ import CartPage from "./pages/Cart/CartPage";
 import ForgotPassword from "./authentication/forgotPass/ForgotPasswordContainer";
 import CategoriesPage from "./pages/categories/CategoriesPage";
 import AccountSettings from "./pages/AccountSettings/AccountSettings";
+import SignUpContainer from "./authentication/SignUp/SignUpContainer";
 
 function AppContent() {
   const location = useLocation();
@@ -26,7 +26,7 @@ function AppContent() {
         <Route path="/" element={<HomePage />} />
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup" element={<SignUpContainer />} />
         <Route path="/signin" element={<SignIpPage />} />
         <Route path="/product" element={<ProductPage />} />
         <Route path="/add" element={<AddProductPage />} />

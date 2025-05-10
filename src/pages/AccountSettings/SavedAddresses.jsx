@@ -35,6 +35,36 @@ export default function SavedAddresses({
       </h2>
       <form onSubmit={handleAddNewAddress} className="space-y-4">
         <div>
+          <label className="block text-base font-semibold text-gray-800">
+            Country
+          </label>
+          <select
+            className="w-full p-3 border rounded-md bg-white"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          >
+            <option>Egypt</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            className="block text-base font-semibold text-gray-800"
+            htmlFor="city"
+          >
+            City
+          </label>
+          <input
+            id="city"
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
+            placeholder="City"
+          />
+        </div>
+
+        <div>
           <label
             className="block text-base font-semibold text-gray-800"
             htmlFor="streetName"
@@ -66,36 +96,6 @@ export default function SavedAddresses({
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
             placeholder="Apartment Number / Building"
           />
-        </div>
-
-        <div>
-          <label
-            className="block text-base font-semibold text-gray-800"
-            htmlFor="city"
-          >
-            City
-          </label>
-          <input
-            id="city"
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
-            placeholder="City"
-          />
-        </div>
-
-        <div>
-          <label className="block text-base font-semibold text-gray-800">
-            Country
-          </label>
-          <select
-            className="w-full p-3 border rounded-md bg-white"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-          >
-            <option>Egypt</option>
-          </select>
         </div>
 
         <Button

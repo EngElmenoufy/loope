@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
 const ResetPasswordForm = ({ onSubmit, onBack, error, setError }) => {
   const [newPassword, setNewPassword] = useState("");
@@ -13,31 +14,39 @@ const ResetPasswordForm = ({ onSubmit, onBack, error, setError }) => {
     e.preventDefault();
     setError("");
 
-    setErrorNewPassword("");
+    // setErrorNewPassword("");
 
-    if (newPassword.length < 8) {
-      setErrorNewPassword("Password must be at least 8 characters long");
-      return;
-    }
+    // if (newPassword.length < 8) {
+    //   setErrorNewPassword("Password must be at least 8 characters long");
+    //   return;
+    // }
 
     if (!newPassword) {
       setErrorNewPassword("Please enter a new password");
+    }
+
+    if (!confirmPassword) {
+      setErrorConfirmPassword("Please enter the confirm password");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setErrorConfirmPassword("Please enter the same password");
       return;
     }
 
-    setIsLoading(true);
+    if (!errorNewPassword && !errorConfirmPassword) {
+      setIsLoading(true);
 
-    try {
-      await onSubmit(newPassword);
-    } catch (err) {
-      // Error is handled in the parent component
-    } finally {
-      setIsLoading(false);
+      setTimeout(async () => {
+        try {
+          await onSubmit(newPassword);
+        } catch (err) {
+          // Error is handled in the parent component
+        } finally {
+          setIsLoading(false);
+        }
+      }, 5000);
     }
   };
 
@@ -61,7 +70,10 @@ const ResetPasswordForm = ({ onSubmit, onBack, error, setError }) => {
 
   const handleNewPasswordBlur = () => {
     if (newPassword.length < 8) {
-      setErrorNewPassword("Please enter at least 8-character");
+      setErrorNewPassword("Password must be at least 8 characters long");
+    }
+    if (confirmPassword && newPassword !== confirmPassword) {
+      setErrorConfirmPassword("Please enter the same password");
     }
   };
 
@@ -223,13 +235,19 @@ const ResetPasswordForm = ({ onSubmit, onBack, error, setError }) => {
         >
           Back
         </button>
-        <button
+        {/* <button
           type="submit"
           disabled={isLoading}
           className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#18403C] hover:bg-[#0e5b53] focus:outline-none"
         >
           {isLoading ? "Updating..." : "Reset Password"}
-        </button>
+        </button> */}
+
+        <ButtonWithLoading
+          buttonName="Reset Password"
+          isLoading={isLoading}
+          otherClass="flex-1"
+        />
       </div>
     </form>
   );

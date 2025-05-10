@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
 const VerificationForm = ({ onSubmit, onBack, email, error, setError }) => {
   const [code, setCode] = useState("");
@@ -23,18 +24,28 @@ const VerificationForm = ({ onSubmit, onBack, email, error, setError }) => {
     e.preventDefault();
     setError("");
 
-    setIsLoading(true);
+    if (!code) {
+      setErrorCode("Please enter the verification code");
+      return;
+    }
 
-    try {
-      await onSubmit(code);
-    } catch (err) {
-      // Error is handled in the parent component
-    } finally {
-      setIsLoading(false);
+    if (!errorCode) {
+      setIsLoading(true);
+
+      setTimeout(async () => {
+        try {
+          await onSubmit(code);
+        } catch (err) {
+          // Error is handled in the parent component
+        } finally {
+          setIsLoading(false);
+        }
+      }, 5000);
     }
   };
 
   const handleVerificationCode = (e) => {
+    setError("");
     setErrorCode("");
     if (e.target.value.length <= 6) {
       setCode(e.target.value);
@@ -106,13 +117,19 @@ const VerificationForm = ({ onSubmit, onBack, email, error, setError }) => {
         >
           Back
         </button>
-        <button
+        {/* <button
           type="submit"
           disabled={isLoading}
           className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#18403C] hover:bg-[#0e5b53] focus:outline-none disabled:bg-blue-300"
         >
           {isLoading ? "Verifying..." : "Verify Code"}
-        </button>
+        </button> */}
+
+        <ButtonWithLoading
+          buttonName="Verify Code"
+          isLoading={isLoading}
+          otherClass="flex-1"
+        />
       </div>
     </form>
   );

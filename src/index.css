@@ -105,6 +105,10 @@ h6 {
   }
 }
 
+input {
+  letter-spacing: 0.8px;
+}
+
 /* h5 {
   font-size: 0.8rem;
   line-height: normal;
