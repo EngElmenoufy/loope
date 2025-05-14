@@ -64,16 +64,28 @@ function AddressSelection({
             Default
           </span>
           <p className="text-sm text-gray-700">
-            {selectedDeliveryDetails.fullName}
+            <span className="text-base text-gray-900 font-semibold">
+              City:{" "}
+            </span>{" "}
+            {selectedDeliveryDetails.shippingAddress.city}
           </p>
           <p className="text-sm text-gray-700">
-            {selectedDeliveryDetails.phoneNumber}
+            <span className="text-base text-gray-900 font-semibold">
+              Street:
+            </span>{" "}
+            {selectedDeliveryDetails.shippingAddress.street}
           </p>
           <p className="text-sm text-gray-700">
-            {selectedDeliveryDetails.email}
+            <span className="text-base text-gray-900 font-semibold">
+              Flat:{" "}
+            </span>{" "}
+            {selectedDeliveryDetails.shippingAddress.flat}
           </p>
           <p className="text-sm text-gray-700">
-            {selectedDeliveryDetails.address}
+            <span className="text-base text-gray-900 font-semibold">
+              Phone:{" "}
+            </span>{" "}
+            {selectedDeliveryDetails.shippingAddress.phone}
           </p>
         </div>
 
@@ -81,7 +93,7 @@ function AddressSelection({
           onClick={handleAddNewAddress}
           className="w-full p-4 border border-gray-300 rounded-lg text-center"
         >
-          Add a new address
+          Change Your Details
         </button>
       </div>
     </div>

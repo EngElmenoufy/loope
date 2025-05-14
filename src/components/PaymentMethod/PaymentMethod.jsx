@@ -3,7 +3,9 @@ function PaymentMethod({ method, onChangeMethod }) {
     <div className="my-4 flex gap-4">
       <div
         className={`w-20 border border-gray-300 rounded-lg flex flex-col items-center p-1 cursor-pointer ${method === "cash" ? "!border-black !border-2" : ""}`}
-        onClick={() => onChangeMethod("cash")}
+        onClick={() =>
+          onChangeMethod((prev) => ({ ...prev, paymentMethod: "cash" }))
+        }
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +20,9 @@ function PaymentMethod({ method, onChangeMethod }) {
       </div>
       <div
         className={`w-20 border border-gray-300 rounded-lg flex flex-col items-center p-1 cursor-pointer ${method === "card" ? "!border-black !border-2" : ""}`}
-        onClick={() => onChangeMethod("card")}
+        onClick={() =>
+          onChangeMethod((prev) => ({ ...prev, paymentMethod: "card" }))
+        }
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

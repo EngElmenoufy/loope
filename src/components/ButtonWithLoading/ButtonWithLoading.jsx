@@ -6,7 +6,7 @@ function ButtonWithLoading({ buttonName, isLoading, onLoading, otherClass }) {
       onClick={onLoading}
       className={`flex justify-center py-2 px-4 border border-transparent rounded-md transition-all shadow-sm text-sm font-medium text-white bg-[#18403C] ${isLoading ? "" : "hover:bg-[#133330] hover:shadow-lg"} ${otherClass}`}
     >
-      {isLoading ? <div class="loader"></div> : buttonName}
+      {isLoading ? <div className="loader"></div> : buttonName}
     </button>
   );
 }

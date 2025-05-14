@@ -1,20 +1,29 @@
 import { useState } from "react";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-function AccountEmail({ email }) {
+function AccountEmail({
+  user,
+  onSubmit,
+  formError,
+  successMessage,
+  isLoading,
+}) {
+  const [userData, setUserData] = useState({
+    ...user,
+  });
   const [newEmail, setNewEmail] = useState("");
   const [errorNewEmail, setErrorNewEmail] = useState("");
-  const [yourPassword, setYourPassword] = useState("");
-  const [errorYourPassword, setErrorYourPassword] = useState("");
-  const [showYourPassword, setShowYourPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
-    setIsLoading(true);
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(newEmail)) {
+      setErrorNewEmail("Please enter vaild email");
+      return;
+    }
+
+    onSubmit(userData, "email");
 
     // try {
     //   await onSubmit(email);
@@ -26,30 +35,15 @@ function AccountEmail({ email }) {
   };
 
   const handleNewEmailChange = (e) => {
+    const { name, value } = e.target;
     setErrorNewEmail("");
-    setNewEmail(e.target.value);
-  };
 
-  const handleNewEmailBlur = () => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(newEmail)) {
-      setErrorNewEmail("Please enter vaild email");
-    }
-  };
+    setNewEmail(value);
 
-  const toggleYourPasswordVisibility = () => {
-    setShowYourPassword(!showYourPassword);
-  };
-
-  const handleYourPasswordChange = (e) => {
-    setErrorYourPassword("");
-    setYourPassword(e.target.value);
-  };
-
-  const handleYourPasswordBlur = () => {
-    if (yourPassword.length < 8) {
-      setErrorYourPassword("Please enter at least 8-character");
-    }
+    setUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -57,31 +51,36 @@ function AccountEmail({ email }) {
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Email</h2>
       <div className="space-y-1 pb-4 border-b border-gray-200">
         <h3 className="text-base font-semibold text-gray-800">Current email</h3>
-        <p className="text-gray-600">{email}</p>
+        <p className="text-gray-600">{user.email}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="py-4">
-        {error && (
+      <form onSubmit={handleSubmit}>
+        {formError && (
           <div className="mb-4 bg-red-50 p-2 rounded border border-red-200">
-            <p className="text-sm text-red-600">{error}</p>
+            <p className="text-sm text-red-600">{formError}</p>
+          </div>
+        )}
+        {successMessage && (
+          <div className="mb-4 bg-green-50 p-2 rounded border border-green-200">
+            <p className="text-sm text-green-600">{successMessage}</p>
           </div>
         )}
 
         <div className={`mb-1 ${!errorNewEmail ? "pb-5" : ""}`}>
           <label
-            htmlFor="newEmail"
+            htmlFor="email"
             className="block text-base font-semibold text-gray-800"
           >
-            New Email
+            Email <span className="text-red-600">*</span>
           </label>
           <input
             type="email"
-            id="newEmail"
+            id="email"
+            name="email"
             value={newEmail}
-            onChange={(e) => handleNewEmailChange(e)}
-            onBlur={handleNewEmailBlur}
+            onChange={handleNewEmailChange}
             className={`mt-1 ${errorNewEmail ? "text-[#E14627]" : ""} block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none`}
-            placeholder="Enter new email"
+            placeholder="Enter your email"
           />
           {errorNewEmail && (
             <p className="text-sm text-[#E14627] h-[20px]">
@@ -94,8 +93,8 @@ function AccountEmail({ email }) {
                 className="inline-block mr-2"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M5.9999 11.6C7.48511 11.6 8.9095 11.01 9.9597 9.95982C11.0099 8.90962 11.5999 7.48524 11.5999 6.00002C11.5999 4.51481 11.0099 3.09043 9.9597 2.04023C8.9095 0.990023 7.48511 0.400024 5.9999 0.400024C4.51469 0.400024 3.09031 0.990023 2.0401 2.04023C0.989901 3.09043 0.399902 4.51481 0.399902 6.00002C0.399902 7.48524 0.989901 8.90962 2.0401 9.95982C3.09031 11.01 4.51469 11.6 5.9999 11.6ZM8.5948 5.09492C8.72231 4.9629 8.79287 4.78608 8.79127 4.60254C8.78968 4.41901 8.71606 4.24344 8.58628 4.11365C8.45649 3.98387 8.28092 3.91025 8.09738 3.90865C7.91385 3.90706 7.73702 3.97761 7.605 4.10512L5.2999 6.41022L4.3948 5.50512C4.26278 5.37761 4.08596 5.30706 3.90242 5.30865C3.71888 5.31025 3.54331 5.38387 3.41353 5.51365C3.28374 5.64344 3.21013 5.81901 3.20853 6.00254C3.20694 6.18608 3.27749 6.3629 3.405 6.49492L4.805 7.89492C4.93627 8.02615 5.11429 8.09987 5.2999 8.09987C5.48552 8.09987 5.66353 8.02615 5.7948 7.89492L8.5948 5.09492Z"
                   fill="#E14627"
                 />
@@ -105,7 +104,7 @@ function AccountEmail({ email }) {
           )}
         </div>
 
-        <div className={`mb-1 ${!errorYourPassword ? "pb-5" : ""}`}>
+        {/* <div className={`mb-1 ${!errorYourPassword ? "pb-5" : ""}`}>
           <label
             htmlFor="yourPassword"
             className="block text-base font-semibold text-gray-800"
@@ -162,8 +161,8 @@ function AccountEmail({ email }) {
                 className="inline-block mr-2"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M5.9999 11.6C7.48511 11.6 8.9095 11.01 9.9597 9.95982C11.0099 8.90962 11.5999 7.48524 11.5999 6.00002C11.5999 4.51481 11.0099 3.09043 9.9597 2.04023C8.9095 0.990023 7.48511 0.400024 5.9999 0.400024C4.51469 0.400024 3.09031 0.990023 2.0401 2.04023C0.989901 3.09043 0.399902 4.51481 0.399902 6.00002C0.399902 7.48524 0.989901 8.90962 2.0401 9.95982C3.09031 11.01 4.51469 11.6 5.9999 11.6ZM8.5948 5.09492C8.72231 4.9629 8.79287 4.78608 8.79127 4.60254C8.78968 4.41901 8.71606 4.24344 8.58628 4.11365C8.45649 3.98387 8.28092 3.91025 8.09738 3.90865C7.91385 3.90706 7.73702 3.97761 7.605 4.10512L5.2999 6.41022L4.3948 5.50512C4.26278 5.37761 4.08596 5.30706 3.90242 5.30865C3.71888 5.31025 3.54331 5.38387 3.41353 5.51365C3.28374 5.64344 3.21013 5.81901 3.20853 6.00254C3.20694 6.18608 3.27749 6.3629 3.405 6.49492L4.805 7.89492C4.93627 8.02615 5.11429 8.09987 5.2999 8.09987C5.48552 8.09987 5.66353 8.02615 5.7948 7.89492L8.5948 5.09492Z"
                   fill="#E14627"
                 />
@@ -171,12 +170,12 @@ function AccountEmail({ email }) {
               {errorYourPassword}
             </p>
           )}
-        </div>
+        </div> */}
 
         <ButtonWithLoading
           buttonName={"Change Email"}
           isLoading={isLoading}
-          setIsLoading={setIsLoading}
+          otherClass={"w-[125px]"}
         />
       </form>
     </div>

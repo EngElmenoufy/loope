@@ -1,65 +1,83 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-export default function SignInPage() {
-  const [formError, setFormError] = useState("");
-  const [email, setEmail] = useState("");
-  const [errorEmail, setErrorEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorPassword, setErrorPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+export default function Login({ onLogin, isLoading, error }) {
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [errorData, setErrorData] = useState({
+    email: "",
+    password: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  // Validation rules
+  const validateField = (name, value) => {
+    switch (name) {
+      case "email":
+        if (!value.trim()) return "Please enter your email";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+          return "Please enter a valid email address";
+        return "";
+      case "password":
+        if (!value.trim()) return "Please enter your password";
+        if (value.length < 8) return "Password must be at least 8 characters";
+        return "";
+      default:
+        return "";
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing again
+    if (errorData[name]) {
+      setErrorData((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setErrorData((prev) => ({
+      ...prev,
+      [name]: validateField(name, value),
+    }));
+  };
+
+  useEffect(() => {
+    const isValid =
+      Object.values(errorData).every((error) => !error) &&
+      Object.values(userData).every((field) => field.trim());
+    setIsFormValid(isValid);
+  }, [userData, errorData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!email) {
-      setErrorEmail("Please enter your email");
-    }
-    if (!password) {
-      setErrorPassword("Please enter your password");
-      return;
-    }
+    // Validate all fields before submission
+    const newErrors = {};
+    Object.keys(userData).forEach((key) => {
+      newErrors[key] = validateField(key, userData[key]);
+    });
+    setErrorData(newErrors);
 
-    if (!errorEmail && !errorPassword) {
-      setIsLoading(true);
-      setTimeout(() => {
-        navigate("/");
-        setIsLoading(false);
-      }, 5000);
+    // Check if any errors exist
+    const hasErrors = Object.values(newErrors).some((error) => error);
+    if (hasErrors) return;
+
+    if (isFormValid) {
+      onLogin(userData);
     }
-    // else if (!errorEmail && !errorPassword) {
-    //   setFormError("Please enter your email and password");
-    // }
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  };
-
-  const handleEmailChange = (e) => {
-    setErrorEmail("");
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setErrorPassword("");
-    setPassword(e.target.value);
-  };
-
-  const handleEmailBlur = () => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(email)) {
-      setErrorEmail("Please enter vaild email");
-    }
-  };
-
-  const handlePasswordBlur = () => {
-    if (password.length < 8) {
-      setErrorPassword("Please enter at least 8-character");
-    }
   };
 
   return (
@@ -90,28 +108,29 @@ export default function SignInPage() {
           <p className="text-gray-600 mb-4">Enter your details below</p>
 
           <form onSubmit={handleSubmit}>
-            {formError && (
+            {error && (
               <div className="mb-4 bg-red-50 p-2 rounded border border-red-200">
-                <p className="text-sm text-red-600">{formError}</p>
+                <p className="text-sm text-red-600">{error}</p>
               </div>
             )}
-            <div className={`mb-1 ${!errorEmail ? "pb-5" : ""}`}>
+            <div className={`mb-1 ${!errorData.email ? "pb-5" : ""}`}>
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email Address
+                Email Address <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
                 id="email"
-                value={email}
-                onChange={(e) => handleEmailChange(e)}
-                onBlur={handleEmailBlur}
-                className={`mt-1 ${errorEmail ? "text-[#E14627]" : ""} block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none`}
+                name="email"
+                value={userData.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`mt-1 ${errorData.email ? "text-[#E14627]" : ""} block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none`}
                 placeholder="Enter your email"
               />
-              {errorEmail && (
+              {errorData.email && (
                 <p className="text-sm text-[#E14627] h-[20px]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -122,33 +141,34 @@ export default function SignInPage() {
                     className="inline-block mr-2"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M5.9999 11.6C7.48511 11.6 8.9095 11.01 9.9597 9.95982C11.0099 8.90962 11.5999 7.48524 11.5999 6.00002C11.5999 4.51481 11.0099 3.09043 9.9597 2.04023C8.9095 0.990023 7.48511 0.400024 5.9999 0.400024C4.51469 0.400024 3.09031 0.990023 2.0401 2.04023C0.989901 3.09043 0.399902 4.51481 0.399902 6.00002C0.399902 7.48524 0.989901 8.90962 2.0401 9.95982C3.09031 11.01 4.51469 11.6 5.9999 11.6ZM8.5948 5.09492C8.72231 4.9629 8.79287 4.78608 8.79127 4.60254C8.78968 4.41901 8.71606 4.24344 8.58628 4.11365C8.45649 3.98387 8.28092 3.91025 8.09738 3.90865C7.91385 3.90706 7.73702 3.97761 7.605 4.10512L5.2999 6.41022L4.3948 5.50512C4.26278 5.37761 4.08596 5.30706 3.90242 5.30865C3.71888 5.31025 3.54331 5.38387 3.41353 5.51365C3.28374 5.64344 3.21013 5.81901 3.20853 6.00254C3.20694 6.18608 3.27749 6.3629 3.405 6.49492L4.805 7.89492C4.93627 8.02615 5.11429 8.09987 5.2999 8.09987C5.48552 8.09987 5.66353 8.02615 5.7948 7.89492L8.5948 5.09492Z"
                       fill="#E14627"
                     />
                   </svg>
-                  {errorEmail}
+                  {errorData.email}
                 </p>
               )}
             </div>
 
-            <div className={` ${!errorPassword ? "pb-5" : ""} mb-1`}>
+            <div className={` ${!errorData.password ? "pb-5" : ""} mb-1`}>
               <label
-                htmlFor="newPassword"
+                htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                Password
+                Password <span className="text-red-600">*</span>
               </label>
               <div className="relative">
                 <input
-                  id="newPassword"
+                  id="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your new password"
-                  className={`mt-1 ${errorPassword ? "text-[#E14627]" : ""} block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none`}
-                  value={password}
-                  onChange={(e) => handlePasswordChange(e)}
-                  onBlur={handlePasswordBlur}
+                  placeholder="Enter your"
+                  className={`mt-1 ${errorData.password ? "text-[#E14627]" : ""} block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none`}
+                  value={userData.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <button
                   type="button"
@@ -179,7 +199,7 @@ export default function SignInPage() {
                   )}
                 </button>
               </div>
-              {errorPassword && (
+              {errorData.password && (
                 <p className="text-sm text-[#E14627] h-[20px]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -190,13 +210,13 @@ export default function SignInPage() {
                     className="inline-block mr-2"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M5.9999 11.6C7.48511 11.6 8.9095 11.01 9.9597 9.95982C11.0099 8.90962 11.5999 7.48524 11.5999 6.00002C11.5999 4.51481 11.0099 3.09043 9.9597 2.04023C8.9095 0.990023 7.48511 0.400024 5.9999 0.400024C4.51469 0.400024 3.09031 0.990023 2.0401 2.04023C0.989901 3.09043 0.399902 4.51481 0.399902 6.00002C0.399902 7.48524 0.989901 8.90962 2.0401 9.95982C3.09031 11.01 4.51469 11.6 5.9999 11.6ZM8.5948 5.09492C8.72231 4.9629 8.79287 4.78608 8.79127 4.60254C8.78968 4.41901 8.71606 4.24344 8.58628 4.11365C8.45649 3.98387 8.28092 3.91025 8.09738 3.90865C7.91385 3.90706 7.73702 3.97761 7.605 4.10512L5.2999 6.41022L4.3948 5.50512C4.26278 5.37761 4.08596 5.30706 3.90242 5.30865C3.71888 5.31025 3.54331 5.38387 3.41353 5.51365C3.28374 5.64344 3.21013 5.81901 3.20853 6.00254C3.20694 6.18608 3.27749 6.3629 3.405 6.49492L4.805 7.89492C4.93627 8.02615 5.11429 8.09987 5.2999 8.09987C5.48552 8.09987 5.66353 8.02615 5.7948 7.89492L8.5948 5.09492Z"
                       fill="#E14627"
                     />
                   </svg>
-                  {errorPassword}
+                  {errorData.password}
                 </p>
               )}
             </div>
@@ -205,7 +225,7 @@ export default function SignInPage() {
               <ButtonWithLoading
                 buttonName="Log In"
                 isLoading={isLoading}
-                otherClass="px-8 !py-2 !text-base w-32"
+                otherClass="px-8 !py-2 !text-base w-32 h-[42px] flex justify-center items-center"
               />
 
               <Link

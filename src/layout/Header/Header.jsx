@@ -5,7 +5,7 @@ import IconButton from "../../components/IconButton/IconButton";
 import { useNavigate } from "react-router-dom";
 import DropdownCategories from "./DropdownCategories";
 
-export default function Header() {
+export default function Header({ user, onLogout, cartItemCount, categories }) {
   const [isDropdownCategoriesOpen, setIsDropdownCategoriesOpen] =
     useState(false);
   const navigate = useNavigate();
@@ -14,6 +14,10 @@ export default function Header() {
 
   const toggleDropdownCategories = () => {
     setIsDropdownCategoriesOpen(!isDropdownCategoriesOpen);
+  };
+
+  const onClose = () => {
+    setIsDropdownCategoriesOpen(false);
   };
 
   const handleLogoClick = () => {
@@ -45,7 +49,9 @@ export default function Header() {
             </svg>
             <div className="text-white">Categories</div>
           </button>
-          {isDropdownCategoriesOpen && <DropdownCategories />}
+          {isDropdownCategoriesOpen && (
+            <DropdownCategories categories={categories} onClose={onClose} />
+          )}
         </div>
 
         <div className="w-full relative">
@@ -63,7 +69,7 @@ export default function Header() {
           </button>
         </div>
       </div>
-      <Navbar />
+      <Navbar user={user} onLogout={onLogout} cartItemCount={cartItemCount} />
       {isDropdownCategoriesOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 -z-10"

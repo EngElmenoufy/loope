@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function DropdownYourAccount({ onClose }) {
+function DropdownYourAccount({ user, onClose, onLogout }) {
   const navigate = useNavigate();
 
   const handleAccountSettingsClick = () => {
@@ -15,12 +15,17 @@ function DropdownYourAccount({ onClose }) {
         className="p-3 border-b flex items-center cursor-pointer hover:bg-gray-100"
       >
         <img
-          src="profile-image.avif"
+          src={user.avatar}
           alt="profile image"
           className="rounded-full bg-gray-200 w-10 h-10 mr-3"
         />
         <div>
-          <div className="font-semibold">mahmoud Elmenoufy</div>
+          <div
+            className="font-semibold text-nowrap overflow-hidden text-ellipsis"
+            title={`${user.firstName} ${user.lastName}}`}
+          >
+            {user.firstName} {user.lastName}
+          </div>
           <div className="text-sm text-gray-600">View your profile</div>
         </div>
       </div>
@@ -71,7 +76,13 @@ function DropdownYourAccount({ onClose }) {
           </svg>
           <span>Account settings</span>
         </button>
-        <button className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
+        <button
+          className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100"
+          onClick={() => {
+            onLogout();
+            onClose();
+          }}
+        >
           {/* <LogOut size={18} className="mr-3" /> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"

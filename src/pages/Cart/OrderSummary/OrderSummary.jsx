@@ -2,23 +2,29 @@ import { useState } from "react";
 import PaymentMethod from "../../../components/PaymentMethod/PaymentMethod";
 import Button from "../../../components/Button/Button";
 
-export default function OrderSummary({ onCheckout, method, onChangeMethod }) {
+export default function OrderSummary({
+  onCheckout,
+  method,
+  onChangeMethod,
+  itemsCount,
+  total,
+}) {
   return (
-    <div className="mt-4">
+    <div className="bg-white p-6 rounded-md shadow-md">
       <h3>How you'll pay</h3>
       <PaymentMethod method={method} onChangeMethod={onChangeMethod} />
       <div className="flex flex-col my-4 ">
         <div className="flex justify-between items-center pb-2">
-          <span className="text-lg">Items (2)</span>
+          <span className="text-lg">Items ({itemsCount})</span>
           <span className="text-lg font-semibold">400 AED</span>
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="text-lg">Discount</span>
           <span className="text-lg font-semibold">100 AED</span>
         </div>
-        <div className="flex justify-between items-center border-b pb-2 mb-4">
+        <div className="flex justify-between items-center border-b py-2 mb-4">
           <span className="text-lg">Total Price</span>
-          <span className="text-lg font-semibold">300 AED</span>
+          <span className="text-lg font-semibold">{total} AED</span>
         </div>
         <Button
           type="main"

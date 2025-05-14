@@ -26,16 +26,19 @@ import AddressSelection from "./AddressSelection/AddressSelection";
 import AddAddress from "./AddAddress/AddAddress";
 
 // Main Modal Component
-export default function Checkout({ isOpen, onClose, method, onChangeMethod }) {
+export default function Checkout({
+  isOpen,
+  onClose,
+  details,
+  onChangeDetails,
+}) {
   const [currentView, setCurrentView] = useState("checkout");
-  const [paymentMethod, setPaymentMethod] = useState(null);
-  const [selectedDeliveryDetails, setSelectedDeliveryDetails] = useState({
-    default: true,
-    fullName: "Mahmoud Elmenoufy",
-    phoneNumber: "+201000000000",
-    email: "mahmoud@example.com",
-    address: "Badawi, Al Mahalah Al Kubra (Part 2)",
-  });
+
+  const allAddressFieldsEmpty = Object.values(details.shippingAddress).every(
+    (val) => !val
+  );
+
+  const [errorAddress, setErrorAddress] = useState(false);
 
   // Sample items data
   const itemsTotal = 400;
@@ -74,6 +77,7 @@ export default function Checkout({ isOpen, onClose, method, onChangeMethod }) {
   };
 
   const handleAddressSelection = () => {
+    setErrorAddress(false);
     setCurrentView("checkout");
   };
 
@@ -91,7 +95,10 @@ export default function Checkout({ isOpen, onClose, method, onChangeMethod }) {
 
   const handleSubmitOrder = () => {
     // Here you would add logic to process the order
-    alert("Order submitted successfully!");
+    if (allAddressFieldsEmpty) {
+      setErrorAddress(true);
+      return;
+    }
     onClose();
   };
 
@@ -103,31 +110,27 @@ export default function Checkout({ isOpen, onClose, method, onChangeMethod }) {
       onClick={handleOutsideClick}
     >
       <div
-        className={`max-md:absolute max-md:bottom-0 max-md:left-0 w-full md:mt-0 md:max-w-lg lg:max-w-2xl bg-white rounded-t-lg shadow-lg max-h-[90vh] overflow-y-auto`}
+        className={`max-md:absolute max-md:bottom-0 max-md:left-0 w-full md:mt-0 md:max-w-lg lg:max-w-2xl bg-white rounded-lg max-md:rounded-b-none shadow-lg max-h-[90vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         {currentView === "checkout" && (
           <DoubleCheckOrderDetails
             onClose={onClose}
             handleShipToClick={handleShipToClick}
-            selectedDeliveryDetails={selectedDeliveryDetails}
             itemsTotal={itemsTotal}
             orderTotal={orderTotal}
             discount={discount}
             handleSubmitOrder={handleSubmitOrder}
-            method={method}
-            onChangeMethod={onChangeMethod}
+            details={details}
+            onChangeDetails={onChangeDetails}
+            errorAddress={errorAddress}
           />
         )}
         {currentView === "selectAddress" && (
           <AddressSelection
             onClose={onClose}
-            paymentMethod={paymentMethod}
-            setPaymentMethod={setPaymentMethod}
-            itemsTotal={itemsTotal}
-            discount={discount}
             handleBackToCheckout={handleBackToCheckout}
-            selectedDeliveryDetails={selectedDeliveryDetails}
+            selectedDeliveryDetails={details}
             handleAddressSelection={handleAddressSelection}
             handleAddNewAddress={handleAddNewAddress}
           />
@@ -135,7 +138,8 @@ export default function Checkout({ isOpen, onClose, method, onChangeMethod }) {
         {currentView === "addAddress" && (
           <AddAddress
             onClose={onClose}
-            selectedDeliveryDetails={selectedDeliveryDetails}
+            deliveryDetails={details}
+            onChangeDeliveryDetails={onChangeDetails}
             handleBackToAddressSelection={handleBackToAddressSelection}
             handleAddressSelection={handleAddressSelection}
           />

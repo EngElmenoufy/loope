@@ -22,7 +22,7 @@ const SuccessMessage = () => {
         You successfully set a new password.
       </p>
       <Link
-        to="/signin"
+        to="/login"
         className="inline-block my-3 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#18403C] hover:bg-[#0e5b53] focus:outline-none"
       >
         Proceed to sign in

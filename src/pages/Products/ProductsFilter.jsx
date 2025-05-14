@@ -1,0 +1,779 @@
+import { useState, useEffect } from "react";
+
+const ProductsFilter = () => {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    category: "",
+    brand: "",
+    color: "",
+    negotiable: "all",
+    priceMin: "",
+    priceMax: "",
+  });
+  const [appliedFilters, setAppliedFilters] = useState({
+    category: "",
+    brand: "",
+    color: "",
+    negotiable: "all",
+    priceMin: "",
+    priceMax: "",
+  });
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  // Sample product data
+  const allProducts = [
+    {
+      id: 1,
+      name: "iPhone 14",
+      category: "Electronics",
+      brand: "Apple",
+      color: "Black",
+      price: 999,
+      negotiable: false,
+    },
+    {
+      id: 2,
+      name: 'Samsung TV 55"',
+      category: "Electronics",
+      brand: "Samsung",
+      color: "Black",
+      price: 1200,
+      negotiable: true,
+    },
+    {
+      id: 3,
+      name: "Nike Air Max",
+      category: "Clothing",
+      brand: "Nike",
+      color: "White",
+      price: 150,
+      negotiable: false,
+    },
+    {
+      id: 4,
+      name: "Adidas Hoodie",
+      category: "Clothing",
+      brand: "Adidas",
+      color: "Blue",
+      price: 89,
+      negotiable: true,
+    },
+    {
+      id: 5,
+      name: "IKEA Desk Lamp",
+      category: "Home & Garden",
+      brand: "IKEA",
+      color: "White",
+      price: 35,
+      negotiable: false,
+    },
+    {
+      id: 6,
+      name: "Sony Headphones",
+      category: "Electronics",
+      brand: "Sony",
+      color: "Red",
+      price: 299,
+      negotiable: true,
+    },
+    {
+      id: 7,
+      name: "Dell Laptop",
+      category: "Electronics",
+      brand: "Dell",
+      color: "Gray",
+      price: 899,
+      negotiable: false,
+    },
+    {
+      id: 8,
+      name: "Nike Basketball",
+      category: "Sports",
+      brand: "Nike",
+      color: "Red",
+      price: 45,
+      negotiable: true,
+    },
+  ];
+
+  // Sample data for dropdown options
+  const categories = [
+    "Electronics",
+    "Clothing",
+    "Home & Garden",
+    "Sports",
+    "Books",
+    "Automotive",
+  ];
+  const brands = [
+    "Apple",
+    "Samsung",
+    "Nike",
+    "Adidas",
+    "IKEA",
+    "Sony",
+    "Dell",
+    "HP",
+  ];
+  const colors = [
+    "Red",
+    "Blue",
+    "Green",
+    "Black",
+    "White",
+    "Gray",
+    "Yellow",
+    "Pink",
+  ];
+
+  // Initialize products on component mount
+  useEffect(() => {
+    setFilteredProducts(allProducts);
+  }, []);
+
+  // Close filter when clicking outside on mobile
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isFilterOpen && window.innerWidth < 768) {
+        const filterElement = document.getElementById("mobile-filter");
+        if (filterElement && !filterElement.contains(event.target)) {
+          setIsFilterOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isFilterOpen]);
+
+  const handleFilterChange = (filterType, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [filterType]: value,
+    }));
+  };
+
+  const applyFilters = () => {
+    setAppliedFilters({ ...filters });
+    filterProducts(filters);
+    setIsFilterOpen(false); // Close filter on mobile after applying
+  };
+
+  const filterProducts = (currentFilters) => {
+    let filtered = allProducts.filter((product) => {
+      // Category filter
+      if (
+        currentFilters.category &&
+        product.category !== currentFilters.category
+      ) {
+        return false;
+      }
+
+      // Brand filter
+      if (currentFilters.brand && product.brand !== currentFilters.brand) {
+        return false;
+      }
+
+      // Color filter
+      if (currentFilters.color && product.color !== currentFilters.color) {
+        return false;
+      }
+
+      // Negotiable filter
+      if (currentFilters.negotiable !== "all") {
+        if (currentFilters.negotiable === "yes" && !product.negotiable) {
+          return false;
+        }
+        if (currentFilters.negotiable === "no" && product.negotiable) {
+          return false;
+        }
+      }
+
+      // Price range filter
+      if (
+        currentFilters.priceMin &&
+        product.price < Number(currentFilters.priceMin)
+      ) {
+        return false;
+      }
+      if (
+        currentFilters.priceMax &&
+        product.price > Number(currentFilters.priceMax)
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+
+    setFilteredProducts(filtered);
+  };
+
+  const clearFilters = () => {
+    const clearedFilters = {
+      category: "",
+      brand: "",
+      color: "",
+      negotiable: "all",
+      priceMin: "",
+      priceMax: "",
+    };
+    setFilters(clearedFilters);
+    setAppliedFilters(clearedFilters);
+    setFilteredProducts(allProducts);
+  };
+
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (appliedFilters.category) count++;
+    if (appliedFilters.brand) count++;
+    if (appliedFilters.color) count++;
+    if (appliedFilters.negotiable !== "all") count++;
+    if (appliedFilters.priceMin || appliedFilters.priceMax) count++;
+    return count;
+  };
+
+  const hasUnappliedChanges = () => {
+    return JSON.stringify(filters) !== JSON.stringify(appliedFilters);
+  };
+
+  return (
+    <div className="relative">
+      {/* Mobile Filter Button */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-colors duration-200 flex items-center space-x-2"
+        >
+          <svg
+            className="h-6 w-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+          </svg>
+          {getActiveFiltersCount() > 0 && (
+            <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+              {getActiveFiltersCount()}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Desktop Filter Sidebar */}
+      <div className="hidden md:block p-4 h-fit sticky top-4">
+        {/* Filter Header */}
+        <div className="flex items-center space-x-2 mb-4">
+          <svg
+            className="h-5 w-5 text-gray-600"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+          </svg>
+          <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
+          {getActiveFiltersCount() > 0 && (
+            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+              {getActiveFiltersCount()}
+            </span>
+          )}
+        </div>
+
+        {/* Filter Content */}
+        <div className="space-y-4">
+          {/* Category Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Category
+            </label>
+            <select
+              value={filters.category}
+              onChange={(e) => handleFilterChange("category", e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All Categories</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Brand Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Brand
+            </label>
+            <select
+              value={filters.brand}
+              onChange={(e) => handleFilterChange("brand", e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All Brands</option>
+              {brands.map((brand) => (
+                <option key={brand} value={brand}>
+                  {brand}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Color Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Color
+            </label>
+            <select
+              value={filters.color}
+              onChange={(e) => handleFilterChange("color", e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All Colors</option>
+              {colors.map((color) => (
+                <option key={color} value={color}>
+                  {color}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Negotiable Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Negotiable
+            </label>
+            <div className="flex space-x-2">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="negotiable"
+                  value="all"
+                  checked={filters.negotiable === "all"}
+                  onChange={(e) =>
+                    handleFilterChange("negotiable", e.target.value)
+                  }
+                  className="mr-1"
+                />
+                <span className="text-sm">All</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="negotiable"
+                  value="yes"
+                  checked={filters.negotiable === "yes"}
+                  onChange={(e) =>
+                    handleFilterChange("negotiable", e.target.value)
+                  }
+                  className="mr-1"
+                />
+                <span className="text-sm">Yes</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="negotiable"
+                  value="no"
+                  checked={filters.negotiable === "no"}
+                  onChange={(e) =>
+                    handleFilterChange("negotiable", e.target.value)
+                  }
+                  className="mr-1"
+                />
+                <span className="text-sm">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Price Range Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Price Range
+            </label>
+            <div className="flex space-x-2">
+              <input
+                type="number"
+                placeholder="Min"
+                value={filters.priceMin}
+                onChange={(e) => handleFilterChange("priceMin", e.target.value)}
+                className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <span className="flex items-center text-gray-500">-</span>
+              <input
+                type="number"
+                placeholder="Max"
+                value={filters.priceMax}
+                onChange={(e) => handleFilterChange("priceMax", e.target.value)}
+                className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Clear Filters Button */}
+          <button
+            onClick={clearFilters}
+            className="w-full mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-md transition-colors duration-200 flex items-center justify-center space-x-2"
+          >
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+            <span>Clear All Filters</span>
+          </button>
+
+          {/* Apply Button */}
+          <button
+            onClick={applyFilters}
+            className={`w-full mt-2 px-4 py-2 text-white text-sm font-medium rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 ${
+              hasUnappliedChanges()
+                ? "bg-blue-600 hover:bg-blue-700"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {hasUnappliedChanges() ? (
+              <>
+                <svg
+                  className="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+                </svg>
+                <span>Apply Filters</span>
+              </>
+            ) : (
+              <>
+                <svg
+                  className="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <span>Filters Applied</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Active Filters Display */}
+        {getActiveFiltersCount() > 0 && (
+          <div className="mt-4 p-3 bg-gray-50 rounded-md">
+            <h3 className="text-sm font-medium text-gray-700 mb-2">
+              Active Filters:
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {appliedFilters.category && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  Category: {appliedFilters.category}
+                </span>
+              )}
+              {appliedFilters.brand && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Brand: {appliedFilters.brand}
+                </span>
+              )}
+              {appliedFilters.color && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                  Color: {appliedFilters.color}
+                </span>
+              )}
+              {appliedFilters.negotiable !== "all" && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                  Negotiable:{" "}
+                  {appliedFilters.negotiable === "yes" ? "Yes" : "No"}
+                </span>
+              )}
+              {(appliedFilters.priceMin || appliedFilters.priceMax) && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                  Price: ${appliedFilters.priceMin || "0"} - $
+                  {appliedFilters.priceMax || "∞"}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Filter Overlay */}
+      {isFilterOpen && (
+        <div className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50 flex items-end">
+          <div
+            id="mobile-filter"
+            className="bg-white w-full max-h-3/4 rounded-t-lg p-6 animate-slide-up overflow-y-auto"
+          >
+            {/* Mobile Filter Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-2">
+                <svg
+                  className="h-5 w-5 text-gray-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+                </svg>
+                <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
+                {getActiveFiltersCount() > 0 && (
+                  <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                    {getActiveFiltersCount()}
+                  </span>
+                )}
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="p-2 rounded-md hover:bg-gray-100"
+              >
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Mobile Filter Content */}
+            <div className="space-y-4 pb-4">
+              {/* Category Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category
+                </label>
+                <select
+                  value={filters.category}
+                  onChange={(e) =>
+                    handleFilterChange("category", e.target.value)
+                  }
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Brand Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Brand
+                </label>
+                <select
+                  value={filters.brand}
+                  onChange={(e) => handleFilterChange("brand", e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">All Brands</option>
+                  {brands.map((brand) => (
+                    <option key={brand} value={brand}>
+                      {brand}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Color Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Color
+                </label>
+                <select
+                  value={filters.color}
+                  onChange={(e) => handleFilterChange("color", e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">All Colors</option>
+                  {colors.map((color) => (
+                    <option key={color} value={color}>
+                      {color}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Negotiable Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Negotiable
+                </label>
+                <div className="flex space-x-2">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="negotiable-mobile"
+                      value="all"
+                      checked={filters.negotiable === "all"}
+                      onChange={(e) =>
+                        handleFilterChange("negotiable", e.target.value)
+                      }
+                      className="mr-1"
+                    />
+                    <span className="text-sm">All</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="negotiable-mobile"
+                      value="yes"
+                      checked={filters.negotiable === "yes"}
+                      onChange={(e) =>
+                        handleFilterChange("negotiable", e.target.value)
+                      }
+                      className="mr-1"
+                    />
+                    <span className="text-sm">Yes</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="negotiable-mobile"
+                      value="no"
+                      checked={filters.negotiable === "no"}
+                      onChange={(e) =>
+                        handleFilterChange("negotiable", e.target.value)
+                      }
+                      className="mr-1"
+                    />
+                    <span className="text-sm">No</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Price Range Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Price Range
+                </label>
+                <div className="flex space-x-2">
+                  <input
+                    type="number"
+                    placeholder="Min"
+                    value={filters.priceMin}
+                    onChange={(e) =>
+                      handleFilterChange("priceMin", e.target.value)
+                    }
+                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <span className="flex items-center text-gray-500">-</span>
+                  <input
+                    type="number"
+                    placeholder="Max"
+                    value={filters.priceMax}
+                    onChange={(e) =>
+                      handleFilterChange("priceMax", e.target.value)
+                    }
+                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              {/* Mobile Action Buttons */}
+              <div className="flex space-x-2 pt-4 border-t border-gray-200">
+                <button
+                  onClick={clearFilters}
+                  className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-md transition-colors duration-200"
+                >
+                  Clear All
+                </button>
+                <button
+                  onClick={applyFilters}
+                  className={`flex-1 px-4 py-2 text-white text-sm font-medium rounded-md transition-colors duration-200 ${
+                    hasUnappliedChanges()
+                      ? "bg-blue-600 hover:bg-blue-700"
+                      : "bg-green-600 hover:bg-green-700"
+                  }`}
+                >
+                  {hasUnappliedChanges() ? "Apply Filters" : "Filters Applied"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        @keyframes slide-up {
+          from {
+            transform: translateY(100%);
+          }
+          to {
+            transform: translateY(0);
+          }
+        }
+        .animate-slide-up {
+          animation: slide-up 0.3s ease-out;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default ProductsFilter;
+
+// function Filters({ isOpen, onClose }) {
+//   return (
+//     <aside className={`drawer ${isOpen ? "open" : ""}`}>
+//       {/* Close button */}
+//       <div>
+//         <div className="flex justify-between items-center">
+//           <h3 className="text-lg font-bold mb-4">Filters</h3>
+
+//           <button
+//             onClick={onClose}
+//             className="lg:hidden p-2 rounded-full hover:bg-gray-100"
+//           >
+//             ✖
+//           </button>
+//         </div>
+//         <div className="space-y-4">
+//           <div>
+//             <label className="block mb-2">Price Range</label>
+//             <div className="flex space-x-2">
+//               <input
+//                 type="number"
+//                 placeholder="Min"
+//                 className="w-1/2 p-2 border rounded"
+//               />
+//               <input
+//                 type="number"
+//                 placeholder="Max"
+//                 className="w-1/2 p-2 border rounded"
+//               />
+//             </div>
+//           </div>
+
+//           <button className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+//             Apply Filters
+//           </button>
+//         </div>
+//       </div>
+//     </aside>
+//   );
+// }
+
+// export default Filters;

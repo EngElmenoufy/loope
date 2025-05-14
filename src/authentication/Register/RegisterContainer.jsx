@@ -1,76 +1,79 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ProfileCreation from "./ProfileCreation";
-import SignUp from "./SignUp";
+import Register from "./Register";
 
-function SignUpContainer() {
+export default function RegisterContainer({ onRegister, isLoading, error }) {
   const [step, setStep] = useState(1);
-  const [userData, setUserData] = useState({
+  const [registerData, setRegisterData] = useState({
     firstName: "",
     lastName: "",
+    role: "user",
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [profileData, setProfileData] = useState({
+    avatar: null,
+    preview: "",
+    phone: "",
+    date: "YYYY-MM-DD",
+    city: "",
+    street: "",
+    flat: "",
+    termsAccepted: false,
+  });
+  // const [error, setError] = useState("");
 
-  const handleSignUpSubmit = async (submittedData) => {
-    setUserData((prevData) => ({
-      ...prevData,
-      ...submittedData,
-    }));
+  const handleSignUpSubmit = () => {
     setStep(2);
-    // try {
-    //   // API call to send verification code
-    //   // await fetch('/api/forgot-password', {
-    //   //   method: 'POST',
-    //   //   headers: { 'Content-Type': 'application/json' },
-    //   //   body: JSON.stringify({ email: submittedEmail })
-    //   // });
-
-    //   // Move to next step
-    // } catch (err) {
-    //   setError("Failed to send verification code. Please try again.");
-    // }
   };
 
-  const handleProfileCreationSubmit = async (submittedData) => {
-    setUserData((prevData) => ({
-      ...prevData,
-      ...submittedData,
-    }));
-    navigate("/");
-    // try {
-    //   // API call to send verification code
-    //   // await fetch('/api/forgot-password', {
-    //   //   method: 'POST',
-    //   //   headers: { 'Content-Type': 'application/json' },
-    //   //   body: JSON.stringify({ email: submittedEmail })
-    //   // });
-
-    //   // Move to next step
-    // } catch (err) {
-    //   setError("Failed to send verification code. Please try again.");
-    // }
+  const handleProfileCreationSubmit = (isCompleted) => {
+    if (isCompleted) {
+      const updatedData = {
+        ...registerData,
+        ...profileData,
+      };
+      onRegister(updatedData, true);
+    } else {
+      const profileReset = {
+        avatar: null,
+        preview: "",
+        phone: "",
+        date: "YYYY-MM-DD",
+        city: "",
+        street: "",
+        flat: "",
+        termsAccepted: false,
+      };
+      const updatedData = {
+        ...registerData,
+        ...profileReset,
+      };
+      onRegister(updatedData, false);
+    }
   };
 
   const renderCurrentStep = () => {
     switch (step) {
       case 1:
         return (
-          <SignUp
+          <Register
+            userData={registerData}
+            setUserData={setRegisterData}
             onSubmit={handleSignUpSubmit}
             error={error}
-            setError={setError}
           />
         );
       case 2:
         return (
           <ProfileCreation
+            userData={profileData}
+            setUserData={setProfileData}
             onSubmit={handleProfileCreationSubmit}
             onBack={() => setStep(1)}
+            isLoading={isLoading}
             error={error}
-            setError={setError}
           />
         );
       default:
@@ -112,5 +115,3 @@ function SignUpContainer() {
     </div>
   );
 }
-
-export default SignUpContainer;

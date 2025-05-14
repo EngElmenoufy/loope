@@ -50,7 +50,7 @@
   background-color: #ededed;
 }
 
-.icon-button:hover img {
+.icon-button:hover .icon-image {
   filter: brightness(0) saturate(100%) invert(87%) sepia(10%) saturate(703%)
     hue-rotate(66deg) brightness(101%) contrast(93%);
 }

@@ -5,7 +5,7 @@
 
 @media (min-width: 1024px) {
   .category {
-    grid-template-columns: 13rem 1fr;
+    grid-template-columns: 17rem 1fr;
   }
 }
 

@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 
-function DropdownCategory({ category }) {
+function DropdownCategory({ category, onClose }) {
   return (
     <Link
-      to={category.to}
-      className="p-3 cursor-pointer hover:bg-gray-300 block"
+      to={`/category/${category._id}`}
+      className="p-3 cursor-pointer block hover:bg-gray-100"
+      onClick={onClose}
     >
       {category.name}
     </Link>

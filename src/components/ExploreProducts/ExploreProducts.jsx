@@ -11,7 +11,7 @@ const ExploreProducts = ({ header, title, showScroll = true, children }) => {
       <div className="relative my-3">
         <div className="header-content">
           <h3>{header}</h3>
-          <div role="link" className="see-more-link">
+          {/* <div role="link" className="see-more-link">
             <span className="text-nowrap">see more</span>
             <span className="!w-8">
               <img
@@ -20,7 +20,7 @@ const ExploreProducts = ({ header, title, showScroll = true, children }) => {
                 className="icon"
               />
             </span>
-          </div>
+          </div> */}
         </div>
         {/* Navigation Arrows */}
       </div>

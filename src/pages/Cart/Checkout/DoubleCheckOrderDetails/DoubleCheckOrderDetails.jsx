@@ -5,13 +5,13 @@ import CardInformation from "../CardInformation/CardInformation";
 function DoubleCheckOrderDetails({
   onClose,
   handleShipToClick,
-  selectedDeliveryDetails,
   itemsTotal,
   orderTotal,
   discount,
   handleSubmitOrder,
-  method,
-  onChangeMethod,
+  details,
+  onChangeDetails,
+  errorAddress,
 }) {
   return (
     <div className="flex flex-col">
@@ -38,7 +38,7 @@ function DoubleCheckOrderDetails({
 
           <div
             role="button"
-            className="p-4 rounded-lg border border-gray-200 mb-4"
+            className={`p-4 rounded-lg border border-gray-200 ${errorAddress ? "border-red-600" : ""} mb-4`}
             onClick={handleShipToClick}
           >
             <div className="flex items-center justify-between mb-2">
@@ -56,17 +56,36 @@ function DoubleCheckOrderDetails({
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </div>
+            {errorAddress && (
+              <div className="mb-4 bg-red-50 p-2 rounded border border-red-200">
+                <p className="text-sm text-red-600">
+                  You should add your details
+                </p>
+              </div>
+            )}
             <p className="text-sm text-gray-700">
-              {selectedDeliveryDetails.fullName}
+              <span className="text-base text-gray-900 font-semibold">
+                City:{" "}
+              </span>{" "}
+              {details.shippingAddress.city}
             </p>
             <p className="text-sm text-gray-700">
-              {selectedDeliveryDetails.phoneNumber}
+              <span className="text-base text-gray-900 font-semibold">
+                Street:
+              </span>{" "}
+              {details.shippingAddress.street}
             </p>
             <p className="text-sm text-gray-700">
-              {selectedDeliveryDetails.email}
+              <span className="text-base text-gray-900 font-semibold">
+                Flat:{" "}
+              </span>{" "}
+              {details.shippingAddress.flat}
             </p>
             <p className="text-sm text-gray-700">
-              {selectedDeliveryDetails.address}
+              <span className="text-base text-gray-900 font-semibold">
+                Phone:{" "}
+              </span>{" "}
+              {details.shippingAddress.phone}
             </p>
 
             {/* <div className="mt-4 flex items-center">
@@ -83,8 +102,11 @@ function DoubleCheckOrderDetails({
           <div className="p-4 rounded-lg border border-gray-200">
             <h4>Payment</h4>
 
-            <PaymentMethod method={method} onChangeMethod={onChangeMethod} />
-            {method === "card" && <CardInformation />}
+            <PaymentMethod
+              method={details.paymentMethod}
+              onChangeMethod={onChangeDetails}
+            />
+            {details.paymentMethod === "card" && <CardInformation />}
           </div>
         </div>
 
