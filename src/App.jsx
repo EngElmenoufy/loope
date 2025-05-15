@@ -608,13 +608,11 @@ function AppContent() {
             />
           }
         />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<AccountSettings />} />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
         <Route path="/sales-requests" element={<SaleRequests />} />
       </Routes>
-
-      <p>test</p>
 
       {!hideHeaderFooter && <Footer />}
     </>
