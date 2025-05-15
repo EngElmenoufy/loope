@@ -1,0 +1,23 @@
+.card{
+    background-color: #FFFFFF;
+    padding: 20px;
+    
+}
+.card::after{
+    content: "";
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    background-color: transparent;
+}
+.card p {
+    text-align: left;
+    position: static;
+    top: 0;
+    left: 0;
+    transform: translateY(0);
+    color: black;
+    z-index: 3;
+}

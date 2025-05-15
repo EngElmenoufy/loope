@@ -193,3 +193,40 @@ a:hover {
   color: #707070;
   text-decoration: underline;
 } */
+
+
+.bg-primary-green{
+    background-color: var(--primary-green);
+}
+.border-primary-green{
+    border-color: var(--primary-green);
+}
+.text-primary-green{
+  color: var(--primary-green);
+}
+.bg-primary-hover{
+  background-color: var(--slightly-green);
+}
+.custom-btn{
+  padding: 10px 15px; 
+   border-radius: 10px; 
+}
+.button-primary {
+  background-color: var(--primary-green);
+   border-color: var(--primary-green);
+   color: white;
+   padding: 10px 15px; 
+   border-radius: 10px; 
+}
+.button-primary:hover{
+  background-color: var(--slightly-green);
+}
+.button-secondary {
+  background-color: #a7debd;
+   color: black;
+   padding: 10px 15px; 
+   border-radius: 10px; 
+}
+.button-secondary:hover{
+  background-color: #b0e2c4;
+}

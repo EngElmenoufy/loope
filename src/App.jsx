@@ -18,6 +18,10 @@ import ForgotPassword from "./authentication/forgotPass/ForgotPasswordContainer"
 import CategoriesPage from "./pages/categories/CategoriesPage";
 import AccountSettings from "./pages/AccountSettings/AccountSettings";
 import RegisterContainer from "./authentication/Register/RegisterContainer";
+import Profile from "./pages/Profile/profilePage";
+import SavedAddresses from "./pages/AccountSettings/SavedAddresses";
+import MySalesPage from "./pages/Profile/MySales/MySalesPage";
+import SaleRequests from "./pages/Profile/SalesRequists/SalesRequests";
 
 const URL = "http://localhost:3000";
 
@@ -604,6 +608,10 @@ function AppContent() {
             />
           }
         />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/saved-addresses" element={<SavedAddresses />}/>
+        <Route path="/mysales" element={<MySalesPage />}/>
+        <Route path="/sales-requests" element={<SaleRequests />} />
       </Routes>
 
       {!hideHeaderFooter && <Footer />}
