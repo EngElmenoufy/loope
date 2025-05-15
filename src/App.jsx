@@ -608,10 +608,10 @@ function AppContent() {
             />
           }
         />
-        <Route path="/profile" element={<AccountSettings />} />
+        <Route path="/profile" element={<Profile/>} />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
-        <Route path="/sales-requests" element={<SaleRequests />} />
+        <Route path="/sales-requests" element={<Profile />} />
       </Routes>
 
       {!hideHeaderFooter && <Footer />}
