@@ -5,13 +5,13 @@ import CardInformation from "../CardInformation/CardInformation";
 function DoubleCheckOrderDetails({
   onClose,
   handleShipToClick,
-  itemsTotal,
-  orderTotal,
-  discount,
+  itemsCount,
   handleSubmitOrder,
   details,
   onChangeDetails,
   errorAddress,
+  total,
+  totalWithDiscount,
 }) {
   return (
     <div className="flex flex-col">
@@ -111,17 +111,21 @@ function DoubleCheckOrderDetails({
         </div>
 
         <div className="flex flex-col my-4">
-          <div className="flex justify-between items-center py-2">
-            <span className="text-lg">Items (2)</span>
-            <span className="text-lg font-medium">{itemsTotal}</span>
+          <div className="flex justify-between items-center pb-2">
+            <span className="text-lg">Items ({itemsCount})</span>
+            <span className="text-lg font-semibold">{total} AED</span>
           </div>
           <div className="flex justify-between items-center border-b pb-2">
             <span className="text-lg">Discount</span>
-            <span className="text-lg font-medium">{discount}</span>
+            <span className="text-lg font-semibold">
+              {total - totalWithDiscount} AED
+            </span>
           </div>
           <div className="flex justify-between items-center border-b py-2 mb-4">
             <span className="text-lg">Total Price</span>
-            <span className="text-lg font-medium">{orderTotal}</span>
+            <span className="text-lg font-semibold">
+              {totalWithDiscount} AED
+            </span>
           </div>
           <Button
             type="main"

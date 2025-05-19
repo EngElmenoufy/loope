@@ -3,11 +3,11 @@ import ReviewsHistogram from "./ReviewsHistogram/ReviewsHistogram";
 
 import "./RatingDetails.css";
 
-function RatingDetails() {
+function RatingDetails({ productData }) {
   return (
     <div className="rating-details">
-      <RatingSummary />
-      <ReviewsHistogram />
+      <RatingSummary productData={productData} />
+      {/* <ReviewsHistogram /> */}
     </div>
   );
 }

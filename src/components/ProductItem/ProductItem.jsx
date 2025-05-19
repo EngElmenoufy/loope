@@ -1,10 +1,24 @@
 import Rating from "@mui/material/Rating";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ProductItem({ data, isFixedWidth }) {
+  const navigate = useNavigate();
+
+  const handleProduct = () => {};
+
   return (
-    <div role="link" className={`${isFixedWidth ? "w-48" : ""} pb-2`}>
-      <div className="bg-[#f2f2f2] rounded-lg w-full h-44 mb-2">
-        <img src="cards/card1.png" alt={data.name} className="w-full h-full " />
+    <Link
+      to={`/product/${data._id}`}
+      className={`${isFixedWidth ? "w-48" : ""} pb-2`}
+    >
+      <div className=" rounded-lg overflow-hidden w-full h-44 mb-2 flex justify-center">
+        <img
+          src={
+            data.img && data?.img.length > 0 ? data?.img[0] : "cards/card1.png"
+          }
+          alt={data.name}
+          className="h-full object-cover object-center rounded-t-lg"
+        />
       </div>
       <div className="flex flex-col" title={data.name}>
         <span className="text-sm text-nowrap overflow-hidden text-ellipsis">
@@ -36,9 +50,9 @@ export default function ProductItem({ data, isFixedWidth }) {
             <span className="text-xs text-gray-500">({data.totalReviews})</span>
           </div>
         ) : (
-          <Rating name="read-only" value="4.5" precision={0.5} readOnly />
+          <Rating name="read-only" value={0} precision={0.5} readOnly />
         )}
       </div>
-    </div>
+    </Link>
   );
 }

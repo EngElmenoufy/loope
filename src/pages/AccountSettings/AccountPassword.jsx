@@ -1,20 +1,23 @@
 import { useState } from "react";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
+function AccountPassword({
+  onSubmit,
+  formError,
+  successMessage,
+  isLoading,
+  user,
+}) {
   const [formData, setFormData] = useState({
-    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
   const [errorData, setErrorData] = useState({
-    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
   // const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState({
-    current: false,
     new: false,
     confirm: false,
   });
@@ -22,16 +25,9 @@ function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
   const validateForm = () => {
     let isValid = true;
     const newErrors = {
-      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     };
-
-    // Validate current password
-    if (!formData.currentPassword) {
-      newErrors.currentPassword = "Please enter your current password";
-      isValid = false;
-    }
 
     // Validate new password
     if (!formData.newPassword) {
@@ -63,8 +59,11 @@ function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
       ...user,
       password: formData.newPassword,
     };
-
     onSubmit(updatedData, "password");
+    setFormData({
+      newPassword: "",
+      confirmPassword: "",
+    });
   };
 
   const handleChange = (e) => {
@@ -86,7 +85,9 @@ function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">Password</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        Change Your Password
+      </h2>
       <form onSubmit={handleSubmit}>
         {formError && (
           <div className="mb-4 bg-red-50 p-2 rounded border border-red-200">
@@ -165,7 +166,7 @@ function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
               value={formData.newPassword}
               onChange={handleChange}
             />
-            <button
+            {/* <button
               type="button"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
               onClick={togglePasswordVisibility}
@@ -192,7 +193,7 @@ function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
                   <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z" />
                 </svg>
               )}
-            </button>
+            </button> */}
           </div>
           {errorData.newPassword && (
             <p className="text-sm text-[#E14627] h-[20px]">
@@ -226,13 +227,14 @@ function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
           <div className="relative">
             <input
               id="confirmPassword"
+              name="confirmPassword"
               type={showPassword.confirm ? "text" : "password"}
               placeholder="Confirm your new password"
               className={`mt-1 tracking-wide ${errorData.confirmPassword ? "text-[#E14627]" : ""} block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500`}
               value={formData.confirmPassword}
               onChange={handleChange}
             />
-            <button
+            {/* <button
               type="button"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
               onClick={togglePasswordVisibility}
@@ -261,7 +263,7 @@ function AccountPassword({ onSubmit, formError, successMessage, isLoading }) {
                   <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z" />
                 </svg>
               )}
-            </button>
+            </button> */}
           </div>
           {errorData.confirmPassword && (
             <p className="text-sm text-[#E14627] h-[20px]">

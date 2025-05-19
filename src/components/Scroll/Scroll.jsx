@@ -16,14 +16,26 @@ export default function Scroll({
   const [isAtEndY, setIsAtEndY] = useState(false); // Vertical end
 
   const arrowIcons = [
-    { src: "icons/arrow-left.png", alt: "arrow left icon", position: "left" },
     {
-      src: "icons/arrow-right.png",
+      src: "../../../public/icons/arrow-left.png",
+      alt: "arrow left icon",
+      position: "left",
+    },
+    {
+      src: "../../../public/icons/arrow-right.png",
       alt: "arrow right icon",
       position: "right",
     },
-    { src: "icons/arrow-up.png", alt: "arrow up icon", position: "up" },
-    { src: "icons/arrow-down.png", alt: "arrow down icon", position: "down" },
+    {
+      src: "../../../public/icons/arrow-up.png",
+      alt: "arrow up icon",
+      position: "up",
+    },
+    {
+      src: "../../../public/icons/arrow-down.png",
+      alt: "arrow down icon",
+      position: "down",
+    },
   ];
 
   const checkScrollPosition = () => {

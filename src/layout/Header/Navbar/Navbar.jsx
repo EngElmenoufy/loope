@@ -79,6 +79,8 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
     navigate("/cart");
   };
 
+  console.log(user);
+
   return (
     <>
       <nav className="nav-bar">
@@ -105,7 +107,12 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
                 className="btn-icon icon-button"
               >
                 <img
-                  src={user.avatar}
+                  src={
+                    user.avatar ===
+                    "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPwA="
+                      ? "profile.jpg"
+                      : user.avatar
+                  }
                   alt="user avatar"
                   className="w-6 h-6 rounded-full"
                 />
@@ -162,7 +169,7 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
           </button>
         </div>
 
-        <div className="relative">
+        {/* <div className="relative">
           <button className="btn-icon icon-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +182,7 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
             </svg>
             <div className="label">Sell</div>
           </button>
-        </div>
+        </div> */}
 
         <div className="relative" ref={dropdownNotificationRef}>
           <button

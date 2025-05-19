@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 function DropdownYourAccount({ user, onClose, onLogout }) {
   const navigate = useNavigate();
-  function handleProfileNavigate(){
+  function handleProfileNavigate() {
     navigate("/profile");
     onClose();
   }
@@ -10,21 +10,32 @@ function DropdownYourAccount({ user, onClose, onLogout }) {
     navigate("/account-settings");
     onClose();
   };
+
   const handleSalesRequestsClick = () => {
     navigate("/sales-requests");
     onClose();
   };
 
+  const handleAddProduct = () => {
+    navigate("/add");
+    onClose();
+  };
+
   return (
-    <div className="absolute right-0 top-12 w-64 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+    <div className="absolute right-0 top-12 w-64 bg-white rounded-md shadow-lg border border-gray-100 z-50">
       <div
         onClick={handleProfileNavigate}
         className="p-3 border-b flex items-center cursor-pointer hover:bg-gray-100"
       >
         <img
-          src={user.avatar}
+          src={
+            user.avatar ===
+            "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPwA="
+              ? "../../../../public/profile.jpg"
+              : user.avatar
+          }
           alt="profile image"
-          className="rounded-full bg-gray-200 w-10 h-10 mr-3"
+          className="rounded-full w-10 h-10 mr-3"
         />
         <div>
           <div
@@ -38,46 +49,90 @@ function DropdownYourAccount({ user, onClose, onLogout }) {
       </div>
 
       <div className="py-2">
-        <Link to='/mysales' className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
-          {/* <Gift size={18} className="mr-3" /> */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#18403c"
-          >
-            <path d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Z" />
-          </svg>
-          <span>My Sales</span>
-        </Link>
-        <button onClick={handleSalesRequestsClick} 
-        className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
-          {/* <Gift size={18} className="mr-3" /> */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#18403c"
-          >
-            <path d="M160-720v-80h640v80H160Zm0 560v-240h-40v-80l40-200h640l40 200v80h-40v240h-80v-240H560v240H160Zm80-80h240v-160H240v160Z" />
-          </svg>
-          <span>My Sales Requests</span>
-        </button>
-        <button className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
-          {/* <Gift size={18} className="mr-3" /> */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#18403c"
-          >
-            <path d="M160-720v-80h640v80H160Zm0 560v-240h-40v-80l40-200h640l40 200v80h-40v240h-80v-240H560v240H160Zm80-80h240v-160H240v160Z" />
-          </svg>
-          <span>My Purchases</span>
-        </button>
+        {user.role === "seller" ? (
+          <>
+            <Link
+              to="/mysales"
+              className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100"
+            >
+              {/* <Gift size={18} className="mr-3" /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#18403c"
+              >
+                <path d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Z" />
+              </svg>
+              <span>My Sales</span>
+            </Link>
+            <button
+              onClick={handleSalesRequestsClick}
+              className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100"
+            >
+              {/* <Gift size={18} className="mr-3" /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#18403c"
+              >
+                <path d="M320-414v-306h120v306l-60-56-60 56Zm200 60v-526h120v406L520-354ZM120-216v-344h120v224L120-216Zm0 98 258-258 142 122 224-224h-64v-80h200v200h-80v-64L524-146 382-268 232-118H120Z" />
+              </svg>
+              <span>My Sales Requests</span>
+            </button>
+            <button
+              onClick={handleAddProduct}
+              className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100"
+            >
+              {/* <Gift size={18} className="mr-3" /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#18403c"
+              >
+                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+              </svg>
+              <span>Add Product</span>
+            </button>
+          </>
+        ) : (
+          <>
+            <button className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
+              {/* <Gift size={18} className="mr-3" /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#18403c"
+              >
+                <path d="M160-720v-80h640v80H160Zm0 560v-240h-40v-80l40-200h640l40 200v80h-40v240h-80v-240H560v240H160Zm80-80h240v-160H240v160Z" />
+              </svg>
+              <span>My Purchases</span>
+            </button>
+            <button
+              onClick={handleSalesRequestsClick}
+              className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100"
+            >
+              {/* <Gift size={18} className="mr-3" /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#18403c"
+              >
+                <path d="M320-414v-306h120v306l-60-56-60 56Zm200 60v-526h120v406L520-354ZM120-216v-344h120v224L120-216Zm0 98 258-258 142 122 224-224h-64v-80h200v200h-80v-64L524-146 382-268 232-118H120Z" />
+              </svg>
+              <span>My Purchases Requests</span>
+            </button>
+          </>
+        )}
       </div>
 
       <div className="border-t border-gray-200 py-2">

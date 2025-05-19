@@ -1,14 +1,50 @@
 import { useEffect, useState } from "react";
 import Header from "../../layout/Header/Header";
 import ProductItem from "../../components/ProductItem/ProductItem";
-import "./CategoryPage.css";
 // import CategoryFilter from "./CategoryFilter";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-function CategoryPage({ categories, brands, products }) {
-  const { id: categoryId } = useParams();
+export default function ProductsPage({ categories, brands, products }) {
+  const [newProducts, setNewProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [searchParams] = useSearchParams();
+
+  const name = searchParams.get("name");
+  const filter = searchParams.get("filter");
+
+  useEffect(() => {
+    if (name) {
+      const performSearch = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/products/search?name=${name}`
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          setNewProducts(data.data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      performSearch();
+    } else {
+      setNewProducts(products);
+    }
+  }, [products]);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
@@ -53,7 +89,7 @@ function CategoryPage({ categories, brands, products }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isFilterOpen && window.innerWidth < 768) {
-        const filterElement = document.getElementById("mobile-filter");
+        const filterElement = document.getElementById("mobile2-filter");
         if (filterElement && !filterElement.contains(event.target)) {
           setIsFilterOpen(false);
         }
@@ -66,21 +102,16 @@ function CategoryPage({ categories, brands, products }) {
     };
   }, [isFilterOpen]);
 
-  // useEffect(() => {
-  //   setFilters((prev) => {
-  //     const newFilters = { ...prev, category: categoryId };
-  //     applyFilters(newFilters); // Pass new filters directly
-  //     return newFilters;
-  //   });
-  // }, []);
-
   useEffect(() => {
     setFilters((prev) => {
-      const newFilters = { ...prev, category: categoryId };
+      const newFilters = {
+        ...prev,
+        hasDiscount: filter === "dis" ? "yes" : "all",
+      };
       applyFilters(newFilters); // Pass new filters directly
       return newFilters;
     });
-  }, [products]);
+  }, [newProducts]);
 
   const handleFilterChange = (filterType, value) => {
     setFilters((prev) => ({
@@ -102,7 +133,7 @@ function CategoryPage({ categories, brands, products }) {
   };
 
   const filterProducts = (currentFilters) => {
-    const filtered = products.filter((product) => {
+    const filtered = newProducts.filter((product) => {
       // Category filter
       if (
         currentFilters.category &&
@@ -155,6 +186,8 @@ function CategoryPage({ categories, brands, products }) {
         }
       }
 
+      // console.log(filteredProducts);
+
       // Price range filter
       if (
         currentFilters.priceMin &&
@@ -188,7 +221,7 @@ function CategoryPage({ categories, brands, products }) {
     };
     setFilters(clearedFilters);
     setAppliedFilters(clearedFilters);
-    setFilteredProducts(products);
+    setFilteredProducts(newProducts);
   };
 
   const getActiveFiltersCount = () => {
@@ -285,9 +318,6 @@ function CategoryPage({ categories, brands, products }) {
     <div>
       <main className="category grid grid-cols-12 gap-4 m-4">
         <div className="relative">
-          {/* Mobile Filter Button */}
-
-          {/* Desktop and Mobile Layout */}
           {/* Desktop Filter Sidebar */}
           <div className="hidden md:block p-4 h-fit sticky top-4">
             {/* Filter Header */}
@@ -537,6 +567,39 @@ function CategoryPage({ categories, brands, products }) {
                 otherClass="w-full"
                 onLoading={() => applyFilters(null)}
               />
+              {/* <button
+                onClick={applyFilters}
+                className={`w-full mt-2 px-4 py-2 text-white text-sm font-medium rounded-md transition-colors duration-200 flex items-center justify-center space-x-2
+                  `}
+              > */}
+              {/* {hasUnappliedChanges() ? (
+                  <>
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+                    </svg>
+                    <span>Apply Filters</span>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                    <span>Filters Applied</span>
+                  </>
+                )} */}
+              {/* </button> */}
             </div>
 
             {/* Active Filters Display */}
@@ -599,7 +662,7 @@ function CategoryPage({ categories, brands, products }) {
           {isFilterOpen && (
             <div className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50 flex items-end">
               <div
-                id="mobile-filter"
+                id="mobile2-filter"
                 className="bg-white w-full max-h-3/4 rounded-t-lg p-6 animate-slide-up overflow-y-auto"
               >
                 {/* Mobile Filter Header */}
@@ -856,18 +919,11 @@ function CategoryPage({ categories, brands, products }) {
                     >
                       Clear All
                     </button>
-                    <button
-                      onClick={applyFilters}
-                      className={`flex-1 px-4 py-2 text-white text-sm font-medium rounded-md transition-colors duration-200 ${
-                        hasUnappliedChanges()
-                          ? "bg-blue-600 hover:bg-blue-700"
-                          : "bg-green-600 hover:bg-green-700"
-                      }`}
-                    >
-                      {hasUnappliedChanges()
-                        ? "Apply Filters"
-                        : "Filters Applied"}
-                    </button>
+                    <ButtonWithLoading
+                      buttonName="Apply Filters"
+                      otherClass="flex-1"
+                      onLoading={() => applyFilters(null)}
+                    />
                   </div>
                 </div>
               </div>
@@ -890,7 +946,7 @@ function CategoryPage({ categories, brands, products }) {
         </div>
         <section className="p-2">
           <div className="title flex justify-between items-center">
-            <span>Category</span>
+            <span>Product</span>
             <Button
               text="Filter"
               otherClass="md:hidden !w-fit"
@@ -898,13 +954,13 @@ function CategoryPage({ categories, brands, products }) {
             />
           </div>
 
-          <h2 className="header w-fit">electronices</h2>
+          <h2 className="header w-fit">All Products</h2>
           <div className="mt-2">
             <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center sm:justify-items-stretch">
               {filteredProducts.map((product) => (
                 <li
                   className="p-2 w-3/4 sm:w-auto bg-white transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
-                  key={product.id}
+                  key={product._id}
                 >
                   <ProductItem data={product} />
                 </li>
@@ -916,5 +972,3 @@ function CategoryPage({ categories, brands, products }) {
     </div>
   );
 }
-
-export default CategoryPage;
