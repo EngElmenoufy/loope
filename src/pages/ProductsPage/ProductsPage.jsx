@@ -11,7 +11,7 @@ export default function ProductsPage({
   brands,
   products,
   token,
-  addFavorite,
+  addOrRemoveFavorite,
 }) {
   const [newProducts, setNewProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
