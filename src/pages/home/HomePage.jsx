@@ -7,7 +7,7 @@ import Header from "../../layout/Header/Header";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 
-function HomePage({ products }) {
+function HomePage({ products, token, addOrRemoveFavorite }) {
   const discountedProducts = products
     .filter((product) => Number(product.discount) > 0)
     .slice(0, 10);
@@ -167,7 +167,12 @@ function HomePage({ products }) {
               className="p-2 bg-white w-52 flex-shrink-0 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
               key={product._id}
             >
-              <ProductItem isFixedWidth={true} data={product} />
+              <ProductItem
+                isFixedWidth={true}
+                data={product}
+                token={token}
+                onAddOrRemoveFavorite={addOrRemoveFavorite}
+              />
             </li>
           ))}
         </ExploreProducts>
@@ -181,7 +186,12 @@ function HomePage({ products }) {
               className="p-2 w-52 flex-shrink-0 bg-white transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
               key={product.id}
             >
-              <ProductItem isFixedWidth={true} data={product} />
+              <ProductItem
+                isFixedWidth={true}
+                data={product}
+                token={token}
+                onAddOrRemoveFavorite={addOrRemoveFavorite}
+              />
             </li>
           ))}
         </ExploreProducts>

@@ -1,6 +1,4 @@
 function Reviewer({ userData }) {
-  console.log(userData);
-
   return (
     <div role="link" className="flex gap-4 items-center my-2 cursor-pointer">
       <img

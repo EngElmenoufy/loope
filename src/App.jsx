@@ -52,7 +52,10 @@ function AppContent() {
 
   // Products state
   const [products, setProducts] = useState([]);
+  const [productsWithFavorites, setProductsWithFavorites] = useState([]);
+  const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [favoriteProductIds, setFavoriteProductIds] = useState([]);
   const [brands, setBrands] = useState([]);
   const [isLoading, setIsLoading] = useState({
     products: false,
@@ -162,6 +165,91 @@ function AppContent() {
   useEffect(() => {
     getProducts();
   }, []);
+
+  const getFavorites = async () => {
+    try {
+      const response = await fetch(`${URL}/api/favorites/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.msg);
+      setFavoriteProducts(data);
+      setFavoriteProductIds(data.map((fav) => fav.productId._id));
+
+      // setProducts(productsWithFavorites);
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  };
+
+  useEffect(() => {
+    getFavorites();
+  }, []);
+
+  const addOrRemoveFavorite = async (id, isRemove) => {
+    if (isRemove) {
+      try {
+        const response = await fetch(`${URL}/api/favorites/`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            productId: id,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.msg);
+
+        return { success: true };
+      } catch (err) {
+        return { success: false, error: err.message };
+      } finally {
+        setTimeout(() => {
+          getFavorites();
+        }, 500);
+      }
+    } else {
+      try {
+        const response = await fetch(`${URL}/api/favorites/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            productId: id,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.msg);
+
+        return { success: true };
+      } catch (err) {
+        return { success: false, error: err.message };
+      } finally {
+        setTimeout(() => {
+          getFavorites();
+        }, 500);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setProductsWithFavorites(
+      products.map((product) => ({
+        ...product,
+        isFavorite: favoriteProductIds.includes(product._id),
+      }))
+    );
+  }, [products, favoriteProductIds]);
 
   const getCart = async () => {
     if (token) {
@@ -544,7 +632,9 @@ function AppContent() {
           path="/"
           element={
             <HomePage
-              products={products}
+              products={productsWithFavorites}
+              token={token}
+              addOrRemoveFavorite={addOrRemoveFavorite}
               isLoading={isLoading.products}
               error={error.products}
             />
@@ -556,7 +646,9 @@ function AppContent() {
             <CategoryPage
               categories={categories}
               brands={brands}
-              products={products}
+              products={productsWithFavorites}
+              token={token}
+              addOrRemoveFavorite={addOrRemoveFavorite}
               isLoading={isLoading.categories}
               error={error.categories}
             />
@@ -598,7 +690,8 @@ function AppContent() {
             <ProductPage
               categories={categories}
               brands={brands}
-              products={products}
+              addOrRemoveFavorite={addOrRemoveFavorite}
+              products={productsWithFavorites}
               addToCart={addToCart}
               token={token}
               isLoading={isLoading.products}
@@ -611,7 +704,7 @@ function AppContent() {
             <AddProductPage
               categories={categories}
               brands={brands}
-              onAdd={addProduct}
+              onAddOrRemoverFavorite={addProduct}
               user={user}
             />
           }
@@ -649,7 +742,9 @@ function AppContent() {
             <ProductsPage
               categories={categories}
               brands={brands}
-              products={products}
+              addOrRemoveFavorite={addOrRemoveFavorite}
+              products={productsWithFavorites}
+              token={token}
               isLoading={isLoading.categories}
               error={error.categories}
             />
