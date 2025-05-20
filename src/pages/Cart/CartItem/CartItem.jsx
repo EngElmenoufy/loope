@@ -63,8 +63,6 @@ function CartItem({ item, onUpdate, onRemove, token }) {
     }
   };
 
-  console.log(itemData);
-
   return (
     <>
       <div className="bg-white shadow-md flex gap-4 p-4 rounded-md max-h-40">

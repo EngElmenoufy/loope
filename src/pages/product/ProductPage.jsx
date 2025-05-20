@@ -82,7 +82,14 @@ import { useEffect, useState } from "react";
 //   },
 // ];
 
-function ProductPage({ categories, brands, token, addToCart, products }) {
+function ProductPage({
+  categories,
+  brands,
+  token,
+  addToCart,
+  products,
+  addFavorite,
+}) {
   const [productData, setProductData] = useState({});
   const [sellerData, setSellerData] = useState({});
   const [productReviews, setProductReviews] = useState([]);
@@ -235,7 +242,12 @@ function ProductPage({ categories, brands, token, addToCart, products }) {
               className="p-2 bg-white w-52 flex-shrink-0 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
               key={product._id}
             >
-              <ProductItem isFixedWidth={true} data={product} />
+              <ProductItem
+                isFixedWidth={true}
+                data={product}
+                token={token}
+                onAddOrRemoveFavorite={addOrRemoveFavorite}
+              />
             </li>
           ))}
         </ExploreProducts>

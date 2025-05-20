@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-function CategoryPage({ categories, brands, products }) {
+function CategoryPage({ categories, brands, products, addOrRemoveFavorite }) {
   const { id: categoryId } = useParams();
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -906,7 +906,10 @@ function CategoryPage({ categories, brands, products }) {
                   className="p-2 w-3/4 sm:w-auto bg-white transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
                   key={product.id}
                 >
-                  <ProductItem data={product} />
+                  <ProductItem
+                    data={product}
+                    onAddOrRemoveFavorite={addOrRemoveFavorite}
+                  />
                 </li>
               ))}
             </ul>

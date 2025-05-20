@@ -79,8 +79,6 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
     navigate("/cart");
   };
 
-  console.log(user);
-
   return (
     <>
       <nav className="nav-bar">

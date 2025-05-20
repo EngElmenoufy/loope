@@ -6,7 +6,13 @@ import { useSearchParams } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-export default function ProductsPage({ categories, brands, products }) {
+export default function ProductsPage({
+  categories,
+  brands,
+  products,
+  token,
+  addOrRemoveFavorite,
+}) {
   const [newProducts, setNewProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -962,7 +968,11 @@ export default function ProductsPage({ categories, brands, products }) {
                   className="p-2 w-3/4 sm:w-auto bg-white transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
                   key={product._id}
                 >
-                  <ProductItem data={product} />
+                  <ProductItem
+                    data={product}
+                    token={token}
+                    onAddOrRemoveFavorite={addOrRemoveFavorite}
+                  />
                 </li>
               ))}
             </ul>

@@ -49,7 +49,7 @@ function MainPicture({ card }) {
     //     </li>
     //   ))}
     // </Scroll>
-    <div className=" shrink-0 grow-0 basis-4/5 md:basis-full rounded-2xl">
+    <div className="bg-white shrink-0 grow-0 basis-4/5 md:basis-full rounded-2xl">
       <img src={card} alt={card} className="main-picture w-full h-full" />
     </div>
   );

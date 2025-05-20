@@ -16,8 +16,6 @@ function ProductDetails({ categories, brands, data, sellerData, addToCart }) {
     addToCart(prodata);
   };
 
-  console.log(sellerData.avatar);
-
   return (
     <section className="product-details">
       {/* <ProductHeader sellerData={sellerData} /> */}

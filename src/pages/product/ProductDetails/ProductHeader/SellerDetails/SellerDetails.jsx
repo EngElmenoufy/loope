@@ -1,8 +1,6 @@
 function SellerDetails({ sellerData }) {
   // console.log(sellerData);
 
-  console.log(sellerData);
-
   return (
     <div role="link" className="flex items-center gap-4 w-fit">
       <img
