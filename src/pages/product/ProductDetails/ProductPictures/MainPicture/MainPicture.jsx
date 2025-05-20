@@ -49,21 +49,8 @@ function MainPicture({ card }) {
     //     </li>
     //   ))}
     // </Scroll>
-    <div className="bg-[#f2f2f2] shrink-0 grow-0 basis-4/5 md:basis-full rounded-2xl">
-      {card.type === "video" ? (
-        <video
-          src={card?.src}
-          className="main-picture w-full h-full"
-          muted
-          controls
-        />
-      ) : (
-        <img
-          src={card?.src}
-          alt={card?.title}
-          className="main-picture w-full h-full"
-        />
-      )}
+    <div className=" shrink-0 grow-0 basis-4/5 md:basis-full rounded-2xl">
+      <img src={card} alt={card} className="main-picture w-full h-full" />
     </div>
   );
 }

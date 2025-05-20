@@ -132,7 +132,11 @@ main {
   gap: 0.4rem;
 }
 
-.see-more-link:hover img.icon {
+.see-more-link svg {
+  transition: all 0.3s;
+}
+
+.see-more-link:hover svg {
   transform: translateX(4px);
 }
 
@@ -194,39 +198,38 @@ a:hover {
   text-decoration: underline;
 } */
 
-
-.bg-primary-green{
-    background-color: var(--primary-green);
+.bg-primary-green {
+  background-color: var(--primary-green);
 }
-.border-primary-green{
-    border-color: var(--primary-green);
+.border-primary-green {
+  border-color: var(--primary-green);
 }
-.text-primary-green{
+.text-primary-green {
   color: var(--primary-green);
 }
-.bg-primary-hover{
+.bg-primary-hover {
   background-color: var(--slightly-green);
 }
-.custom-btn{
-  padding: 10px 15px; 
-   border-radius: 10px; 
+.custom-btn {
+  padding: 10px 15px;
+  border-radius: 10px;
 }
 .button-primary {
   background-color: var(--primary-green);
-   border-color: var(--primary-green);
-   color: white;
-   padding: 10px 15px; 
-   border-radius: 10px; 
+  border-color: var(--primary-green);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
 }
-.button-primary:hover{
+.button-primary:hover {
   background-color: var(--slightly-green);
 }
 .button-secondary {
   background-color: #a7debd;
-   color: black;
-   padding: 10px 15px; 
-   border-radius: 10px; 
+  color: black;
+  padding: 10px 15px;
+  border-radius: 10px;
 }
-.button-secondary:hover{
+.button-secondary:hover {
   background-color: #b0e2c4;
 }

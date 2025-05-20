@@ -6,7 +6,7 @@ const SubscriptionForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add logic to handle email subscription (e.g., API call)
-    console.log("Subscribed with:", email);
+    // console.log("Subscribed with:", email);
     setEmail("");
   };
 

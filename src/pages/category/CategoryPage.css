@@ -3,6 +3,11 @@
   grid-template-columns: 1fr;
 }
 
+@media (min-width: 768px) {
+  .category {
+    grid-template-columns: 14rem 1fr;
+  }
+}
 @media (min-width: 1024px) {
   .category {
     grid-template-columns: 17rem 1fr;
@@ -47,13 +52,6 @@
   margin: 0;
   font-weight: 400;
 }
-
-.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 1rem;
-}
-
 .drawer {
   width: 100%;
   padding: 0.5rem;

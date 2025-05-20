@@ -1,4 +1,8 @@
-function SellerDetails() {
+function SellerDetails({ sellerData }) {
+  // console.log(sellerData);
+
+  console.log(sellerData);
+
   return (
     <div role="link" className="flex items-center gap-4 w-fit">
       <img
@@ -7,12 +11,9 @@ function SellerDetails() {
         className="rounded-full w-10 h-10"
       />
       <div>
-        <span className="block text-lg font-semibold">Seller name</span>
-        <p className="text-sm">Dubai, United Arab Emirates</p>
-        {/* <div className="flex gap-4">
-          <a>seller items</a>
-          <a>contact seller</a>
-        </div> */}
+        <span className="block text-lg font-semibold">
+          {sellerData?.firstName} {sellerData?.lastName}
+        </span>
       </div>
     </div>
   );

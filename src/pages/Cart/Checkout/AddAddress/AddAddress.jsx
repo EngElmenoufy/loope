@@ -79,7 +79,13 @@ function AddAddress({
     setErrorData(newErrors);
 
     if (hasErrors) return;
-
+    onChangeDeliveryDetails((prev) => ({
+      ...prev,
+      shippingAddress: {
+        ...prev.shippingAddress,
+        ...details,
+      },
+    }));
     handleAddressSelection();
   };
 
@@ -169,7 +175,7 @@ function AddAddress({
                 htmlFor="city"
                 className="block text-base font-semibold text-gray-800"
               >
-                City
+                City <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -207,7 +213,7 @@ function AddAddress({
                 htmlFor="street"
                 className="block text-base font-semibold text-gray-800"
               >
-                Street Name / Area
+                Street Name / Area <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"

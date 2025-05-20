@@ -31,6 +31,9 @@ export default function Checkout({
   onClose,
   details,
   onChangeDetails,
+  itemsCount,
+  total,
+  totalWithDiscount,
 }) {
   const [currentView, setCurrentView] = useState("checkout");
 
@@ -39,11 +42,6 @@ export default function Checkout({
   );
 
   const [errorAddress, setErrorAddress] = useState(false);
-
-  // Sample items data
-  const itemsTotal = 400;
-  const discount = 100;
-  const orderTotal = itemsTotal - discount;
 
   // Reset view when modal is opened
   // useEffect(() => {
@@ -117,9 +115,9 @@ export default function Checkout({
           <DoubleCheckOrderDetails
             onClose={onClose}
             handleShipToClick={handleShipToClick}
-            itemsTotal={itemsTotal}
-            orderTotal={orderTotal}
-            discount={discount}
+            total={total}
+            itemsCount={itemsCount}
+            totalWithDiscount={totalWithDiscount}
             handleSubmitOrder={handleSubmitOrder}
             details={details}
             onChangeDetails={onChangeDetails}

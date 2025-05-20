@@ -24,6 +24,9 @@ import MySalesPage from "./pages/Profile/MySales/MySalesPage";
 import PendingSalesRequests from "./pages/Profile/SalesRequists/Pending/PendingSalesRequests";
 import SavedItemsPage from "./pages/SavedItems/SavedItemsPage";
 
+import ProductsPage from "./pages/ProductsPage/ProductsPage";
+import ScrollToTop from "./components/ScrollToTop";
+
 const URL = "http://localhost:3000";
 
 function AppContent() {
@@ -32,7 +35,6 @@ function AppContent() {
     location.pathname === "/login" ||
     location.pathname === "/register" ||
     location.pathname === "/forgotpass";
-
   // User state
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem("ecom_user");
@@ -140,6 +142,7 @@ function AppContent() {
     getBrands();
   }, []);
 
+  // get products
   const getProducts = async () => {
     try {
       const response = await fetch(`${URL}/api/products/`, {
@@ -189,34 +192,32 @@ function AppContent() {
     getCart();
   }, []);
 
+  const addToCart = async (productData) => {
+    try {
+      const response = await fetch(`${URL}/api/cart/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(productData),
+      });
+      const data = await response.json();
 
-    const getFavorites = async () => {
-      try {
-        const response = await fetch(`${URL}/api/favorites/`, {
-          method: "GET",
-          headers: { 
-            "Content-Type": "application/json" ,
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.msg);
-          setFavorites(data);
-        return { success: true };
-      } catch (err) {
-        return { success: false, error: err.message };
-      }
-    };
-  
-  useEffect(()=>{
-    getFavorites();
-  },[])
+      getCart();
+      navigate("/cart");
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  };
 
   // Auth functions
   const login = async (userData) => {
     setIsLoading((prev) => ({ ...prev, user: true }));
     try {
-      const response = await fetch(`${URL}/api/auth/login`, {
+      const response = await fetch(`${URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -257,7 +258,7 @@ function AppContent() {
       setIsLoading((prev) => ({ ...prev, user: true }));
     }
     try {
-      const response = await fetch(`${URL}/api/auth/Register`, {
+      const response = await fetch(`${URL}/auth/Register`, {
         method: "POST",
         body: formData,
       });
@@ -279,6 +280,7 @@ function AppContent() {
   };
 
   const logout = () => {
+    navigate("/");
     setUser(null);
     setToken(null);
     setCart([]);
@@ -415,25 +417,27 @@ function AppContent() {
         ...prev,
         add: false,
       }));
+
+      navigate("/");
     }
   };
 
   // Cart functions
-  const addToCart = (product, quantity = 1) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
+  // const addToCart = (product, quantity = 1) => {
+  //   setCart((prevCart) => {
+  //     const existingItem = prevCart.find((item) => item.id === product.id);
 
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
+  //     if (existingItem) {
+  //       return prevCart.map((item) =>
+  //         item.id === product.id
+  //           ? { ...item, quantity: item.quantity + quantity }
+  //           : item
+  //       );
+  //     }
 
-      return [...prevCart, { ...product, quantity }];
-    });
-  };
+  //     return [...prevCart, { ...product, quantity }];
+  //   });
+  // };
 
   const removeFromCart = async (productId) => {
     setIsLoading((prev) => ({ ...prev, page: true }));
@@ -447,15 +451,19 @@ function AppContent() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.msg);
-      const newCart = cart.cartItem.filter(
-        (item) => item.productId._id !== productId
-      );
-      setCart(newCart);
+
+      // const newCart = cart.cartItem.filter(
+      //   (item) => item.productId._id !== productId
+      // );
+      // setCart(newCart);
       return { success: true };
     } catch (err) {
       // setError((prev) => ({ ...prev, auth: err.message }));
       return { success: false, error: err.message };
     } finally {
+      setTimeout(() => {
+        getCart();
+      }, 1000);
       setIsLoading((prev) => ({ ...prev, page: false }));
     }
   };
@@ -535,6 +543,7 @@ function AppContent() {
         />
       )}
 
+      <ScrollToTop />
       <Routes>
         <Route
           path="/"
@@ -589,11 +598,14 @@ function AppContent() {
           }
         />
         <Route
-          path="/product"
+          path="/product/:id"
           element={
             <ProductPage
+              categories={categories}
+              brands={brands}
               products={products}
-              onAddToCart={addToCart}
+              addToCart={addToCart}
+              token={token}
               isLoading={isLoading.products}
             />
           }
@@ -619,6 +631,7 @@ function AppContent() {
               onRemoveFromCart={removeFromCart}
               onUpdateQuantity={updateCartItemQuantity}
               user={user}
+              token={token}
             />
           }
         />
@@ -635,7 +648,20 @@ function AppContent() {
             />
           }
         />
-        <Route path="/profile" element={<Profile/>} />
+        <Route
+          path="/products"
+          element={
+            <ProductsPage
+              categories={categories}
+              brands={brands}
+              products={products}
+              isLoading={isLoading.categories}
+              error={error.categories}
+            />
+          }
+        />
+
+        <Route path="/profile" element={<Profile />} />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
         <Route path="/sales-requests" element={<PendingSalesRequests />} />

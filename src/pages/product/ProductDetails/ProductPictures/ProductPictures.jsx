@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Picture from "./Picture/Picture";
 import MainPicture from "./MainPicture/MainPicture";
 import "./ProductPictures.css";
@@ -21,13 +21,19 @@ const cards = [
   },
 ];
 
-function ProductPictures() {
-  const [selectedCard, setSelectedCard] = useState(cards[0]);
+function ProductPictures({ productData }) {
+  const [selectedCard, setSelectedCard] = useState(null);
   const [immediateCard, setImmediateCard] = useState(null);
 
   const handleHoverCard = (data) => {
     setImmediateCard(data);
   };
+
+  useEffect(() => {
+    if (productData.img !== undefined) {
+      setSelectedCard(productData.img[0]);
+    }
+  }, [productData]);
 
   const handleLeaveCard = () => {
     setImmediateCard(null);
@@ -40,16 +46,24 @@ function ProductPictures() {
   return (
     <div className="product-pictures">
       <div className="pictures">
-        {cards.map((card) => (
-          <Picture
-            key={card.id}
-            card={card}
-            selectedImage={selectedCard}
-            onMouseEnter={handleHoverCard}
-            onMouseLeave={handleLeaveCard}
-            onClick={handleClickCard}
-          />
-        ))}
+        {productData.img !== undefined ? (
+          productData.img.map((img) => (
+            <Picture
+              key={img}
+              card={img}
+              selectedImage={selectedCard}
+              onMouseEnter={handleHoverCard}
+              onMouseLeave={handleLeaveCard}
+              onClick={handleClickCard}
+            />
+          ))
+        ) : (
+          <div>
+            {[...Array(6)].map((_, index) => (
+              <Picture key={index} isDefined={false} />
+            ))}
+          </div>
+        )}
       </div>
       {/* <Scroll position="up" showScroll={true}>
         {cards.map((card) => (
@@ -63,7 +77,11 @@ function ProductPictures() {
           />
         ))}
       </Scroll> */}
-      <MainPicture card={immediateCard ? immediateCard : selectedCard} />
+      {productData.img !== undefined ? (
+        <MainPicture card={immediateCard ? immediateCard : selectedCard} />
+      ) : (
+        <div className="bg-[#f2f2f2]"></div>
+      )}
     </div>
   );
 }

@@ -48,7 +48,9 @@ function AccountEmail({
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Email</h2>
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        Change Your Email
+      </h2>
       <div className="space-y-1 pb-4 border-b border-gray-200">
         <h3 className="text-base font-semibold text-gray-800">Current email</h3>
         <p className="text-gray-600">{user.email}</p>
@@ -66,12 +68,12 @@ function AccountEmail({
           </div>
         )}
 
-        <div className={`mb-1 ${!errorNewEmail ? "pb-5" : ""}`}>
+        <div className={`pt-3 mb-1 ${!errorNewEmail ? "pb-5" : ""}`}>
           <label
             htmlFor="email"
             className="block text-base font-semibold text-gray-800"
           >
-            Email <span className="text-red-600">*</span>
+            New Email
           </label>
           <input
             type="email"
