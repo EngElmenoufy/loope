@@ -1,11 +1,26 @@
-
 import React, { useState, useEffect } from 'react';
-import SingleSaleRequest from './SingleSaleRequest';
+import SinglePendingSalesRequests from './SinglePendingSalesRequest';
 
-const SaleRequests = () => {
+const PendingSalesRequest = () => {
   const [activeTab, setActiveTab] = useState('pending');
   const [selectedOrder, setSelectedOrder] = useState(null);
- 
+  useEffect(() => {
+     const getCategories = async () => {
+       try {
+         const response = await fetch(`${URL}/api/categories/`, {
+           method: "GET",
+           headers: { "Content-Type": "application/json" },
+         });
+         const data = await response.json();
+         if (!response.ok) throw new Error(data.msg);
+         setCategories(data);
+         return { success: true };
+       } catch (err) {
+         return { success: false, error: err.message };
+       }
+     };
+     getCategories();
+   }, []);
   const [orders] = useState([
     {
       id: 1,
@@ -79,8 +94,8 @@ const SaleRequests = () => {
         
         <div className="space-y-6">
           {orders.map(order => (
-            <SingleSaleRequest 
-            order={order} s
+            <SinglePendingSalesRequests 
+            order={order} 
             setSelectedOrder={setSelectedOrder} 
             selectedOrder={selectedOrder}
             />
@@ -92,4 +107,4 @@ const SaleRequests = () => {
   );
 };
 
-export default SaleRequests;
+export default PendingSalesRequest;

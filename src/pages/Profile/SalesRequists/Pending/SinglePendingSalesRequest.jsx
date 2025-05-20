@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import CounterOffer from "../../../components/CounterOffer";
+import CounterOffer from "../../../../components/CounterOffer";
 
-function SingleSaleRequest({ order, setSelectedOrder, selectedOrder }) {
+function SinglePendingSaleRequest({ order, setSelectedOrder, selectedOrder }) {
   const [showCounterOfferModal, setShowCounterOfferModal] = useState(false);
   const [customerOfferPrice, setCustomerOfferPrice] = useState("");
   const [sellerOfferPrice, setSellerOfferPrice] = useState("");
@@ -128,4 +128,4 @@ function SingleSaleRequest({ order, setSelectedOrder, selectedOrder }) {
   );
 }
 
-export default SingleSaleRequest;
+export default SinglePendingSaleRequest;

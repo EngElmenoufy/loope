@@ -21,7 +21,8 @@ import RegisterContainer from "./authentication/Register/RegisterContainer";
 import Profile from "./pages/Profile/profilePage";
 import SavedAddresses from "./pages/AccountSettings/SavedAddresses";
 import MySalesPage from "./pages/Profile/MySales/MySalesPage";
-import SalesRequests from "./pages/Profile/SalesRequists/SalesRequests";
+import PendingSalesRequests from "./pages/Profile/SalesRequists/Pending/PendingSalesRequests";
+import SavedItemsPage from "./pages/SavedItems/SavedItemsPage";
 
 const URL = "http://localhost:3000";
 
@@ -53,6 +54,7 @@ function AppContent() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [favorites, setFavorites] = useState([])
   const [isLoading, setIsLoading] = useState({
     products: false,
     categories: false,
@@ -160,6 +162,7 @@ function AppContent() {
   useEffect(() => {
     getProducts();
   }, []);
+  
 
   const getCart = async () => {
     if (token) {
@@ -186,6 +189,29 @@ function AppContent() {
     getCart();
   }, []);
 
+
+    const getFavorites = async () => {
+      try {
+        const response = await fetch(`${URL}/api/favorites/`, {
+          method: "GET",
+          headers: { 
+            "Content-Type": "application/json" ,
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.msg);
+          setFavorites(data);
+        return { success: true };
+      } catch (err) {
+        return { success: false, error: err.message };
+      }
+    };
+  
+  useEffect(()=>{
+    getFavorites();
+  },[])
+
   // Auth functions
   const login = async (userData) => {
     setIsLoading((prev) => ({ ...prev, user: true }));
@@ -209,6 +235,7 @@ function AppContent() {
       setIsLoading((prev) => ({ ...prev, user: false }));
     }
   };
+  
 
   const register = async (userData, setLoading) => {
     const formData = new FormData();
@@ -611,7 +638,12 @@ function AppContent() {
         <Route path="/profile" element={<Profile/>} />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
-        <Route path="/sales-requests" element={<SalesRequests />} />
+        <Route path="/sales-requests" element={<PendingSalesRequests />} />
+        <Route path="/saved-items" element={
+          <SavedItemsPage 
+          favorites={favorites} 
+          setFavorites={setFavorites}
+          />} />
       </Routes>
 
       {!hideHeaderFooter && <Footer />}
