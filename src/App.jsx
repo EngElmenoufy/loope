@@ -24,15 +24,38 @@ import MySalesPage from "./pages/Profile/MySales/MySalesPage";
 import SalesRequests from "./pages/Profile/SalesRequists/SalesRequests";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./pages/NotFound/NotFound";
 
 const URL = "http://localhost:3000";
 
 function AppContent() {
   const location = useLocation();
+  const definedRoutes = [
+    "/",
+    "/category/:id",
+    "/categories",
+    "/register",
+    "/login",
+    "/product/:id",
+    "/add",
+    "/cart",
+    "/forgotpass",
+    "/account-settings",
+    "/products",
+    "/profile",
+    "/saved-addresses",
+    "/mysales",
+    "/sales-requests",
+  ];
+
+  // Check if current path matches any defined route
+  const isDefinedRoute = definedRoutes.includes(location.pathname);
+
   const hideHeaderFooter =
     location.pathname === "/login" ||
     location.pathname === "/register" ||
-    location.pathname === "/forgotpass";
+    location.pathname === "/forgotpass" ||
+    !isDefinedRoute;
   // User state
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem("ecom_user");
@@ -167,24 +190,26 @@ function AppContent() {
   }, []);
 
   const getFavorites = async () => {
-    try {
-      const response = await fetch(`${URL}/api/favorites/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.msg);
-      setFavoriteProducts(data);
-      setFavoriteProductIds(data.map((fav) => fav.productId._id));
+    if (token) {
+      try {
+        const response = await fetch(`${URL}/api/favorites/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.msg);
+        setFavoriteProducts(data);
+        setFavoriteProductIds(data.map((fav) => fav.productId._id));
 
-      // setProducts(productsWithFavorites);
+        // setProducts(productsWithFavorites);
 
-      return { success: true };
-    } catch (err) {
-      return { success: false, error: err.message };
+        return { success: true };
+      } catch (err) {
+        return { success: false, error: err.message };
+      }
     }
   };
 
@@ -755,6 +780,7 @@ function AppContent() {
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
         <Route path="/sales-requests" element={<SalesRequests />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       {!hideHeaderFooter && <Footer />}
