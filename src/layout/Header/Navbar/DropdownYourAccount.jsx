@@ -10,6 +10,10 @@ function DropdownYourAccount({ user, onClose, onLogout }) {
     navigate("/account-settings");
     onClose();
   };
+  const handleMySalesNavigate = () => {
+    navigate("/mysales");
+    onClose();
+  };
 
   const handleSalesRequestsClick = () => {
     navigate("/sales-requests");
@@ -49,6 +53,46 @@ function DropdownYourAccount({ user, onClose, onLogout }) {
       </div>
 
       <div className="py-2">
+        <button onClick={handleMySalesNavigate} className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
+          {/* <Gift size={18} className="mr-3" /> */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#18403c"
+          >
+            <path d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Z" />
+          </svg>
+          <span>My Sales</span>
+        </button>
+        <button onClick={handleSalesRequestsClick} 
+        className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
+          {/* <Gift size={18} className="mr-3" /> */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#18403c"
+          >
+            <path d="M160-720v-80h640v80H160Zm0 560v-240h-40v-80l40-200h640l40 200v80h-40v240h-80v-240H560v240H160Zm80-80h240v-160H240v160Z" />
+          </svg>
+          <span>My Sales Requests</span>
+        </button>
+        <button className="flex items-center w-full px-4 py-3 gap-2 hover:bg-gray-100">
+          {/* <Gift size={18} className="mr-3" /> */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#18403c"
+          >
+            <path d="M160-720v-80h640v80H160Zm0 560v-240h-40v-80l40-200h640l40 200v80h-40v240h-80v-240H560v240H160Zm80-80h240v-160H240v160Z" />
+          </svg>
+          <span>My Purchases</span>
+        </button>
         {user.role === "seller" ? (
           <>
             <Link

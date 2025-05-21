@@ -21,7 +21,9 @@ import RegisterContainer from "./authentication/Register/RegisterContainer";
 import Profile from "./pages/Profile/profilePage";
 import SavedAddresses from "./pages/AccountSettings/SavedAddresses";
 import MySalesPage from "./pages/Profile/MySales/MySalesPage";
-import SalesRequests from "./pages/Profile/SalesRequists/SalesRequests";
+import PendingSalesRequests from "./pages/Profile/SalesRequists/Pending/PendingSalesRequests";
+import SavedItemsPage from "./pages/SavedItems/SavedItemsPage";
+
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./pages/NotFound/NotFound";
@@ -80,6 +82,7 @@ function AppContent() {
   const [categories, setCategories] = useState([]);
   const [favoriteProductIds, setFavoriteProductIds] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState({
     products: false,
     categories: false,
@@ -779,7 +782,14 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
+        {/* <Route path="/sales-requests" element={<PendingSalesRequests />} /> */}
         <Route path="/sales-requests" element={<SalesRequests />} />
+        <Route
+          path="/saved-items"
+          element={
+            <SavedItemsPage favorites={favorites} setFavorites={setFavorites} />
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
