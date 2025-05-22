@@ -151,6 +151,22 @@ function AppContent() {
   }, []);
 
   useEffect(() => {
+    // Check URL for token
+    const queryParams = new URLSearchParams(window.location.search);
+    const authToken = queryParams.get("token");
+    const authUser = queryParams.get("user");
+
+    if (authToken) {
+      // Store the token in state
+      setToken(authToken);
+      // console.log();
+      setUser(JSON.parse(authUser));
+
+      navigate(window.location.pathname);
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const getBrands = async () => {
       try {
         const response = await fetch(`${URL}/api/brands/`, {
@@ -347,6 +363,11 @@ function AppContent() {
     } finally {
       setIsLoading((prev) => ({ ...prev, user: false }));
     }
+  };
+
+  const signWithGoogle = async (userData) => {
+    // setIsLoading((prev) => ({ ...prev, user: true }));
+    window.location.href = `${URL}/auth/google`;
   };
 
   const register = async (userData, setLoading) => {
@@ -699,6 +720,7 @@ function AppContent() {
               onRegister={register}
               isLoading={isLoading.user}
               error={error.auth}
+              onSignWithGoogle={signWithGoogle}
             />
           }
         />
@@ -709,6 +731,7 @@ function AppContent() {
               onLogin={login}
               isLoading={isLoading.user}
               error={error.auth}
+              onSignWithGoogle={signWithGoogle}
             />
           }
         />
@@ -782,8 +805,8 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
-        {/* <Route path="/sales-requests" element={<PendingSalesRequests />} /> */}
-        <Route path="/sales-requests" element={<SalesRequests />} />
+        <Route path="/sales-requests" element={<PendingSalesRequests />} />
+        {/* <Route path="/sales-requests" element={<SalesRequests />} /> */}
         <Route
           path="/saved-items"
           element={

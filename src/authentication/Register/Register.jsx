@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-export default function Register({ onSubmit, userData, setUserData, error }) {
+export default function Register({
+  onSubmit,
+  userData,
+  setUserData,
+  error,
+  onSignWithGoogle,
+}) {
   const [errorData, setErrorData] = useState({
     firstName: "",
     lastName: "",
@@ -87,6 +93,10 @@ export default function Register({ onSubmit, userData, setUserData, error }) {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleSingUpGoogle = () => {
+    onSignWithGoogle();
   };
 
   return (
@@ -306,6 +316,7 @@ export default function Register({ onSubmit, userData, setUserData, error }) {
         <button
           type="button"
           className="w-full border border-gray-300 py-3 rounded flex items-center justify-center shadow hover:shadow-lg gap-2 hover:bg-gray-100 transition"
+          onClick={handleSingUpGoogle}
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
