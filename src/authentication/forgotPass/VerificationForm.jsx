@@ -32,15 +32,27 @@ const VerificationForm = ({ onSubmit, onBack, email, error, setError }) => {
     if (!errorCode) {
       setIsLoading(true);
 
-      setTimeout(async () => {
-        try {
-          await onSubmit(code);
-        } catch (err) {
-          // Error is handled in the parent component
-        } finally {
-          setIsLoading(false);
-        }
-      }, 5000);
+      try {
+        const response = await fetch(`http://localhost:3000/auth/verify-otp`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            otp: code,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.msg);
+        onSubmit(code);
+        return { success: true };
+      } catch (err) {
+        setError("Failed to send verification code. Please try again.");
+        return { success: false, error: err.message };
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 

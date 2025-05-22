@@ -11,63 +11,24 @@ export default function ForgotPasswordContainer({ onClose }) {
   const [verificationCode, setVerificationCode] = useState("");
   const [error, setError] = useState("");
 
-  const handleEmailSubmit = async (submittedEmail) => {
+  const handleEmailSubmit = (submittedEmail) => {
     setEmail(submittedEmail);
-    try {
-      // API call to send verification code
-      // await fetch('/api/forgot-password', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email: submittedEmail })
-      // });
 
-      // Move to next step
-      setStep(2);
-    } catch (err) {
-      setError("Failed to send verification code. Please try again.");
-    }
+    setStep(2);
   };
 
-  const handleVerificationSubmit = async (code) => {
+  const handleVerificationSubmit = (code) => {
     setVerificationCode(code);
-    try {
-      // API call to verify code
-      // await fetch('/api/verify-code', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, code })
-      // });
 
-      // Move to next step
-      setStep(3);
-    } catch (err) {
-      setError("Invalid verification code. Please try again.");
-    }
+    setStep(3);
   };
 
-  const handlePasswordSubmit = async (newPassword) => {
-    try {
-      // API call to reset password
-      // await fetch('/api/reset-password', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     email,
-      //     code: verificationCode,
-      //     newPassword
-      //   })
-      // });
+  const handlePasswordSubmit = () => {
+    setStep(4);
 
-      // Show success message
-      setStep(4);
-
-      // Close modal after 3 seconds
-      setTimeout(() => {
-        onClose && onClose();
-      }, 3000);
-    } catch (err) {
-      setError("Failed to update password. Please try again.");
-    }
+    // setTimeout(() => {
+    //   onClose && onClose();
+    // }, 3000);
   };
 
   const renderCurrentStep = () => {
@@ -97,6 +58,8 @@ export default function ForgotPasswordContainer({ onClose }) {
             onBack={() => setStep(2)}
             error={error}
             setError={setError}
+            email={email}
+            code={verificationCode}
           />
         );
       case 4:
