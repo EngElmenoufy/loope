@@ -26,15 +26,38 @@ import SavedItemsPage from "./pages/SavedItems/SavedItemsPage";
 
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./pages/NotFound/NotFound";
 
 const URL = "http://localhost:3000";
 
 function AppContent() {
   const location = useLocation();
+  const definedRoutes = [
+    "/",
+    "/category/:id",
+    "/categories",
+    "/register",
+    "/login",
+    "/product/:id",
+    "/add",
+    "/cart",
+    "/forgotpass",
+    "/account-settings",
+    "/products",
+    "/profile",
+    "/saved-addresses",
+    "/mysales",
+    "/sales-requests",
+  ];
+
+  // Check if current path matches any defined route
+  const isDefinedRoute = definedRoutes.includes(location.pathname);
+
   const hideHeaderFooter =
     location.pathname === "/login" ||
     location.pathname === "/register" ||
-    location.pathname === "/forgotpass";
+    location.pathname === "/forgotpass" ||
+    !isDefinedRoute;
   // User state
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem("ecom_user");
@@ -59,7 +82,7 @@ function AppContent() {
   const [categories, setCategories] = useState([]);
   const [favoriteProductIds, setFavoriteProductIds] = useState([]);
   const [brands, setBrands] = useState([]);
- 
+  const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState({
     products: false,
     categories: false,
@@ -128,6 +151,22 @@ function AppContent() {
   }, []);
 
   useEffect(() => {
+    // Check URL for token
+    const queryParams = new URLSearchParams(window.location.search);
+    const authToken = queryParams.get("token");
+    const authUser = queryParams.get("user");
+
+    if (authToken) {
+      // Store the token in state
+      setToken(authToken);
+      // console.log();
+      setUser(JSON.parse(authUser));
+
+      navigate(window.location.pathname);
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const getBrands = async () => {
       try {
         const response = await fetch(`${URL}/api/brands/`, {
@@ -168,27 +207,28 @@ function AppContent() {
   useEffect(() => {
     getProducts();
   }, []);
-  
 
   const getFavorites = async () => {
-    try {
-      const response = await fetch(`${URL}/api/favorites/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.msg);
-      setFavoriteProducts(data);
-      setFavoriteProductIds(data.map((fav) => fav.productId._id));
+    if (token) {
+      try {
+        const response = await fetch(`${URL}/api/favorites/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.msg);
+        setFavoriteProducts(data);
+        setFavoriteProductIds(data.map((fav) => fav.productId._id));
 
-      // setProducts(productsWithFavorites);
+        // setProducts(productsWithFavorites);
 
-      return { success: true };
-    } catch (err) {
-      return { success: false, error: err.message };
+        return { success: true };
+      } catch (err) {
+        return { success: false, error: err.message };
+      }
     }
   };
 
@@ -324,7 +364,11 @@ function AppContent() {
       setIsLoading((prev) => ({ ...prev, user: false }));
     }
   };
-  
+
+  const signWithGoogle = async (userData) => {
+    // setIsLoading((prev) => ({ ...prev, user: true }));
+    window.location.href = `${URL}/auth/google`;
+  };
 
   const register = async (userData, setLoading) => {
     const formData = new FormData();
@@ -677,6 +721,7 @@ function AppContent() {
               onRegister={register}
               isLoading={isLoading.user}
               error={error.auth}
+              onSignWithGoogle={signWithGoogle}
             />
           }
         />
@@ -687,6 +732,7 @@ function AppContent() {
               onLogin={login}
               isLoading={isLoading.user}
               error={error.auth}
+              onSignWithGoogle={signWithGoogle}
             />
           }
         />
@@ -761,13 +807,14 @@ function AppContent() {
         <Route path="/saved-addresses" element={<SavedAddresses />} />
         <Route path="/mysales" element={<MySalesPage />} />
         <Route path="/sales-requests" element={<PendingSalesRequests />} />
-        <Route path="/saved-items" element={
-          <SavedItemsPage 
-          favoriteProducts={favoriteProducts} 
-          setFavoriteProducts={setFavoriteProducts}
-          addOrRemoveFavorite={addOrRemoveFavorite}
-          addToCart={addToCart}
-          />} />
+        {/* <Route path="/sales-requests" element={<SalesRequests />} /> */}
+        <Route
+          path="/saved-items"
+          element={
+            <SavedItemsPage favorites={favorites} setFavorites={setFavorites} />
+          }
+        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       {!hideHeaderFooter && <Footer />}

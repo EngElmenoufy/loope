@@ -1,7 +1,14 @@
 import { useState } from "react";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-const ResetPasswordForm = ({ onSubmit, onBack, error, setError }) => {
+const ResetPasswordForm = ({
+  onSubmit,
+  onBack,
+  error,
+  setError,
+  email,
+  code,
+}) => {
   const [newPassword, setNewPassword] = useState("");
   const [errorNewPassword, setErrorNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,15 +45,31 @@ const ResetPasswordForm = ({ onSubmit, onBack, error, setError }) => {
     if (!errorNewPassword && !errorConfirmPassword) {
       setIsLoading(true);
 
-      setTimeout(async () => {
-        try {
-          await onSubmit(newPassword);
-        } catch (err) {
-          // Error is handled in the parent component
-        } finally {
-          setIsLoading(false);
-        }
-      }, 5000);
+      try {
+        const response = await fetch(
+          `http://localhost:3000/auth/reset-password`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              otp: code,
+              newPassword: newPassword,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.msg);
+        onSubmit();
+        return { success: true };
+      } catch (err) {
+        setError("Failed to send verification code. Please try again.");
+        return { success: false, error: err.message };
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 

@@ -88,43 +88,7 @@ function ProductPage({
   token,
   addToCart,
   products,
-  addFavorite,
-  addOrRemoveFavorite
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
+  addOrRemoveFavorite,
 }) {
   const [productData, setProductData] = useState({});
   const [sellerData, setSellerData] = useState({});

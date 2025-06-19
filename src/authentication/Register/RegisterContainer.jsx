@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import ProfileCreation from "./ProfileCreation";
 import Register from "./Register";
 
-export default function RegisterContainer({ onRegister, isLoading, error }) {
+export default function RegisterContainer({
+  onRegister,
+  isLoading,
+  error,
+  onSignWithGoogle,
+}) {
   const [step, setStep] = useState(1);
   const [registerData, setRegisterData] = useState({
     firstName: "",
@@ -63,6 +68,7 @@ export default function RegisterContainer({ onRegister, isLoading, error }) {
             setUserData={setRegisterData}
             onSubmit={handleSignUpSubmit}
             error={error}
+            onSignWithGoogle={onSignWithGoogle}
           />
         );
       case 2:

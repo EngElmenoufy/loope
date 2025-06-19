@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
-export default function Login({ onLogin, isLoading, error }) {
+export default function Login({ onLogin, isLoading, error, onSignWithGoogle }) {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -238,6 +238,7 @@ export default function Login({ onLogin, isLoading, error }) {
             <button
               type="button"
               className="w-full border border-gray-300 py-3 rounded flex items-center justify-center gap-2 hover:bg-gray-50 transition duration-200"
+              onClick={() => onSignWithGoogle()}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path

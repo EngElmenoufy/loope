@@ -82,21 +82,6 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
   return (
     <>
       <nav className="nav-bar">
-        <div className="relative">
-          <Link to='/saved-items' className="btn-icon icon-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
-              viewBox="0 -960 960 960"
-              width="24px"
-              fill="#fff"
-            >
-              <path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z" />
-            </svg>
-            <div className="label">Favorite</div>
-          </Link>
-        </div>
-
         <div className="relative" ref={dropdownAccountRef}>
           {user ? (
             <>
@@ -149,6 +134,21 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
               <div className="label w-fit">Register</div>
             </Link>
           )}
+        </div>
+
+        <div className="relative">
+          <Link to="/saved-items" className="btn-icon icon-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#fff"
+            >
+              <path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z" />
+            </svg>
+            <div className="label">Favorite</div>
+          </Link>
         </div>
 
         <div className="relative">
