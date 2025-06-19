@@ -59,7 +59,7 @@ function AppContent() {
   const [categories, setCategories] = useState([]);
   const [favoriteProductIds, setFavoriteProductIds] = useState([]);
   const [brands, setBrands] = useState([]);
-  const [favorites, setFavorites] = useState([])
+ 
   const [isLoading, setIsLoading] = useState({
     products: false,
     categories: false,
@@ -305,7 +305,7 @@ function AppContent() {
   const login = async (userData) => {
     setIsLoading((prev) => ({ ...prev, user: true }));
     try {
-      const response = await fetch(`${URL}/auth/login`, {
+      const response = await fetch(`${URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -346,7 +346,7 @@ function AppContent() {
       setIsLoading((prev) => ({ ...prev, user: true }));
     }
     try {
-      const response = await fetch(`${URL}/auth/Register`, {
+      const response = await fetch(`${URL}/api/auth/Register`, {
         method: "POST",
         body: formData,
       });
@@ -620,6 +620,7 @@ function AppContent() {
     fetchData();
   }, []);
 
+ 
   return (
     <>
       {!hideHeaderFooter && (
@@ -762,8 +763,10 @@ function AppContent() {
         <Route path="/sales-requests" element={<PendingSalesRequests />} />
         <Route path="/saved-items" element={
           <SavedItemsPage 
-          favorites={favorites} 
-          setFavorites={setFavorites}
+          favoriteProducts={favoriteProducts} 
+          setFavoriteProducts={setFavoriteProducts}
+          addOrRemoveFavorite={addOrRemoveFavorite}
+          addToCart={addToCart}
           />} />
       </Routes>
 
