@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import SinglePendingSalesRequests from './SinglePendingSalesRequest';
+import SingleRejectedSalesRequests from './SingleRejectedSalesRequests';
 
-const PendingSalesRequests = () => {
-      const [selectedOrder, setSelectedOrder] = useState(null);
+const RejectedSalesRequests = () => {
+  const [activeTab, setActiveTab] = useState('pending');
+  const [selectedOrder, setSelectedOrder] = useState(null);
   useEffect(() => {
      const getCategories = async () => {
        try {
@@ -61,22 +62,18 @@ const PendingSalesRequests = () => {
 
 
   return (
-    
-      
-      
+   
         
         <div className="space-y-6">
           {orders.map(order => (
-            <SinglePendingSalesRequests 
+            <SingleRejectedSalesRequests 
             order={order} 
             setSelectedOrder={setSelectedOrder} 
             selectedOrder={selectedOrder}
             />
           ))}
         </div>
-  
-    
   );
 };
 
-export default PendingSalesRequests;
+export default RejectedSalesRequests;

@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Heart, ShoppingBag, Trash2, MessageCircle, X } from "lucide-react";
 
-export default function SavedItemsPage({ favorites, setFavorites }) {
-  //     {
+export default function SavedItemsPage({
+  favoriteProducts,
+  setFavoriteProducts,
+  addOrRemoveFavorite,
+  addToCart,
+}) {
+  //     {z
   //     "status": "success",
   //     "data": {
   //         "colors": [],
@@ -28,78 +33,33 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
   //     }
   //
 
-  // Sample favorite items data
-  const [favoriteProducts, setFavoriteProducts] = useState([
-    {
-      id: 1,
-      name: "Premium Leather Jacket",
-      price: 249.99,
-      image: "/api/placeholder/250/300",
-      seller: "Fashion Outlet",
-      inStock: true,
-    },
-    {
-      id: 2,
-      name: "Wireless Noise-Canceling Headphones",
-      price: 179.99,
-      image: "/api/placeholder/250/300",
-      seller: "Audio Tech",
-      inStock: true,
-    },
-    {
-      id: 3,
-      name: "Vintage Denim Jeans",
-      price: 89.99,
-      image: "/api/placeholder/250/300",
-      seller: "RetroWear",
-      inStock: false,
-    },
-    {
-      id: 4,
-      name: "Smart Watch Series 5",
-      price: 329.99,
-      image: "/api/placeholder/250/300",
-      seller: "TechGadgets",
-      inStock: true,
-    },
-    {
-      id: 5,
-      name: "Ergonomic Office Chair",
-      price: 199.99,
-      image: "/api/placeholder/250/300",
-      seller: "Comfort Living",
-      inStock: true,
-    },
-    {
-      id: 6,
-      name: "Mechanical Keyboard",
-      price: 149.99,
-      image: "/api/placeholder/250/300",
-      seller: "Tech Peripherals",
-      inStock: true,
-    },
-  ]);
-
   const [offerModalOpen, setOfferModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [offerPrice, setOfferPrice] = useState("");
   const [message, setMessage] = useState("");
   const [notifications, setNotifications] = useState([]);
+  console.log(favoriteProducts);
 
   // Function to move item to shopping bag
   const moveToShoppingBag = (item) => {
     // In a real app, this would call an API to update the cart
     // For demo purposes, we'll just show a notification
-    addNotification(`${item.name} added to your shopping bag!`);
-
+    addNotification(`${item.productId?.name} added to your shopping bag!`);
+    console.log(item.productId?._id, item.productId?.sellerId);
     // Remove from favorites
-    setFavoriteProducts(favoriteProducts.filter((fav) => fav.id !== item.id));
+    setFavoriteProducts(
+      favoriteProducts.filter((fav) => fav.productId?._id !== item.id)
+    );
+    addToCart(item.productId?._id, item.productId?.sellerId, 1);
   };
 
   // Function to remove item from favorites
   const removeFromFavorites = (itemId) => {
-    setFavoriteProducts(favoriteProducts.filter((item) => item.id !== itemId));
+    setFavoriteProducts(
+      favoriteProducts?.filter((fav) => fav.productId?._id !== itemId)
+    );
     addNotification("Item removed from favorites");
+    addOrRemoveFavorite(itemId, true);
   };
 
   // Function to open offer modal
@@ -114,7 +74,7 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
   const submitOffer = () => {
     // In a real app, this would send the offer to an API
     addNotification(
-      `Offer of $${offerPrice} sent to ${currentItem.seller} for ${currentItem.name}`
+      `Offer of $${offerPrice} sent to ${currentItem.productId?.sellerId} for ${currentItem.productId?.name}`
     );
     setOfferModalOpen(false);
   };
@@ -182,34 +142,34 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
       <div className="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
         <h1 className="text-3xl font-bold text-gray-800">My Favorites</h1>
         <div className="text-gray-600 bg-white px-4 py-2 rounded-full shadow-sm">
-          {favoriteProducts.length}{" "}
-          {favoriteProducts.length === 1 ? "item" : "items"}
+          {favoriteProducts?.length}{" "}
+          {favoriteProducts?.length === 1 ? "item" : "items"}
         </div>
       </div>
 
       {/* Content */}
-      {favoriteProducts.length === 0 ? (
+      {favoriteProducts?.length === 0 ? (
         <EmptyFavorites />
       ) : (
         <div className="bg-white rounded-lg shadow">
           {/* Items grid for medium and large screens */}
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            {favoriteProducts.map((item) => (
+            {favoriteProducts?.map((item) => (
               <div
-                key={item.id}
+                key={item.productId?._id}
                 className="border border-gray-200 rounded-lg p-4 flex flex-col h-full"
               >
                 {/* Product header with image and remove button */}
                 <div className="relative mb-4">
                   <div className="flex justify-center">
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={item.productId?.img[0]}
+                      alt={item.productId?.name}
                       className="h-48 object-cover rounded-md"
                     />
                   </div>
                   <button
-                    onClick={() => removeFromFavorites(item.id)}
+                    onClick={() => removeFromFavorites(item.productId?._id)}
                     className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-md text-gray-400 hover:text-red-500"
                     aria-label="Remove from favorites"
                   >
@@ -219,26 +179,28 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
 
                 {/* Product info */}
                 <div className="flex-grow flex flex-col">
-                  <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
-                  <p className="text-gray-600 text-sm mb-2">
-                    Sold by: {item.seller}
-                  </p>
+                  <h2 className="text-lg font-semibold mb-1">
+                    {item.productId?.name}
+                  </h2>
+                  <p className="text-gray-600 text-sm mb-2">Sold by: </p>
                   <p className="font-semibold text-lg mb-4">
-                    ${item.price.toFixed(2)}
+                    ${item.productId?.price}
                   </p>
 
                   <div className="flex flex-col gap-2 mt-auto">
                     <button
                       onClick={() => moveToShoppingBag(item)}
-                      disabled={!item.inStock}
+                      disabled={item.inStock}
                       className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md w-full ${
-                        item.inStock
+                        item.productId?.stock_quantity
                           ? "bg-primary-green text-white hover:bg-primary-vover"
                           : "bg-gray-200 text-gray-500 cursor-not-allowed"
                       }`}
                     >
                       <ShoppingBag size={18} />
-                      {item.inStock ? "Add to Bag" : "Out of Stock"}
+                      {item.productId?.stock_quantity
+                        ? "Add to Bag"
+                        : "Out of Stock"}
                     </button>
 
                     <button
@@ -256,16 +218,16 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
 
           {/* Items list for small screens */}
           <div className="md:hidden divide-y divide-gray-200">
-            {favoriteProducts.map((item) => (
+            {favoriteProducts?.map((item) => (
               <div
-                key={item.id}
+                key={item.productId?._id}
                 className="p-4 flex flex-col sm:flex-row gap-4"
               >
                 {/* Product image */}
                 <div className="flex-shrink-0">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={item.productId?.img[0]}
+                    alt={item.productId?.name}
                     className="w-full sm:w-32 h-40 object-cover rounded-md"
                   />
                 </div>
@@ -273,9 +235,11 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
                 {/* Product info */}
                 <div className="flex-grow">
                   <div className="flex justify-between">
-                    <h2 className="text-lg font-semibold">{item.name}</h2>
+                    <h2 className="text-lg font-semibold">
+                      {item.productId?.name}
+                    </h2>
                     <button
-                      onClick={() => removeFromFavorites(item.id)}
+                      onClick={() => removeFromFavorites(item.productId?._id)}
                       className="text-gray-400 hover:text-red-500"
                       aria-label="Remove from favorites"
                     >
@@ -283,15 +247,17 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
                     </button>
                   </div>
 
-                  <p className="text-gray-600 mb-2">Sold by: {item.seller}</p>
+                  <p className="text-gray-600 mb-2">
+                    Sold by: {item.productId?.sellerId}
+                  </p>
                   <p className="font-semibold text-lg mb-4">
-                    ${item.price.toFixed(2)}
+                    ${item.productId?.price}
                   </p>
 
                   <div className="flex flex-wrap gap-2 mt-auto">
                     <button
                       onClick={() => moveToShoppingBag(item)}
-                      disabled={!item.inStock}
+                      disabled={!item.productId?.stock_quantity}
                       className={`flex items-center gap-2 px-4 py-2 rounded-md ${
                         item.inStock
                           ? "bg-primary-green text-white hover:bg-primary-hover"
@@ -299,16 +265,17 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
                       }`}
                     >
                       <ShoppingBag size={18} />
-                      {item.inStock ? "Add to Bag" : "Out of Stock"}
+                      {item.productId?.stock_quantity} ? 'Add to Bag' : 'Out of
+                      Stock'}
                     </button>
 
-                    <button
+                    {/* <button
                       onClick={() => openOfferModal(item)}
                       className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
                     >
                       <MessageCircle size={18} />
                       Make Offer
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
@@ -336,14 +303,14 @@ export default function SavedItemsPage({ favorites, setFavorites }) {
             <div className="p-6">
               <div className="flex gap-4 mb-6">
                 <img
-                  src={currentItem.image}
-                  alt={currentItem.name}
+                  src={currentItem.productId?.img[0]}
+                  alt={currentItem.productId?.name}
                   className="w-16 h-20 object-cover rounded-md"
                 />
                 <div>
-                  <h4 className="font-medium">{currentItem.name}</h4>
+                  <h4 className="font-medium">{currentItem.productId?.name}</h4>
                   <p className="text-gray-600">
-                    Listed price: ${currentItem.price.toFixed(2)}
+                    Listed price: ${currentItem.productId?.price}
                   </p>
                 </div>
               </div>

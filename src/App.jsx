@@ -21,7 +21,7 @@ import RegisterContainer from "./authentication/Register/RegisterContainer";
 import Profile from "./pages/Profile/profilePage";
 import SavedAddresses from "./pages/AccountSettings/SavedAddresses";
 import MySalesPage from "./pages/Profile/MySales/MySalesPage";
-import PendingSalesRequests from "./pages/Profile/SalesRequists/Pending/PendingSalesRequests";
+import PendingSalesRequests from "./pages/Profile/SalesRequists/SalesRequests";
 import SavedItemsPage from "./pages/SavedItems/SavedItemsPage";
 
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
@@ -366,7 +366,7 @@ function AppContent() {
   const login = async (userData) => {
     setIsLoading((prev) => ({ ...prev, user: true }));
     try {
-      const response = await fetch(`${URL}/auth/login`, {
+      const response = await fetch(`${URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -411,7 +411,7 @@ function AppContent() {
       setIsLoading((prev) => ({ ...prev, user: true }));
     }
     try {
-      const response = await fetch(`${URL}/auth/Register`, {
+      const response = await fetch(`${URL}/api/auth/Register`, {
         method: "POST",
         body: formData,
       });
@@ -691,6 +691,7 @@ function AppContent() {
     fetchData();
   }, []);
 
+ 
   return (
     <>
       {!hideHeaderFooter && (
@@ -852,7 +853,11 @@ function AppContent() {
         <Route
           path="/saved-items"
           element={
-            <SavedItemsPage favorites={favorites} setFavorites={setFavorites} />
+            <SavedItemsPage 
+            favoriteProducts={favoriteProducts} 
+            setFavoriteProducts={setFavoriteProducts} 
+            addOrRemoveFavorite={addOrRemoveFavorite}
+            addToCart={addToCart}/>
           }
         />
         <Route path="*" element={<NotFound />} />
