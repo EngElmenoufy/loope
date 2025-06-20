@@ -114,7 +114,7 @@ function CardInformation() {
       <div className="flex items-center mb-4">
         <input type="checkbox" id="save-card" className="mr-2" />
         <label htmlFor="save-card" className="text-gray-700">
-          Save this card for future powdur payments
+          Save this card for future payments
         </label>
       </div>
     </div>

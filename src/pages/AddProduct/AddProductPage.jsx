@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ButtonWithLoading from "../../components/ButtonWithLoading/ButtonWithLoading";
 
 import "./AddProductPage.css";
+import { Alert } from "@mui/material";
 
 export default function AddProductPage({ categories, brands, onAdd, user }) {
   // Default color and size options

@@ -55,7 +55,7 @@ function ProductDescription({
       <p className="text-xl !font-semibold pb-4">{productData.name}</p>
       {/* <div className="py-4">
         <span className="block text-xl max-sm:text-lg font-semibold">
-          {productData.price} AED
+          {productData.price} EGP
         </span>
       </div> */}
       <div className="flex flex-col border-t border-gray-200 py-4">
@@ -65,18 +65,25 @@ function ProductDescription({
               {(productData.price * (1 - productData.discount / 100)).toFixed(
                 2
               )}{" "}
-              AED
+              EGP
             </span>
-            <span className="text-gray-500 line-through text-sm">
-              {productData.price} AED
+            <div className="flex gap-[2px] items-center">
+              <span className="text-gray-500 line-through text-sm">
+                {productData.price} EGP
+              </span>
               <span className="text-gray-700 ml-4 rounded-lg text-xs bg-green-400 px-1">
                 {productData.discount}% off
               </span>
-            </span>
+              {productData.isNegotiable ? (
+                <span className="text-[#004D40] ml-4 rounded-lg text-xs bg-[#ffc020] px-1">
+                  Negotiable
+                </span>
+              ) : null}
+            </div>
           </>
         ) : (
           <span className="text-2xl text-[#18403C] font-medium">
-            {productData.price} AED
+            {productData.price} EGP
           </span>
         )}
       </div>

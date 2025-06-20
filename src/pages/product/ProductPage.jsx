@@ -6,81 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import "./ProductPage.css";
 import { useEffect, useState } from "react";
-
-// const products = [
-//   {
-//     id: 1,
-//     title: "Wireless Headphones",
-//     price: "129.99 AED",
-//     description:
-//       "Premium noise-cancelling wireless headphones with 30-hour battery life.",
-//     rate: 4,
-//     avatar: "cards/card1.png",
-//   },
-//   {
-//     id: 2,
-//     title: "Smart Watch",
-//     price: "199.99 AED",
-//     description:
-//       "Fitness tracker with heart rate monitor, GPS, and 7-day battery life.",
-//     rate: 3,
-//     avatar: "cards/card2.webp",
-//   },
-//   {
-//     id: 3,
-//     title: "Smartphone Pro",
-//     price: "899.99 AED",
-//     description:
-//       'Latest flagship smartphone with 6.7" display and 108MP camera.',
-//     rate: 2,
-//     avatar: "cards/card8.png",
-//   },
-//   {
-//     id: 4,
-//     title: "Laptop Ultra",
-//     price: "1499.99 AED",
-//     description:
-//       "Powerful laptop with 16GB RAM, 1TB SSD and dedicated graphics.",
-//     rate: 5,
-//     avatar: "cards/card4.webp",
-//   },
-//   {
-//     id: 5,
-//     title: "Bluetooth Speaker",
-//     price: "79.99 AED",
-//     description:
-//       "Waterproof Bluetooth speaker with 360° sound and 12-hour playback.",
-//     rate: 1,
-//     avatar: "cards/card5.png",
-//   },
-//   {
-//     id: 6,
-//     title: "Coffee Maker",
-//     price: "149.99 AED",
-//     description:
-//       "Smart coffee maker with programmable brewing and temperature control.",
-//     rate: 4,
-//     avatar: "cards/card6.png",
-//   },
-//   {
-//     id: 7,
-//     title: "Drone Camera",
-//     price: "349.99 AED",
-//     description:
-//       "HD drone with 4K camera, 30-minute flight time and obstacle avoidance.",
-//     rate: 2,
-//     avatar: "cards/card7.png",
-//   },
-//   {
-//     id: 8,
-//     title: "Gaming Console",
-//     price: "499.99 AED",
-//     description:
-//       "Next-gen gaming console with 1TB storage and 4K gaming capabilities.",
-//     rate: 1,
-//     avatar: "cards/card8.png",
-//   },
-// ];
+import { Alert } from "@mui/material";
 
 function ProductPage({
   categories,
@@ -89,10 +15,13 @@ function ProductPage({
   addToCart,
   products,
   addOrRemoveFavorite,
+  successMessage,
 }) {
   const [productData, setProductData] = useState({});
   const [sellerData, setSellerData] = useState({});
   const [productReviews, setProductReviews] = useState([]);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
 
@@ -176,7 +105,7 @@ function ProductPage({
 
   useEffect(() => {
     getProductDetails();
-  }, []);
+  }, [productId]);
 
   const handleAddReview = async (reviewData) => {
     const redata = { ...reviewData, productId: productData._id };
@@ -193,13 +122,27 @@ function ProductPage({
 
       const data = await response.json();
       getProductReviews(productData._id);
+      if (data.status === "error") {
+        setShowErrorMessage(true);
+      } else {
+        setShowSuccessMessage(true);
+      }
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };
     } finally {
-      setTimeout(() => {
+      const timer1 = setTimeout(() => {
         getProductDetails();
       }, 2000);
+      const timer2 = setTimeout(() => {
+        setShowSuccessMessage(false);
+        setShowErrorMessage(false);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
     }
   };
 
@@ -257,6 +200,21 @@ function ProductPage({
           onAddReview={handleAddReview}
         />
       </main>
+      {successMessage.addToCart && (
+        <Alert severity="success" className="fixed bottom-4 right-4 z-50">
+          {successMessage.addToCart}
+        </Alert>
+      )}
+      {showSuccessMessage && (
+        <Alert severity="success" className="fixed bottom-4 right-4 z-50">
+          You added a review successfully!
+        </Alert>
+      )}
+      {showErrorMessage && (
+        <Alert severity="warning" className="fixed bottom-4 right-4 z-50">
+          You already have a review.
+        </Alert>
+      )}
     </>
   );
 }

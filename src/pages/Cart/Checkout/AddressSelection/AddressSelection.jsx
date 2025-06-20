@@ -4,7 +4,13 @@ function AddressSelection({
   selectedDeliveryDetails,
   handleAddressSelection,
   handleAddNewAddress,
+  setCurrentView,
 }) {
+  const handleClose = () => {
+    onClose();
+    setCurrentView("checkout");
+  };
+
   return (
     <div className="p-4 w-full bg-white rounded-t-lg">
       <div className="p-4 bg-white rounded-lg">
@@ -26,7 +32,7 @@ function AddressSelection({
             </button>
             <h3>Choose Delivery Details</h3>
           </div>
-          <button onClick={onClose} className="text-gray-500">
+          <button onClick={handleClose} className="text-gray-500">
             <svg
               width="20"
               height="20"

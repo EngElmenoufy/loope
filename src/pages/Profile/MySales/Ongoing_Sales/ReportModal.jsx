@@ -1,7 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import ButtonWithLoading from "../../../../components/ButtonWithLoading/ButtonWithLoading";
 
-const ReportModal = ({ isOpen, onClose, children }) => {
+const ReportModal = ({
+  isOpen,
+  onClose,
+  children,
+  setShowSuccessReport,
+  setHideReport,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
   if (!isOpen) return null;
+
+  const handleCloseReport = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      onClose();
+      setShowSuccessReport(true);
+      setIsLoading(false);
+      setHideReport(true);
+
+      const timer2 = setTimeout(() => {
+        setShowSuccessReport(false);
+      }, 5000);
+      return () => clearTimeout(timer2);
+    }, 3000);
+    return () => clearTimeout(timer);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -20,23 +45,23 @@ const ReportModal = ({ isOpen, onClose, children }) => {
           <span className="text-2xl font-bold">&times;</span>
         </button>
 
-          {children}
-          <form action="">
-            <label htmlFor="issue">Enter your issue: </label>
-            <textarea 
-            name="issue" 
-            id="issue" 
-            className="resize-y mt-5 p-2 rounded-md block bg-[#F5F5F5] w-full max-h-64 min-h-32" 
+        {children}
+        <form>
+          <label htmlFor="issue">Enter your issue: </label>
+          <textarea
+            name="issue"
+            id="issue"
+            className="resize-y mt-5 p-2 rounded-md block bg-[#F5F5F5] w-full max-h-64 min-h-32"
             rows={8}
             required
-            >
-            </textarea>
-            <button 
-            className="bg-primary-green text-white inline-block p-2 mt-5 rounded-md hover:bg-[#174e47]"
-            >
-                Send
-            </button>
-          </form>
+          ></textarea>
+          <ButtonWithLoading
+            buttonName={"Send"}
+            isLoading={isLoading}
+            onLoading={handleCloseReport}
+            otherClass="mt-4"
+          />
+        </form>
       </div>
     </div>
   );

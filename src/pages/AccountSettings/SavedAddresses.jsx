@@ -131,7 +131,7 @@ export default function SavedAddresses({
             htmlFor="street"
             className="block text-base font-semibold text-gray-800"
           >
-            Street Name / Area
+            Street
           </label>
           <input
             type="text"
@@ -169,7 +169,7 @@ export default function SavedAddresses({
             htmlFor="flat"
             className="block text-base font-semibold text-gray-800"
           >
-            Apartment Number / Building
+            Flat
           </label>
           <input
             type="text"

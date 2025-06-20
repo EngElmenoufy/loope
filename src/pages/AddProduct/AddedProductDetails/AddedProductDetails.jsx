@@ -34,7 +34,7 @@ export default function AddedProductDetails({
           onChange={(e) => setListPrice(e.target.value)}
         />
         <span className="absolute text-lg font-semibold top-1/2 right-2 -translate-y-1/2 text-[#0B0A0A]">
-          AED
+          EGP
         </span>
       </div>
 
@@ -47,7 +47,7 @@ export default function AddedProductDetails({
           disabled
         />
         <span className="absolute text-lg font-semibold top-1/2 right-2 -translate-y-1/2 text-[#0B0A0A]">
-          AED
+          EGP
         </span>
       </div>
 

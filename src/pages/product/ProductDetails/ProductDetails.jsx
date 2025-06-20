@@ -21,7 +21,10 @@ function ProductDetails({ categories, brands, data, sellerData, addToCart }) {
       {/* <ProductHeader sellerData={sellerData} /> */}
       <div className="product-header">
         {/* <SellerDetails sellerData={sellerData} /> */}
-        <div role="link" className="flex items-center gap-4 w-fit">
+        <div
+          role="link"
+          className="flex items-center gap-4 w-fit cursor-pointer"
+        >
           <img
             src={
               sellerData.avatar ===

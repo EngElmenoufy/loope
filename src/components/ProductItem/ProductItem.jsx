@@ -92,19 +92,28 @@ export default function ProductItem({
         <div className="flex flex-col mb-1">
           {data.discount ? (
             <>
-              <span className="text-lg text-[#18403C] font-medium">
-                {(data.price * (1 - data.discount / 100)).toFixed(2)} AED
-              </span>
-              <span className="text-gray-500 line-through text-sm">
-                {data.price} AED
+              <div className="flex items-center gap-[2px]">
+                <span className="text-lg text-[#18403C] font-medium">
+                  {(data.price * (1 - data.discount / 100)).toFixed(2)} EGP
+                </span>
+                {data.isNegotiable ? (
+                  <span className="text-[#004D40] ml-4 rounded-lg text-xs bg-[#ffc020] px-1">
+                    Negotiable
+                  </span>
+                ) : null}
+              </div>
+              <div className="flex items-center gap-[2px]">
+                <span className="text-gray-500 line-through text-sm">
+                  {data.price} EGP
+                </span>
                 <span className="text-gray-700 ml-4 rounded-lg text-xs bg-green-400 px-1">
                   {data.discount}% off
                 </span>
-              </span>
+              </div>
             </>
           ) : (
             <span className="text-lg text-[#18403C] font-medium">
-              {data.price} AED
+              {data.price} EGP
             </span>
           )}
         </div>

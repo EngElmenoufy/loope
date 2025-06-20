@@ -324,7 +324,7 @@ export default function Register({
               fill="#18403C"
             />
           </svg>
-          Sign up with Google
+          Continue with Google
         </button>
       </form>
 

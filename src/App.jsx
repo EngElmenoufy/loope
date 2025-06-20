@@ -34,11 +34,11 @@ function AppContent() {
   const location = useLocation();
   const definedRoutes = [
     "/",
-    "/category/:id",
+    "/category",
     "/categories",
     "/register",
     "/login",
-    "/product/:id",
+    "/product",
     "/add",
     "/cart",
     "/forgotpass",
@@ -51,7 +51,11 @@ function AppContent() {
   ];
 
   // Check if current path matches any defined route
-  const isDefinedRoute = definedRoutes.includes(location.pathname);
+  // const isDefinedRoute = definedRoutes.includes(location.pathname);
+  const isDefinedRoute = definedRoutes.some(
+    (route) =>
+      location.pathname === route || location.pathname.startsWith(route + "/")
+  );
 
   const hideHeaderFooter =
     location.pathname === "/login" ||
@@ -114,6 +118,7 @@ function AppContent() {
     password: null,
     email: null,
     add: null,
+    addToCart: null,
   });
 
   const navigate = useNavigate();
@@ -256,9 +261,10 @@ function AppContent() {
       } catch (err) {
         return { success: false, error: err.message };
       } finally {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           getFavorites();
         }, 500);
+        return () => clearTimeout(timer);
       }
     } else {
       try {
@@ -279,9 +285,11 @@ function AppContent() {
       } catch (err) {
         return { success: false, error: err.message };
       } finally {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           getFavorites();
         }, 500);
+
+        return () => clearTimeout(timer);
       }
     }
   };
@@ -333,11 +341,24 @@ function AppContent() {
       const data = await response.json();
 
       getCart();
-      navigate("/cart");
+      // navigate("/cart");
+      setSuccessMessage((prev) => ({
+        ...prev,
+        addToCart: "Great! You added the product to cart.",
+      }));
 
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };
+    } finally {
+      const timer = setTimeout(() => {
+        setSuccessMessage((prev) => ({
+          ...prev,
+          addToCart: null,
+        }));
+      }, 5000);
+
+      return () => clearTimeout(timer);
     }
   };
 
@@ -462,7 +483,7 @@ function AppContent() {
       }));
       return { success: false, error: err.message };
     } finally {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setSuccessMessage((prev) => ({
           ...prev,
           [changed]: null,
@@ -472,6 +493,8 @@ function AppContent() {
         ...prev,
         updateData: { ...prev.updateData, [changed]: false },
       }));
+
+      return () => clearTimeout(timer);
     }
   };
 
@@ -539,11 +562,12 @@ function AppContent() {
       }));
       return { success: false, error: err.message };
     } finally {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setSuccessMessage((prev) => ({
           ...prev,
           add: null,
         }));
+        getProducts();
       }, 5000);
       setIsLoading((prev) => ({
         ...prev,
@@ -551,6 +575,7 @@ function AppContent() {
       }));
 
       navigate("/");
+      return () => clearTimeout(timer);
     }
   };
 
@@ -593,10 +618,12 @@ function AppContent() {
       // setError((prev) => ({ ...prev, auth: err.message }));
       return { success: false, error: err.message };
     } finally {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         getCart();
       }, 1000);
       setIsLoading((prev) => ({ ...prev, page: false }));
+
+      return () => clearTimeout(timer);
     }
   };
 
@@ -685,6 +712,7 @@ function AppContent() {
               token={token}
               addOrRemoveFavorite={addOrRemoveFavorite}
               isLoading={isLoading.products}
+              successMessage={successMessage}
               error={error.products}
             />
           }
@@ -744,6 +772,7 @@ function AppContent() {
               addOrRemoveFavorite={addOrRemoveFavorite}
               products={productsWithFavorites}
               addToCart={addToCart}
+              successMessage={successMessage}
               token={token}
               isLoading={isLoading.products}
             />
@@ -755,22 +784,23 @@ function AppContent() {
             <AddProductPage
               categories={categories}
               brands={brands}
-              onAddOrRemoverFavorite={addProduct}
+              onAdd={addProduct}
               user={user}
             />
           }
         />
-
         <Route
           path="/cart"
           element={
             <CartPage
               cart={cart}
+              getCart={getCart}
               cartItemCount={cartItemCount}
               onRemoveFromCart={removeFromCart}
               onUpdateQuantity={updateCartItemQuantity}
               user={user}
               token={token}
+              SubmitChangeDeliveryDetails={updateUserData}
             />
           }
         />
@@ -802,9 +832,21 @@ function AppContent() {
           }
         />
 
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile/:id"
+          element={
+            <Profile
+              addOrRemoveFavorite={addOrRemoveFavorite}
+              products={productsWithFavorites}
+              token={token}
+            />
+          }
+        />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
-        <Route path="/mysales" element={<MySalesPage />} />
+        <Route
+          path="/mysales"
+          element={<MySalesPage token={token} user={user} />}
+        />
         <Route path="/sales-requests" element={<PendingSalesRequests />} />
         {/* <Route path="/sales-requests" element={<SalesRequests />} /> */}
         <Route

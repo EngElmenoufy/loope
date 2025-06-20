@@ -17,17 +17,17 @@ export default function OrderSummary({
       <div className="flex flex-col my-4 ">
         <div className="flex justify-between items-center pb-2">
           <span className="text-lg">Items ({itemsCount})</span>
-          <span className="text-lg font-semibold">{total} AED</span>
+          <span className="text-lg font-semibold">{total} EGP</span>
         </div>
         <div className="flex justify-between items-center border-b pb-2">
           <span className="text-lg">Discount</span>
           <span className="text-lg font-semibold">
-            {total - totalWithDiscount} AED
+            {total - totalWithDiscount} EGP
           </span>
         </div>
         <div className="flex justify-between items-center border-b py-2 mb-4">
           <span className="text-lg">Total Price</span>
-          <span className="text-lg font-semibold">{totalWithDiscount} AED</span>
+          <span className="text-lg font-semibold">{totalWithDiscount} EGP</span>
         </div>
         <Button
           type="main"

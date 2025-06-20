@@ -92,7 +92,7 @@ export default function RegisterContainer({
       {/* Header */}
       <header className="w-full bg-[#18403C] py-4 px-6 text-white text-center">
         <h1 className="text-2xl font-bold">
-          <Link to="/">Loope</Link>
+          <Link to="/">SmartCart</Link>
         </h1>
       </header>
 

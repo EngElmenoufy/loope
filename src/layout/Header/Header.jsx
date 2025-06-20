@@ -116,10 +116,10 @@ export default function Header({ user, onLogout, cartItemCount, categories }) {
   return (
     <header className="p-3 relative z-30 flex justify-between items-center max-lg:flex-wrap bg-[#18403C] mb-4">
       <h1
-        className="text-3xl font-medium text-white hover:cursor-pointer"
+        className="text-2xl font-semibold text-white hover:cursor-pointer flex items-center gap-1"
         onClick={handleLogoClick}
       >
-        <a>Loope</a>
+        <span>SmartCart</span>
       </h1>
       <div className="flex items-center gap-3 md:gap-5 max-lg:order-2 max-lg:mt-2 max-lg:w-full lg:flex-1 lg:mx-7">
         <div className="relative" ref={dropdownCategoriesRef}>
@@ -190,7 +190,12 @@ export default function Header({ user, onLogout, cartItemCount, categories }) {
           )}
         </div>
       </div>
-      <Navbar user={user} onLogout={onLogout} cartItemCount={cartItemCount} />
+      <Navbar
+        cartItemCount={cartItemCount}
+        user={user}
+        onLogout={onLogout}
+        cartItemCount={cartItemCount}
+      />
       {isDropdownCategoriesOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 -z-10"

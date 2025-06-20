@@ -7,12 +7,19 @@ function AddAddress({
   onChangeDeliveryDetails,
   handleBackToAddressSelection,
   handleAddressSelection,
+  user,
+  SubmitChangeDeliveryDetails,
+  setCurrentView,
 }) {
   const [details, setDetails] = useState({
     city: deliveryDetails.shippingAddress.city,
     street: deliveryDetails.shippingAddress.street,
     flat: deliveryDetails.shippingAddress.flat,
     phone: deliveryDetails.shippingAddress.phone,
+  });
+
+  const [userData, setUserData] = useState({
+    ...user,
   });
 
   const [errorData, setErrorData] = useState({
@@ -42,17 +49,21 @@ function AddAddress({
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Clear error when user starts typing
     if (errorData[name]) {
-      setDetails((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+      setErrorData((prev) => ({ ...prev, [name]: "" }));
     }
+
+    const numericValue =
+      name === "phone" ? value.replace(/[^0-9]/g, "") : value;
 
     setDetails((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: numericValue,
+    }));
+
+    setUserData((prev) => ({
+      ...prev,
+      [name]: numericValue,
     }));
   };
 
@@ -86,7 +97,13 @@ function AddAddress({
         ...details,
       },
     }));
+    SubmitChangeDeliveryDetails(userData, "address");
     handleAddressSelection();
+  };
+
+  const handleClose = () => {
+    onClose();
+    setCurrentView("checkout");
   };
 
   return (
@@ -111,7 +128,7 @@ function AddAddress({
               </button>
               <h2 className="text-xl font-semibold">Enter an address</h2>
             </div>
-            <button onClick={onClose} className="text-gray-500">
+            <button onClick={handleClose} className="text-gray-500">
               <svg
                 width="20"
                 height="20"

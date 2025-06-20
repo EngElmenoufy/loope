@@ -1,33 +1,32 @@
-import { useState } from 'react';
-import { Heart, ShoppingBag, Trash2, MessageCircle, X } from 'lucide-react';
+import { useState } from "react";
+import { Heart, ShoppingBag, Trash2, MessageCircle, X } from "lucide-react";
 
-export default function SavedItemsPage({favorites, setFavorites}) {
-//     {
-//     "status": "success",
-//     "data": {
-//         "colors": [],
-//         "size": [],
-//         "isNegotiable": true,
-//         "_id": "68068b9fc89cd016ddb8930d",
-//         "name": "asdgh",
-//         "price": 55,
-//         "description": "iphonedfhfdg",
-//         "stock_quantity": 100,
-//         "category": "67d6bb840f9cac53301a1b57",
-//         "img": [
-//             "user-1745259423174.jpeg",
-//             "user-1745259423175.jpeg"
-//         ],
-//         "discount": 10,
-//         "condition": "used",
-//         "sellerId": "6806840d1893e12784c81fbd",
-//         "allowReturn": false,
-//         "slug": "asdgh",
-//         "yourEarn": 54.45,
-//         "__v": 0
-//     }
-// 
-
+export default function SavedItemsPage({ favorites, setFavorites }) {
+  //     {
+  //     "status": "success",
+  //     "data": {
+  //         "colors": [],
+  //         "size": [],
+  //         "isNegotiable": true,
+  //         "_id": "68068b9fc89cd016ddb8930d",
+  //         "name": "asdgh",
+  //         "price": 55,
+  //         "description": "iphonedfhfdg",
+  //         "stock_quantity": 100,
+  //         "category": "67d6bb840f9cac53301a1b57",
+  //         "img": [
+  //             "user-1745259423174.jpeg",
+  //             "user-1745259423175.jpeg"
+  //         ],
+  //         "discount": 10,
+  //         "condition": "used",
+  //         "sellerId": "6806840d1893e12784c81fbd",
+  //         "allowReturn": false,
+  //         "slug": "asdgh",
+  //         "yourEarn": 54.45,
+  //         "__v": 0
+  //     }
+  //
 
   // Sample favorite items data
   const [favoriteProducts, setFavoriteProducts] = useState([
@@ -37,7 +36,7 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       price: 249.99,
       image: "/api/placeholder/250/300",
       seller: "Fashion Outlet",
-      inStock: true
+      inStock: true,
     },
     {
       id: 2,
@@ -45,7 +44,7 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       price: 179.99,
       image: "/api/placeholder/250/300",
       seller: "Audio Tech",
-      inStock: true
+      inStock: true,
     },
     {
       id: 3,
@@ -53,7 +52,7 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       price: 89.99,
       image: "/api/placeholder/250/300",
       seller: "RetroWear",
-      inStock: false
+      inStock: false,
     },
     {
       id: 4,
@@ -61,7 +60,7 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       price: 329.99,
       image: "/api/placeholder/250/300",
       seller: "TechGadgets",
-      inStock: true
+      inStock: true,
     },
     {
       id: 5,
@@ -69,7 +68,7 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       price: 199.99,
       image: "/api/placeholder/250/300",
       seller: "Comfort Living",
-      inStock: true
+      inStock: true,
     },
     {
       id: 6,
@@ -77,8 +76,8 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       price: 149.99,
       image: "/api/placeholder/250/300",
       seller: "Tech Peripherals",
-      inStock: true
-    }
+      inStock: true,
+    },
   ]);
 
   const [offerModalOpen, setOfferModalOpen] = useState(false);
@@ -87,20 +86,19 @@ export default function SavedItemsPage({favorites, setFavorites}) {
   const [message, setMessage] = useState("");
   const [notifications, setNotifications] = useState([]);
 
-  
   // Function to move item to shopping bag
   const moveToShoppingBag = (item) => {
     // In a real app, this would call an API to update the cart
     // For demo purposes, we'll just show a notification
     addNotification(`${item.name} added to your shopping bag!`);
-    
+
     // Remove from favorites
-    setFavoriteProducts(favoriteProducts.filter(fav => fav.id !== item.id));
+    setFavoriteProducts(favoriteProducts.filter((fav) => fav.id !== item.id));
   };
 
   // Function to remove item from favorites
   const removeFromFavorites = (itemId) => {
-    setFavoriteProducts(favoriteProducts.filter(item => item.id !== itemId));
+    setFavoriteProducts(favoriteProducts.filter((item) => item.id !== itemId));
     addNotification("Item removed from favorites");
   };
 
@@ -115,7 +113,9 @@ export default function SavedItemsPage({favorites, setFavorites}) {
   // Function to submit an offer
   const submitOffer = () => {
     // In a real app, this would send the offer to an API
-    addNotification(`Offer of $${offerPrice} sent to ${currentItem.seller} for ${currentItem.name}`);
+    addNotification(
+      `Offer of $${offerPrice} sent to ${currentItem.seller} for ${currentItem.name}`
+    );
     setOfferModalOpen(false);
   };
 
@@ -123,23 +123,30 @@ export default function SavedItemsPage({favorites, setFavorites}) {
   const addNotification = (text) => {
     const newNotification = {
       id: Date.now(),
-      text
+      text,
     };
     setNotifications([...notifications, newNotification]);
-    
+
     // Auto remove notification after 5 seconds
-    setTimeout(() => {
-      setNotifications(current => current.filter(n => n.id !== newNotification.id));
+    const timer = setTimeout(() => {
+      setNotifications((current) =>
+        current.filter((n) => n.id !== newNotification.id)
+      );
     }, 5000);
+
+    return () => clearTimeout(timer);
   };
 
   // Empty state component
   const EmptyFavorites = () => (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <Heart size={64} className="text-gray-300 mb-4" />
-      <h3 className="text-xl font-semibold mb-2">Your favorites list is empty</h3>
+      <h3 className="text-xl font-semibold mb-2">
+        Your favorites list is empty
+      </h3>
       <p className="text-gray-500 mb-6 max-w-md">
-        Items you save will appear here. Find products you love and click the heart icon to save them for later.
+        Items you save will appear here. Find products you love and click the
+        heart icon to save them for later.
       </p>
       <button className="bg-primary-green text-white px-6 py-2 rounded-md hover:bg-primary-hover">
         Explore Products
@@ -151,11 +158,18 @@ export default function SavedItemsPage({favorites, setFavorites}) {
     <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-50 min-h-screen">
       {/* Notifications */}
       <div className="fixed top-4 right-4 z-50 space-y-2">
-        {notifications.map(notification => (
-          <div key={notification.id} className="bg-gray-800 text-white px-4 py-2 rounded shadow-lg flex items-center justify-between">
+        {notifications.map((notification) => (
+          <div
+            key={notification.id}
+            className="bg-gray-800 text-white px-4 py-2 rounded shadow-lg flex items-center justify-between"
+          >
             <span>{notification.text}</span>
-            <button 
-              onClick={() => setNotifications(notifications.filter(n => n.id !== notification.id))}
+            <button
+              onClick={() =>
+                setNotifications(
+                  notifications.filter((n) => n.id !== notification.id)
+                )
+              }
               className="ml-4 text-gray-300 hover:text-white"
             >
               <X size={16} />
@@ -168,7 +182,8 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       <div className="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
         <h1 className="text-3xl font-bold text-gray-800">My Favorites</h1>
         <div className="text-gray-600 bg-white px-4 py-2 rounded-full shadow-sm">
-          {favoriteProducts.length} {favoriteProducts.length === 1 ? 'item' : 'items'}
+          {favoriteProducts.length}{" "}
+          {favoriteProducts.length === 1 ? "item" : "items"}
         </div>
       </div>
 
@@ -179,14 +194,21 @@ export default function SavedItemsPage({favorites, setFavorites}) {
         <div className="bg-white rounded-lg shadow">
           {/* Items grid for medium and large screens */}
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            {favoriteProducts.map(item => (
-              <div key={item.id} className="border border-gray-200 rounded-lg p-4 flex flex-col h-full">
+            {favoriteProducts.map((item) => (
+              <div
+                key={item.id}
+                className="border border-gray-200 rounded-lg p-4 flex flex-col h-full"
+              >
                 {/* Product header with image and remove button */}
                 <div className="relative mb-4">
                   <div className="flex justify-center">
-                    <img src={item.image} alt={item.name} className="h-48 object-cover rounded-md" />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="h-48 object-cover rounded-md"
+                    />
                   </div>
-                  <button 
+                  <button
                     onClick={() => removeFromFavorites(item.id)}
                     className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-md text-gray-400 hover:text-red-500"
                     aria-label="Remove from favorites"
@@ -194,27 +216,31 @@ export default function SavedItemsPage({favorites, setFavorites}) {
                     <Trash2 size={18} />
                   </button>
                 </div>
-                
+
                 {/* Product info */}
                 <div className="flex-grow flex flex-col">
                   <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
-                  <p className="text-gray-600 text-sm mb-2">Sold by: {item.seller}</p>
-                  <p className="font-semibold text-lg mb-4">${item.price.toFixed(2)}</p>
-                  
+                  <p className="text-gray-600 text-sm mb-2">
+                    Sold by: {item.seller}
+                  </p>
+                  <p className="font-semibold text-lg mb-4">
+                    ${item.price.toFixed(2)}
+                  </p>
+
                   <div className="flex flex-col gap-2 mt-auto">
                     <button
                       onClick={() => moveToShoppingBag(item)}
                       disabled={!item.inStock}
                       className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md w-full ${
-                        item.inStock 
-                          ? 'bg-primary-green text-white hover:bg-primary-vover' 
-                          : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        item.inStock
+                          ? "bg-primary-green text-white hover:bg-primary-vover"
+                          : "bg-gray-200 text-gray-500 cursor-not-allowed"
                       }`}
                     >
                       <ShoppingBag size={18} />
-                      {item.inStock ? 'Add to Bag' : 'Out of Stock'}
+                      {item.inStock ? "Add to Bag" : "Out of Stock"}
                     </button>
-                    
+
                     <button
                       onClick={() => openOfferModal(item)}
                       className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 w-full"
@@ -227,21 +253,28 @@ export default function SavedItemsPage({favorites, setFavorites}) {
               </div>
             ))}
           </div>
-          
+
           {/* Items list for small screens */}
           <div className="md:hidden divide-y divide-gray-200">
-            {favoriteProducts.map(item => (
-              <div key={item.id} className="p-4 flex flex-col sm:flex-row gap-4">
+            {favoriteProducts.map((item) => (
+              <div
+                key={item.id}
+                className="p-4 flex flex-col sm:flex-row gap-4"
+              >
                 {/* Product image */}
                 <div className="flex-shrink-0">
-                  <img src={item.image} alt={item.name} className="w-full sm:w-32 h-40 object-cover rounded-md" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full sm:w-32 h-40 object-cover rounded-md"
+                  />
                 </div>
-                
+
                 {/* Product info */}
                 <div className="flex-grow">
                   <div className="flex justify-between">
                     <h2 className="text-lg font-semibold">{item.name}</h2>
-                    <button 
+                    <button
                       onClick={() => removeFromFavorites(item.id)}
                       className="text-gray-400 hover:text-red-500"
                       aria-label="Remove from favorites"
@@ -249,24 +282,26 @@ export default function SavedItemsPage({favorites, setFavorites}) {
                       <Trash2 size={20} />
                     </button>
                   </div>
-                  
+
                   <p className="text-gray-600 mb-2">Sold by: {item.seller}</p>
-                  <p className="font-semibold text-lg mb-4">${item.price.toFixed(2)}</p>
-                  
+                  <p className="font-semibold text-lg mb-4">
+                    ${item.price.toFixed(2)}
+                  </p>
+
                   <div className="flex flex-wrap gap-2 mt-auto">
                     <button
                       onClick={() => moveToShoppingBag(item)}
                       disabled={!item.inStock}
                       className={`flex items-center gap-2 px-4 py-2 rounded-md ${
-                        item.inStock 
-                          ? 'bg-primary-green text-white hover:bg-primary-hover' 
-                          : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        item.inStock
+                          ? "bg-primary-green text-white hover:bg-primary-hover"
+                          : "bg-gray-200 text-gray-500 cursor-not-allowed"
                       }`}
                     >
                       <ShoppingBag size={18} />
-                      {item.inStock ? 'Add to Bag' : 'Out of Stock'}
+                      {item.inStock ? "Add to Bag" : "Out of Stock"}
                     </button>
-                    
+
                     <button
                       onClick={() => openOfferModal(item)}
                       className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
@@ -285,35 +320,46 @@ export default function SavedItemsPage({favorites, setFavorites}) {
       {/* Offer Modal */}
       {offerModalOpen && currentItem && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            {/* Backdrop with blur */}
+          {/* Backdrop with blur */}
           {/* <div className="fixed inset-0 backdrop-blur-0" onClick={()=>setOfferModalOpen(false)}></div> */}
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
               <h3 className="text-lg font-semibold">Make an Offer</h3>
-              <button 
+              <button
                 onClick={() => setOfferModalOpen(false)}
                 className="text-gray-400 hover:text-gray-600"
               >
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="p-6">
               <div className="flex gap-4 mb-6">
-                <img src={currentItem.image} alt={currentItem.name} className="w-16 h-20 object-cover rounded-md" />
+                <img
+                  src={currentItem.image}
+                  alt={currentItem.name}
+                  className="w-16 h-20 object-cover rounded-md"
+                />
                 <div>
                   <h4 className="font-medium">{currentItem.name}</h4>
-                  <p className="text-gray-600">Listed price: ${currentItem.price.toFixed(2)}</p>
+                  <p className="text-gray-600">
+                    Listed price: ${currentItem.price.toFixed(2)}
+                  </p>
                 </div>
               </div>
-              
+
               <div>
                 <div className="mb-4">
-                  <label htmlFor="offerPrice" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="offerPrice"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Your Offer (EGP)
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">$</span>
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                      $
+                    </span>
                     <input
                       type="number"
                       id="offerPrice"
@@ -326,7 +372,7 @@ export default function SavedItemsPage({favorites, setFavorites}) {
                     />
                   </div>
                 </div>
-                
+
                 {/* <div className="mb-6">
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                     Message to Seller (Optional)
@@ -341,7 +387,7 @@ export default function SavedItemsPage({favorites, setFavorites}) {
                     style={{minHeight: '70px', maxHeight: '150px',}}
                   ></textarea>
                 </div> */}
-                
+
                 <div className="flex justify-end gap-3">
                   <button
                     type="button"

@@ -85,10 +85,23 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
         <div className="relative" ref={dropdownAccountRef}>
           {user ? (
             <>
-              <button
+              {/* <button
                 onClick={toggleDropdownAccount}
                 className="btn-icon icon-button"
+              > */}
+              <button
+                onClick={toggleDropdownAccount}
+                className="animate-opacity group relative btn-icon icon-button"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#FFFFFF"
+                >
+                  <path d="M480-360 280-560h400L480-360Z" />
+                </svg>
                 <img
                   src={
                     user.avatar ===
@@ -99,17 +112,9 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
                   alt="user avatar"
                   className="w-6 h-6 rounded-full"
                 />
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#FFFFFF"
-                >
-                  <path d="M480-360 280-560h400L480-360Z" />
-                </svg>
-                <div className="label w-36">Your account</div>
+                <p className="absolute invisible group-hover:visible -scale-50 group-hover:scale-100 transition-all duration-300 w-fit text-nowrap rounded-lg -bottom-12 bg-white text-[#18403c] px-4 py-2">
+                  Your Account
+                </p>
                 {/* <span className="text-white max-md:hidden">Login</span> */}
               </button>
               {isDropdownAccountOpen && (
@@ -137,7 +142,10 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
         </div>
 
         <div className="relative">
-          <Link to="/saved-items" className="btn-icon icon-button">
+          <Link
+            to="/saved-items"
+            className="animate-opacity group relative btn-icon icon-button"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -147,12 +155,17 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
             >
               <path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z" />
             </svg>
-            <div className="label">Favorite</div>
+            <p className="absolute invisible group-hover:visible -scale-50 group-hover:scale-100 transition-all duration-300 w-fit text-nowrap rounded-lg -bottom-12 bg-white text-[#18403c] px-4 py-2">
+              Favorite
+            </p>
           </Link>
         </div>
 
         <div className="relative">
-          <button onClick={handleCartClick} className="btn-icon icon-button">
+          <button
+            onClick={handleCartClick}
+            className="animate-opacity group relative btn-icon icon-button"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -162,9 +175,15 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
             >
               <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM208-800h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Z" />
             </svg>
-            <div className="label">Cart</div>
-            {/* <span className="text-white max-md:hidden">Cart</span> */}
+            <p className="absolute invisible group-hover:visible -scale-50 group-hover:scale-100 transition-all duration-300 w-fit text-nowrap rounded-lg -bottom-12 bg-white text-[#18403c] px-4 py-2">
+              Cart
+            </p>
           </button>
+          {cartItemCount ? (
+            <span className="absolute -top-2 -right-2 bg-red-500 w-fit px-2 align-middle rounded-3xl text-white ">
+              {cartItemCount}
+            </span>
+          ) : null}
         </div>
 
         {/* <div className="relative">
@@ -185,7 +204,7 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
         <div className="relative" ref={dropdownNotificationRef}>
           <button
             onClick={toggleDropdownNotification}
-            className="btn-icon icon-button"
+            className="animate-opacity group relative btn-icon icon-button"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +224,9 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
             >
               <path d="M480-360 280-560h400L480-360Z" />
             </svg>
-            <div className="label right-0">Notifications</div>
+            <p className="absolute invisible group-hover:visible -scale-50 group-hover:scale-100 transition-all duration-300 w-fit text-nowrap rounded-lg -bottom-12 bg-white text-[#18403c] px-4 py-2 right-0">
+              Notifications
+            </p>
           </button>
           {isDropdownNotificationOpen && <DropdownNotification />}
         </div>

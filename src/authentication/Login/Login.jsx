@@ -85,7 +85,7 @@ export default function Login({ onLogin, isLoading, error, onSignWithGoogle }) {
       {/* Header */}
       <header className="w-full bg-[#18403C] py-4 px-6 text-white text-center">
         <h1 className="text-2xl font-bold">
-          <Link to="/">Loope</Link>
+          <Link to="/">SmartCart</Link>
         </h1>
       </header>
 
@@ -104,7 +104,7 @@ export default function Login({ onLogin, isLoading, error, onSignWithGoogle }) {
 
         {/* Login Form Section */}
         <div className="w-full lg:p-6">
-          <h2 className="text-2xl font-bold mb-2">Log in to Loope</h2>
+          <h2 className="text-2xl font-bold mb-2">Log in to SmartCart</h2>
           <p className="text-gray-600 mb-4">Enter your details below</p>
 
           <form onSubmit={handleSubmit}>
@@ -223,7 +223,7 @@ export default function Login({ onLogin, isLoading, error, onSignWithGoogle }) {
 
             <div className="flex items-center justify-between mb-5">
               <ButtonWithLoading
-                buttonName="Log In"
+                buttonName="Sign In"
                 isLoading={isLoading}
                 otherClass="px-8 !py-2 !text-base w-32 h-[42px] flex justify-center items-center"
               />
@@ -246,9 +246,20 @@ export default function Login({ onLogin, isLoading, error, onSignWithGoogle }) {
                   fill="#18403C"
                 />
               </svg>
-              Sign in with Google
+              Continue with Google
             </button>
           </form>
+          <div className="mt-6 text-center">
+            <p className="text-[#9FAAA6]">
+              You don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-[#18403C] ml-1 font-medium hover:underline"
+              >
+                Register
+              </Link>
+            </p>
+          </div>
         </div>
       </main>
     </div>
