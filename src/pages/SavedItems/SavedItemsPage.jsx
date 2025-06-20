@@ -37,6 +37,7 @@ export default function SavedItemsPage({
 
   const [offerModalOpen, setOfferModalOpen] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const [showRemoveMessage, setShowRemoveMessage] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [offerPrice, setOfferPrice] = useState("");
   const [message, setMessage] = useState("");
@@ -74,8 +75,14 @@ export default function SavedItemsPage({
     setFavoriteProducts(
       favoriteProducts?.filter((fav) => fav.productId?._id !== itemId)
     );
-    addNotification("Item removed from favorites");
+    setShowRemoveMessage(true);
+    // addNotification("Item removed from favorites");
     addOrRemoveFavorite(itemId, true);
+    const timer = setTimeout(() => {
+      setShowRemoveMessage(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
   };
 
   // Function to open offer modal
@@ -218,7 +225,7 @@ export default function SavedItemsPage({
                     >
                       <ShoppingBag size={18} />
                       {item.productId?.stock_quantity
-                        ? "Add to Bag"
+                        ? "Add to cart"
                         : "Out of Stock"}
                     </button>
 
@@ -397,7 +404,12 @@ export default function SavedItemsPage({
       )}
       {showMessage && (
         <Alert severity="success" className="fixed bottom-4 right-4 z-50">
-          You have successfully ordered your products.
+          You have successfully added the product to the cart.
+        </Alert>
+      )}
+      {showRemoveMessage && (
+        <Alert severity="success" className="fixed bottom-4 right-4 z-50">
+          You have successfully removed the product from your favorites.
         </Alert>
       )}
     </div>

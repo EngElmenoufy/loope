@@ -2,8 +2,9 @@ import { useNavigate, Link } from "react-router-dom";
 
 function DropdownYourAccount({ user, onClose, onLogout }) {
   const navigate = useNavigate();
+
   function handleProfileNavigate() {
-    navigate("/profile");
+    navigate(`/profile/${user._id}`);
     onClose();
   }
   const handleAccountSettingsClick = () => {

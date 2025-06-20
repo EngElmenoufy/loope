@@ -4,6 +4,7 @@ import ProductPictures from "./ProductPictures/ProductPictures";
 import "./ProductDetails.css";
 import ProductHeader from "./ProductHeader/ProductHeader";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function ProductDetails({ categories, brands, data, sellerData, addToCart }) {
   const handleAddToCart = (quan) => {
@@ -21,8 +22,9 @@ function ProductDetails({ categories, brands, data, sellerData, addToCart }) {
       {/* <ProductHeader sellerData={sellerData} /> */}
       <div className="product-header">
         {/* <SellerDetails sellerData={sellerData} /> */}
-        <div
-          role="link"
+
+        <Link
+          to={`/profile/${sellerData._id}`}
           className="flex items-center gap-4 w-fit cursor-pointer"
         >
           <img
@@ -40,7 +42,8 @@ function ProductDetails({ categories, brands, data, sellerData, addToCart }) {
               {sellerData?.firstName} {sellerData?.lastName}
             </span>
           </div>
-        </div>
+        </Link>
+
         {/* <div className="flex gap-3 items-center">
           <img src="icons/flag.png" alt="report the product" className="icon" />
           <img src="icons/share.png" alt="share the product" className="icon" />

@@ -50,6 +50,8 @@ function ProductDescription({
     setQuantity(value);
   };
 
+  // console.log(productData.isNegotiable);
+
   return (
     <div className="product-description">
       <p className="text-xl !font-semibold pb-4">{productData.name}</p>
@@ -82,9 +84,16 @@ function ProductDescription({
             </div>
           </>
         ) : (
-          <span className="text-2xl text-[#18403C] font-medium">
-            {productData.price} EGP
-          </span>
+          <div className="flex gap-[2px] items-center">
+            <span className="text-2xl text-[#18403C] font-medium">
+              {productData.price} EGP
+            </span>
+            {productData.isNegotiable ? (
+              <span className="text-[#004D40] ml-4 rounded-lg text-xs bg-[#ffc020] px-1">
+                Negotiable
+              </span>
+            ) : null}
+          </div>
         )}
       </div>
 

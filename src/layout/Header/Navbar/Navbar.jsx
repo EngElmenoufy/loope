@@ -85,10 +85,6 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
         <div className="relative" ref={dropdownAccountRef}>
           {user ? (
             <>
-              {/* <button
-                onClick={toggleDropdownAccount}
-                className="btn-icon icon-button"
-              > */}
               <button
                 onClick={toggleDropdownAccount}
                 className="animate-opacity group relative btn-icon icon-button"
@@ -126,7 +122,10 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
               )}
             </>
           ) : (
-            <Link to="/register" className="btn-icon icon-button">
+            <Link
+              to="/register"
+              className="animate-opacity group relative btn-icon icon-button"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"
@@ -136,7 +135,9 @@ export default function Navbar({ user, onLogout, cartItemCount }) {
               >
                 <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
               </svg>
-              <div className="label w-fit">Register</div>
+              <p className="absolute invisible group-hover:visible -scale-50 group-hover:scale-100 transition-all duration-300 w-fit text-nowrap rounded-lg -bottom-12 bg-white text-[#18403c] px-4 py-2">
+                Register
+              </p>
             </Link>
           )}
         </div>

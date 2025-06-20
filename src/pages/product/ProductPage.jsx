@@ -180,7 +180,7 @@ function ProductPage({
           title={"Best Sales"}
           header={"Explore Our Products"}
         >
-          {products.slice(0, 10).map((product) => (
+          {products.slice(9, 19).map((product) => (
             <li
               className="p-2 bg-white w-52 flex-shrink-0 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
               key={product._id}
