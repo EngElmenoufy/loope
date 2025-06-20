@@ -21,7 +21,7 @@ import RegisterContainer from "./authentication/Register/RegisterContainer";
 import Profile from "./pages/Profile/profilePage";
 import SavedAddresses from "./pages/AccountSettings/SavedAddresses";
 import MySalesPage from "./pages/Profile/MySales/MySalesPage";
-import PendingSalesRequests from "./pages/Profile/SalesRequists/Pending/PendingSalesRequests";
+import PendingSalesRequests from "./pages/Profile/SalesRequists/SalesRequests";
 import SavedItemsPage from "./pages/SavedItems/SavedItemsPage";
 
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
