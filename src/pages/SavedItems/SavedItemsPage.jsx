@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Heart, ShoppingBag, Trash2, MessageCircle, X } from "lucide-react";
+import { Alert } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function SavedItemsPage({
   favoriteProducts,
@@ -34,6 +36,7 @@ export default function SavedItemsPage({
   //
 
   const [offerModalOpen, setOfferModalOpen] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [offerPrice, setOfferPrice] = useState("");
   const [message, setMessage] = useState("");
@@ -44,13 +47,26 @@ export default function SavedItemsPage({
   const moveToShoppingBag = (item) => {
     // In a real app, this would call an API to update the cart
     // For demo purposes, we'll just show a notification
-    addNotification(`${item.productId?.name} added to your shopping bag!`);
-    console.log(item.productId?._id, item.productId?.sellerId);
+    setShowMessage(true);
+    // console.log(item.productId?._id, item.productId?.sellerId);
     // Remove from favorites
-    setFavoriteProducts(
-      favoriteProducts.filter((fav) => fav.productId?._id !== item.id)
-    );
-    addToCart(item.productId?._id, item.productId?.sellerId, 1);
+    // setFavoriteProducts(
+    //   favoriteProducts.filter(
+    //     (fav) => fav.productId?._id !== item.productId._id
+    //   )
+    // );
+    const productData = {
+      productId: item.productId?._id,
+      sellerId: item.productId?.sellerId,
+      quantity: 1,
+    };
+    addToCart(productData);
+
+    const timer = setTimeout(() => {
+      setShowMessage(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
   };
 
   // Function to remove item from favorites
@@ -115,7 +131,7 @@ export default function SavedItemsPage({
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-50 min-h-screen">
+    <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
       {/* Notifications */}
       <div className="fixed top-4 right-4 z-50 space-y-2">
         {notifications.map((notification) => (
@@ -179,9 +195,12 @@ export default function SavedItemsPage({
 
                 {/* Product info */}
                 <div className="flex-grow flex flex-col">
-                  <h2 className="text-lg font-semibold mb-1">
+                  <Link
+                    to={`/product/${item.productId?._id}`}
+                    className="text-black text-lg font-semibold hover:underline text-nowrap overflow-hidden text-ellipsis"
+                  >
                     {item.productId?.name}
-                  </h2>
+                  </Link>
                   <p className="text-gray-600 text-sm mb-2">Sold by: </p>
                   <p className="font-semibold text-lg mb-4">
                     ${item.productId?.price}
@@ -203,13 +222,13 @@ export default function SavedItemsPage({
                         : "Out of Stock"}
                     </button>
 
-                    <button
+                    {/* <button
                       onClick={() => openOfferModal(item)}
                       className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 w-full"
                     >
                       <MessageCircle size={18} />
                       Make Offer
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
@@ -375,6 +394,11 @@ export default function SavedItemsPage({
             </div>
           </div>
         </div>
+      )}
+      {showMessage && (
+        <Alert severity="success" className="fixed bottom-4 right-4 z-50">
+          You have successfully ordered your products.
+        </Alert>
       )}
     </div>
   );

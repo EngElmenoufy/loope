@@ -48,6 +48,7 @@ function AppContent() {
     "/saved-addresses",
     "/mysales",
     "/sales-requests",
+    "/saved-items",
   ];
 
   // Check if current path matches any defined route
@@ -691,7 +692,6 @@ function AppContent() {
     fetchData();
   }, []);
 
- 
   return (
     <>
       {!hideHeaderFooter && (
@@ -850,14 +850,25 @@ function AppContent() {
         />
         <Route path="/sales-requests" element={<PendingSalesRequests />} />
         {/* <Route path="/sales-requests" element={<SalesRequests />} /> */}
+        {/* <ProductPage
+              categories={categories}
+              brands={brands}
+              addOrRemoveFavorite={addOrRemoveFavorite}
+              products={productsWithFavorites}
+              addToCart={addToCart}
+              successMessage={successMessage}
+              token={token}
+              isLoading={isLoading.products}
+            /> */}
         <Route
           path="/saved-items"
           element={
-            <SavedItemsPage 
-            favoriteProducts={favoriteProducts} 
-            setFavoriteProducts={setFavoriteProducts} 
-            addOrRemoveFavorite={addOrRemoveFavorite}
-            addToCart={addToCart}/>
+            <SavedItemsPage
+              favoriteProducts={favoriteProducts}
+              setFavoriteProducts={setFavoriteProducts}
+              addOrRemoveFavorite={addOrRemoveFavorite}
+              addToCart={addToCart}
+            />
           }
         />
         <Route path="*" element={<NotFound />} />
