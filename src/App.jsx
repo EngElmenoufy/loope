@@ -367,7 +367,7 @@ function AppContent() {
   const login = async (userData) => {
     setIsLoading((prev) => ({ ...prev, user: true }));
     try {
-      const response = await fetch(`${URL}/api/auth/login`, {
+      const response = await fetch(`${URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -412,7 +412,7 @@ function AppContent() {
       setIsLoading((prev) => ({ ...prev, user: true }));
     }
     try {
-      const response = await fetch(`${URL}/api/auth/Register`, {
+      const response = await fetch(`${URL}/auth/Register`, {
         method: "POST",
         body: formData,
       });
