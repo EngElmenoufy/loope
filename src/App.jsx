@@ -811,7 +811,11 @@ function AppContent() {
         <Route
           path="/saved-items"
           element={
-            <SavedItemsPage favorites={favorites} setFavorites={setFavorites} />
+            <SavedItemsPage 
+            favoriteProducts={favoriteProducts} 
+            setFavoriteProducts={setFavoriteProducts} 
+            addOrRemoveFavorite={addOrRemoveFavorite}
+            addToCart={addToCart}/>
           }
         />
         <Route path="*" element={<NotFound />} />
