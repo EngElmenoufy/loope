@@ -6,7 +6,10 @@ import NoSales from "../NoSales";
 import OrderProducts from "./OrderProducts";
 import Button from "../../../../components/Button/Button";
 import { ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 const OngoingSales = ({ activeTab, setActiveTab, orders, user }) => {
+  const navigate = useNavigate();
   const handleToContinueShopping = () => {
     navigate("/products");
   };
@@ -43,13 +46,13 @@ const OngoingSales = ({ activeTab, setActiveTab, orders, user }) => {
                 type="main"
                 text="Continue Shopping"
                 otherClass="!px-6 !py-3 !rounded-full !w-fit"
-                onClick={handleToContinueShopping}
+                onClick={() => handleToContinueShopping()}
               />
               <Button
                 type="second"
                 text="View Wishlist"
                 otherClass="!px-6 !py-3 !rounded-full !w-fit "
-                onClick={handleToFavorite}
+                onClick={() => handleToFavorite()}
               />
             </div>
           </div>
