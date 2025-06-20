@@ -102,7 +102,7 @@ export default function RegisterContainer({
         <div className="w-full hidden md:block max-h-[400px] rounded-md ">
           <div className="p-4 bg-blue-50  w-full lg:w-11/12 mx-auto rounded-md">
             <img
-              src="signup.webp"
+              src="register.webp"
               alt="Shopping illustration with cart, bags, and gifts"
               className="max-h-full object-contain"
             />
