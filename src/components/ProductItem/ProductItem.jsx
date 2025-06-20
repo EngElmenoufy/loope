@@ -2,6 +2,7 @@ import { Alert } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 export default function ProductItem({
   data,

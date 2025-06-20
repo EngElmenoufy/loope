@@ -6,7 +6,10 @@ import NoSales from "../NoSales";
 import OrderProducts from "../Ongoing_Sales/OrderProducts";
 import { ShoppingCart } from "lucide-react";
 import Button from "../../../../components/Button/Button";
+import { useNavigate } from "react-router-dom";
+
 const PastSales = ({ activeTab, setActiveTab, orders, user }) => {
+  const navigate = useNavigate();
   const handleToContinueShopping = () => {
     navigate("/products");
   };
