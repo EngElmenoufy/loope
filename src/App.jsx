@@ -27,6 +27,7 @@ import SavedItemsPage from "./pages/SavedItems/SavedItemsPage";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./pages/NotFound/NotFound";
+import SellerProductsList from "./pages/SellerProducts/SellerProductsList";
 
 const URL = "http://localhost:3000";
 
@@ -49,6 +50,7 @@ function AppContent() {
     "/mysales",
     "/sales-requests",
     "/saved-items",
+    "/seller-products"
   ];
 
   // Check if current path matches any defined route
@@ -82,6 +84,7 @@ function AppContent() {
 
   // Products state
   const [products, setProducts] = useState([]);
+ 
   const [productsWithFavorites, setProductsWithFavorites] = useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -214,6 +217,39 @@ function AppContent() {
     getProducts();
   }, []);
 
+  
+
+
+
+
+  // Edit Product Details
+  const updateSellerProduct = async (productId, newNegotiate, newDiscount, newPrice) => {
+    setIsLoading((prev) => ({ ...prev, page: true }));
+    try {
+      const body = {
+        isNegotiable: newNegotiate,
+        discount: newDiscount,
+        price: newPrice
+      };
+      console.log(body)
+      const response = await fetch(`${URL}/api/products/${productId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.msg);
+      return { success: true };
+    } catch (err) {
+      // setError((prev) => ({ ...prev, auth: err.message }));
+      return { success: false, error: err.message };
+    } finally {
+      setIsLoading((prev) => ({ ...prev, page: false }));
+    }
+  };
   const getFavorites = async () => {
     if (token) {
       try {
@@ -632,7 +668,7 @@ function AppContent() {
     setIsLoading((prev) => ({ ...prev, page: true }));
     try {
       const body = {
-        quantity: newQuantity,
+        quantity: newQuantity
       };
       const response = await fetch(`${URL}/api/cart/${productId}`, {
         method: "PATCH",
@@ -871,6 +907,7 @@ function AppContent() {
             />
           }
         />
+        <Route path="/seller-products" element={ <SellerProductsList updateSellerProduct={updateSellerProduct} token={token}/> }/>
         <Route path="*" element={<NotFound />} />
       </Routes>
 

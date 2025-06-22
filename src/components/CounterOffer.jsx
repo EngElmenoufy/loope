@@ -9,6 +9,7 @@ const CounterOffer = ({
   children,
   setSelectedOrder,
   onSubmitCounterOffer,
+  updateSellerProduct
 }) => {
   if (!isOpen) return null;
 
