@@ -144,7 +144,10 @@ function SingleOngoingSale({
 
   return (
     <div className="card rounded-md mb-10">
-      <div className="flex items-center mb-4">
+      <Link
+        to={`/profile/${sellerData._id}`}
+        className="flex items-center gap-1 w-fit cursor-pointer mb-4"
+      >
         <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden mr-3">
           <img
             src={
@@ -160,7 +163,7 @@ function SingleOngoingSale({
         <h2 className="text-xl font-bold">
           {sellerData?.firstName} {sellerData?.lastName}
         </h2>
-      </div>
+      </Link>
 
       <div className="flex flex-col md:flex-row md:items-start gap-6">
         <div className="w-full md:w-1/3 flex justify-center">

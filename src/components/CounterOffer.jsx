@@ -5,10 +5,11 @@ const CounterOffer = ({
   isOpen,
   onClose,
   title,
-  order,
-  children,
+  request,
   setSelectedOrder,
-  onSubmitCounterOffer,
+  handleSubmitCounterOffer,
+  children,
+  setShowCounterOfferModal,
 }) => {
   if (!isOpen) return null;
 
@@ -39,13 +40,13 @@ const CounterOffer = ({
           <ButtonWithLoading
             buttonName={"CONFIRM"}
             otherClass="w-full py-[10px]"
-            onLoading={onSubmitCounterOffer}
+            onLoading={() => handleSubmitCounterOffer("counter")}
           />
           <button
             onClick={() => setShowCounterOfferModal(false)}
             className="w-full mt-3 custom-btn  bg-gray-100 border border-gray-300 hover:bg-gray-200 text-gray-600 "
           >
-            SKIP
+            CLOSE
           </button>
         </div>
       </div>

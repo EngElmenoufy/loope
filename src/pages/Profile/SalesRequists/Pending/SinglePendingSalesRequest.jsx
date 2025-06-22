@@ -1,128 +1,180 @@
 import React, { useState, useEffect } from "react";
 import CounterOffer from "../../../../components/CounterOffer";
+import { Link } from "react-router-dom";
 
-function SinglePendingSaleRequest({ order, setSelectedOrder, selectedOrder }) {
-  const [showCounterOfferModal, setShowCounterOfferModal] = useState(false);
-  const [customerOfferPrice, setCustomerOfferPrice] = useState("");
-  const [sellerOfferPrice, setSellerOfferPrice] = useState("");
+function SinglePendingSaleRequest({
+  request,
+  isSeller,
+  getMyRequests,
+  setSelectedOrder,
+  selectedOrder,
+}) {
+  const [showCounter, setShowCounter] = useState(false);
+  const [counterPrice, setCounterPrice] = useState("");
+  const showDetailsAbout = isSeller ? "buyer" : "seller";
+  // const [showCounterOfferModal, setShowCounterOfferModal] = useState(false);
+  // const [customerOfferPrice, setCustomerOfferPrice] = useState("");
+  // const [sellerOfferPrice, setSellerOfferPrice] = useState("");
 
-  const handleAccept = () => {
-    setSellerOfferPrice(customerOfferPrice);
-  };
+  // const handleAccept = () => {
+  //   setSellerOfferPrice(customerOfferPrice);
+  // };
 
-  const handleReject = () => {
-    setSellerOfferPrice(null);
+  // const handleReject = () => {
+  //   setSellerOfferPrice(null);
+  // };
+  // const handleCounterOffer = () => {
+  //   setSelectedOrder(order);
+  //   setShowCounterOfferModal(true);
+  // };
+  const responseRequest = async (type) => {
+    const body = {
+      response: type,
+    };
+
+    if (counterPrice) {
+      body.counterPrice = Number(counterPrice);
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/negotiation/respond/${request.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.msg);
+      getMyRequests();
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+    // finally {
+    //   const timer = setTimeout(() => {
+    //     getFavorites();
+    //   }, 500);
+
+    //   return () => clearTimeout(timer);
+    // }
   };
-  const handleCounterOffer = () => {
-    setSelectedOrder(order);
-    setShowCounterOfferModal(true);
-  };
-  const handleSubmitCounterOffer = () => {
-    setShowCounterOfferModal(false);
-  };
+  // console.log(order);
+
   return (
-    <div key={order.id} className="bg-gray-50 p-4 rounded-lg">
+    <div key={request.id} className="bg-white p-4 rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center">
+        <Link
+          to={`/profile/${request[showDetailsAbout].id}`}
+          className="flex items-center w-fit cursor-pointer"
+        >
           <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden mr-3">
             <img
-              src={order.userAvatar}
-              alt={order.userName}
+              src={
+                request[showDetailsAbout]?.avatar ===
+                "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPwA="
+                  ? "profile.jpg"
+                  : request[showDetailsAbout]?.avatar
+              }
+              alt={request[showDetailsAbout]?.name}
               className="h-full w-full object-cover"
             />
           </div>
           <div>
-            <h2 className="font-bold">{order.userName}</h2>
-            <p className="text-sm text-gray-500">SMITH</p>
+            <h2 className="font-bold text-xl">
+              {request[showDetailsAbout]?.name}
+            </h2>
           </div>
-        </div>
-        <button
-          className="text-sm font-medium border-b border-gray-800 hover:border-primary-green"
-          onClick={() => handleReject(order)}
-        >
-          REJECT
-        </button>
+        </Link>
+        {isSeller && (
+          <button
+            className="text-sm font-medium border-b border-gray-800 hover:border-primary-green"
+            onClick={() => responseRequest("reject")}
+          >
+            REJECT
+          </button>
+        )}
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-1/3 lg:w-1/4">
+        <div className="w-full md:w-1/3 lg:w-1/4 max-h-64">
           <div className="aspect-square overflow-hidden rounded-md">
             <img
-              src={order.productImage}
-              alt={order.productName}
-              className="w-full h-full object-cover"
+              src={request.productImage}
+              alt={request.productName}
+              className="w-full max-h-64 object-contain object-center"
             />
           </div>
         </div>
 
         <div className="flex-1">
-          <h3 className="text-xl font-bold mb-2">{order.productName}</h3>
-          <p className="text-sm mb-4">{order.productDescription}</p>
+          <Link
+            to={`/product/${request.productId}`}
+            className="text-xl font-bold mb-5 hover:underline text-nowrap overflow-hidden text-ellipsis"
+          >
+            {request.productName}
+          </Link>
 
           <div className="space-y-1 mb-4">
-            <p className="text-sm">
-              <span className="font-medium">Order ID:</span> {order.orderId}
+            <p className="text-lg mb-2">
+              <span className="font-bold">Request Date:</span>{" "}
+              <span className="text-xl">
+                {new Date(request.date).toDateString()}
+              </span>
             </p>
-            <p className="text-sm">
-              <span className="font-medium">Order Date:</span> {order.orderDate}
+
+            <p className="text-lg mb-2">
+              <span className="font-bold">Original Price:</span>{" "}
+              <span className="text-xl">{request.originalPrice} EGP</span>
             </p>
-            <p className="text-sm">
-              <span className="font-medium">Transaction ID:</span>{" "}
-              {order.transactionId}
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">Payment:</span>{" "}
-              {order.paymentMethod}
-            </p>
-            <p className="text-sm font-bold">
-              Price: {order.price} {order.currency}
+
+            <p className="text-lg mb-2">
+              <span className="font-bold">Offered Price:</span>{" "}
+              <span className="text-xl">{request.offeredPrice} EGP</span>
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-3 mt-6">
-            <button
-              className="button-secondary"
-              onClick={() => handleCounterOffer(order)}
-            >
-              COUNTER OFFER
-            </button>
-            <button
-              className="button-primary"
-              onClick={() => handleAccept(order)}
-            >
-              ACCEPT
-            </button>
-          </div>
+          {isSeller && (
+            <div className="flex flex-col md:flex-row gap-3 mt-6">
+              <button
+                className="button-secondary"
+                onClick={() => setShowCounter(true)}
+              >
+                COUNTER OFFER
+              </button>
+              <button
+                className="button-primary"
+                onClick={() => responseRequest("accept")}
+              >
+                ACCEPT
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-4 pt-4 border-t">
-        <p className="font-medium">SHIPPING ADDRESS</p>
-        <p className="font-medium">
-          ESTIMATED DELIVERY: {order.estimatedDelivery}
-        </p>
-      </div>
       {/* Counter Offer Modal */}
       <CounterOffer
-        isOpen={showCounterOfferModal}
-        onClose={() => setShowCounterOfferModal(false)}
+        isOpen={showCounter}
+        onClose={() => setShowCounter(false)}
         title="Counter Offer"
-        order={order}
-        handleSubmitCounterOffer={handleSubmitCounterOffer}
-        setShowCounterOfferModal={setShowCounterOfferModal}
+        request={request}
+        handleSubmitCounterOffer={responseRequest}
+        setShowCounterOfferModal={setShowCounter}
       >
-        {selectedOrder && (
-          <div className="space-y-4">
-            <p>Customer offering price is ${selectedOrder.price}</p>
-            <input
-              type="text"
-              placeholder="Enter Your Counter Offer"
-              className="w-full border rounded-md p-2"
-              onChange={(e) => setSellerOfferPrice(e.target.value)}
-              required
-            />
-          </div>
-        )}
+        <div className="space-y-4">
+          <p>Customer offering price is {request.offeredPrice} EGP</p>
+          <input
+            type="text"
+            placeholder="Enter Your Counter Offer"
+            className="w-full border rounded-md p-2"
+            onChange={(e) => setCounterPrice(e.target.value)}
+            required
+          />
+        </div>
       </CounterOffer>
     </div>
   );

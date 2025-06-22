@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom";
+
 function Reviewer({ userData }) {
   return (
-    <div role="link" className="flex gap-4 items-center my-2 cursor-pointer">
+    <Link
+      to={`/profile/${userData._id}`}
+      className="flex gap-4 items-center w-fit my-2 cursor-pointer"
+    >
       <img
         src={
           userData.avatar ===
@@ -14,7 +19,7 @@ function Reviewer({ userData }) {
       <span className="block text-sm md:text-base font-semibold">
         {userData.firstName} {userData.lastName}
       </span>
-    </div>
+    </Link>
   );
 }
 

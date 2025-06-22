@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import SingleApprovedSalesRequests from "./SingleApprovedSalesRequests";
 import { useNavigate } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
 import Button from "../../../../components/Button/Button";
+import SingleCouteredSalesRequests from "./SingleCounteredSalesRequests";
+import { useEffect, useState } from "react";
+import { ShoppingCart } from "lucide-react";
 
-const ApprovedSalesRequests = ({ requests, isSeller }) => {
+function CounteredSalesRequests({ requests, isSeller }) {
   const [isEmpty, setIsEmpty] = useState(false);
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const ApprovedSalesRequests = ({ requests, isSeller }) => {
       {requests.length !== 0 ? (
         <div className="space-y-6">
           {requests.map((request) => (
-            <SingleApprovedSalesRequests
+            <SingleCouteredSalesRequests
               key={request?.id}
               isSeller={isSeller}
               request={request}
@@ -45,7 +45,7 @@ const ApprovedSalesRequests = ({ requests, isSeller }) => {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Your accepted requests is empty
+                Your countered requests is empty
               </h2>
               <p className="text-gray-600 text-center mb-8 max-w-md">
                 Start shopping to find amazing deals!
@@ -71,6 +71,6 @@ const ApprovedSalesRequests = ({ requests, isSeller }) => {
       )}
     </>
   );
-};
+}
 
-export default ApprovedSalesRequests;
+export default CounteredSalesRequests;

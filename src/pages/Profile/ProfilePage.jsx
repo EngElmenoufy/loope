@@ -19,6 +19,7 @@ const Profile = ({ addOrRemoveFavorite, products, token }) => {
   });
 
   const [userData, setUserData] = useState(null);
+  const [sellerProducts, setSellerProducts] = useState([]);
 
   const navigate = useNavigate();
 
@@ -39,6 +40,29 @@ const Profile = ({ addOrRemoveFavorite, products, token }) => {
       const data = await response.json();
       if (data.data) {
         setUserData(data.data);
+        getSellerProducts(data.data.token);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getSellerProducts = async (sellerToken) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/products/my-products`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sellerToken}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (data.data) {
+        setSellerProducts(data.data);
       }
     } catch (err) {
       console.error(err.message);
@@ -130,25 +154,27 @@ const Profile = ({ addOrRemoveFavorite, products, token }) => {
           </div>
         </div>
 
-        <ExploreProducts
-          onClickSeeMore={handleProductsWithoutFilter}
-          title={"Products"}
-          header={`${userData?.firstName}'s Products`}
-        >
-          {products.slice(10, 20).map((product) => (
-            <li
-              className="p-2 bg-white w-52 flex-shrink-0 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
-              key={product._id}
-            >
-              <ProductItem
-                isFixedWidth={true}
-                data={product}
-                token={token}
-                onAddOrRemoveFavorite={addOrRemoveFavorite}
-              />
-            </li>
-          ))}
-        </ExploreProducts>
+        {sellerProducts.length !== 0 && (
+          <ExploreProducts
+            onClickSeeMore={handleProductsWithoutFilter}
+            title={"Products"}
+            header={`${userData?.firstName}'s Products`}
+          >
+            {sellerProducts.slice(0, 10).map((product) => (
+              <li
+                className="p-2 bg-white w-52 flex-shrink-0 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md cursor-pointer"
+                key={product._id}
+              >
+                <ProductItem
+                  isFixedWidth={true}
+                  data={product}
+                  token={token}
+                  onAddOrRemoveFavorite={addOrRemoveFavorite}
+                />
+              </li>
+            ))}
+          </ExploreProducts>
+        )}
 
         {/* <div className="max-w-4xl mx-auto mt-8">
           <div className="flex border-b mb-4">

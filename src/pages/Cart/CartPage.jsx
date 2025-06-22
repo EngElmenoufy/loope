@@ -50,21 +50,50 @@ export default function CartPage({
   const totalPrice = cart.totalPrice;
 
   const [totalWithDiscount, setTotalWithDiscount] = useState(0);
+  const [totalWithoutDiscount, setTotalWithoutDiscount] = useState(0);
+  // const [total, setTotal] = useState(0);
 
   const calculateTotal = () => {
     return cartItems?.reduce((total, product) => {
-      if (product.discount) {
+      if (product.productId.discount) {
         // Apply discount (subtract discount percentage from price)
-        const discountedPrice = product.price * (1 - product.discount / 100);
+        const discountedPrice =
+          product.price *
+          product.quantity *
+          (1 - product.productId.discount / 100);
+
+        // setTotal((prev) => prev + product.price * product.quantity);
+        // total += product.price * product.quantity;
+
         return total + discountedPrice;
       }
+      // else if (product.price !== product.productId.price) {
+      //   const discountedPrice = product.productId.price - product.price;
+
+      //   console.log(total + discountedPrice);
+      //   return total + discountedPrice;
+      // }
       // No discount, just add the price
       return total + product.price;
     }, 0);
   };
 
+  const calculateTotalWithoutDiscount = () => {
+    return cartItems?.reduce((total, product) => {
+      // Apply discount (subtract discount percentage from price)
+      const totalPriceWithoutDiscount =
+        product.productId.price * product.quantity;
+
+      // setTotal((prev) => prev + product.price * product.quantity);
+      // total += product.price * product.quantity;
+
+      return total + totalPriceWithoutDiscount;
+    }, 0);
+  };
+
   useEffect(() => {
     setTotalWithDiscount(calculateTotal());
+    setTotalWithoutDiscount(calculateTotalWithoutDiscount());
   }, [cart, cartItems]);
 
   const handleToContinueShopping = () => {
@@ -104,7 +133,7 @@ export default function CartPage({
                 method={deliveryDetails.paymentMethod}
                 onChangeMethod={setDeliveryDetails}
                 itemsCount={cartItemCount}
-                total={totalPrice}
+                total={totalWithoutDiscount}
                 totalWithDiscount={totalWithDiscount}
               />
               <Checkout

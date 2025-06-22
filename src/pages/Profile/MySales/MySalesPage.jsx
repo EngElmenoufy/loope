@@ -12,7 +12,7 @@ function MySalesPage({ token, user }) {
   const getMyOrders = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/order${user.role === "seller" ? "/seller" : ""}`,
+        `http://localhost:3000/api/order${user.role === "seller" ? "/my-orders" : ""}`,
         {
           method: "GET",
           headers: {

@@ -6,7 +6,6 @@ import Alert from "@mui/material/Alert";
 
 function CartItem({ item, onUpdate, onRemove, token }) {
   const [offerPrice, setOfferPrice] = useState("");
-  const [isOffered, setIsOffered] = useState(false);
   const [showNegotiation, setShowNegotiation] = useState(false);
   const [counterOffer, setCounterOffer] = useState(false);
   const [productStatus, setProductStatus] = useState("");
@@ -16,7 +15,43 @@ function CartItem({ item, onUpdate, onRemove, token }) {
 
   const [quantity, setQuantity] = useState(item.quantity);
 
-  const price = Number(item.price) * Number(item.quantity);
+  let totalPrice = (item.productId.price * item.quantity).toFixed(2);
+
+  let discountedPrice;
+  if (item.productId.discount) {
+    discountedPrice = (
+      item.productId.price *
+      item.quantity *
+      (1 - item.productId.discount / 100)
+    ).toFixed(2);
+  } else {
+    discountedPrice = (item.productId.price * item.quantity).toFixed(2);
+  }
+
+  let offeredPrice;
+  if (item.productId.discount) {
+    offeredPrice = (
+      item.price *
+      item.quantity *
+      (1 - item.productId.discount / 100)
+    ).toFixed(2);
+  } else {
+    offeredPrice = (item.price * item.quantity).toFixed(2);
+  }
+
+  const isOffered = offeredPrice !== discountedPrice;
+
+  // useEffect(() => {
+  //   if (product.productId.discount) {
+  //     // Apply discount (subtract discount percentage from price)
+  //     const discountedPrice =
+
+  //     price = discountedPrice;
+  //   }
+
+  //   // No discount, just add the price
+  //   return total + product.price;
+  // }, []);
 
   // const quantityOptions = [];
 
@@ -133,21 +168,27 @@ function CartItem({ item, onUpdate, onRemove, token }) {
                 {itemData.discount ? (
                   <>
                     <span className="text-lg text-[#18403C] font-medium">
-                      {(itemData.price * (1 - itemData.discount / 100)).toFixed(
-                        2
-                      )}{" "}
-                      EGP
+                      {discountedPrice} EGP
                     </span>
                     <span className="text-gray-500 line-through text-sm">
-                      {itemData.price} EGP
+                      {totalPrice} EGP
                       <span className="text-gray-700 ml-4 rounded-lg text-xs bg-green-400 px-1">
                         {itemData.discount}% off
                       </span>
                     </span>
                   </>
+                ) : isOffered ? (
+                  <>
+                    <span className="text-lg text-[#18403C] font-medium">
+                      {offeredPrice} EGP
+                    </span>
+                    <span className="text-gray-500 line-through text-sm">
+                      {totalPrice} EGP
+                    </span>
+                  </>
                 ) : (
                   <span className="text-lg text-[#18403C] font-medium">
-                    {itemData.price} EGP
+                    {totalPrice} EGP
                   </span>
                 )}
               </div>
@@ -193,7 +234,7 @@ function CartItem({ item, onUpdate, onRemove, token }) {
                       isOpen={counterOffer}
                       onClose={() => setCounterOffer(false)}
                       title="Counter Offer"
-                      onSubmitCounterOffer={handleSubmitCounterOffer}
+                      handleSubmitCounterOffer={handleSubmitCounterOffer}
                     >
                       <div className="space-y-4">
                         <p>Customer offering price is {item.price} EGP</p>
