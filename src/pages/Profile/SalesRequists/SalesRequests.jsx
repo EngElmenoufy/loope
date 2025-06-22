@@ -23,7 +23,6 @@ function SalesRequests({ token, user }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.msg);
       setMyRequests(data.data.negotiations);
-      console.log(data.data.negotiations);
     } catch (err) {
       console.error(err.message);
     }

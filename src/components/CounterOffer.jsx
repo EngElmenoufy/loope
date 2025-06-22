@@ -5,6 +5,7 @@ const CounterOffer = ({
   isOpen,
   onClose,
   title,
+  product,
   request,
   setSelectedOrder,
   handleSubmitCounterOffer,

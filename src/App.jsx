@@ -87,7 +87,7 @@ function AppContent() {
 
   // Products state
   const [products, setProducts] = useState([]);
- 
+
   const [productsWithFavorites, setProductsWithFavorites] = useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -171,7 +171,6 @@ function AppContent() {
     if (authToken) {
       // Store the token in state
       setToken(authToken);
-      // console.log();
       setUser(JSON.parse(authUser));
 
       navigate(window.location.pathname);
@@ -220,21 +219,9 @@ function AppContent() {
     getProducts();
   }, []);
 
-  
-
-
-
-
   // Edit Product Details
-  const updateSellerProduct = async (productId, newNegotiate, newDiscount, newPrice) => {
-    setIsLoading((prev) => ({ ...prev, page: true }));
+  const updateSellerProduct = async (productId, body) => {
     try {
-      const body = {
-        isNegotiable: newNegotiate,
-        discount: newDiscount,
-        price: newPrice
-      };
-      console.log(body)
       const response = await fetch(`${URL}/api/products/${productId}`, {
         method: "PATCH",
         headers: {
@@ -250,7 +237,11 @@ function AppContent() {
       // setError((prev) => ({ ...prev, auth: err.message }));
       return { success: false, error: err.message };
     } finally {
-      setIsLoading((prev) => ({ ...prev, page: false }));
+      const timer = setTimeout(() => {
+        getProducts();
+      }, 1000);
+
+      return () => clearTimeout(timer);
     }
   };
   const getFavorites = async () => {
@@ -667,11 +658,36 @@ function AppContent() {
     }
   };
 
+  const removeSellerProduct = async (productId) => {
+    try {
+      const response = await fetch(`${URL}/api/products/${productId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.msg);
+
+      return { success: true };
+    } catch (err) {
+      // setError((prev) => ({ ...prev, auth: err.message }));
+      return { success: false, error: err.message };
+    } finally {
+      const timer = setTimeout(() => {
+        getProducts();
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  };
+
   const updateCartItemQuantity = async (productId, newQuantity) => {
     setIsLoading((prev) => ({ ...prev, page: true }));
     try {
       const body = {
-        quantity: newQuantity
+        quantity: newQuantity,
       };
       const response = await fetch(`${URL}/api/cart/${productId}`, {
         method: "PATCH",
@@ -913,7 +929,16 @@ function AppContent() {
             />
           }
         />
-        <Route path="/seller-products" element={ <SellerProductsList updateSellerProduct={updateSellerProduct} token={token}/> }/>
+        <Route
+          path="/seller-products"
+          element={
+            <SellerProductsList
+              updateSellerProduct={updateSellerProduct}
+              token={token}
+              removeSellerProduct={removeSellerProduct}
+            />
+          }
+        />
 
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="*" element={<NotFound />} />

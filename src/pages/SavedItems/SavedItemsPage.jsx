@@ -42,7 +42,6 @@ export default function SavedItemsPage({
   const [offerPrice, setOfferPrice] = useState("");
   const [message, setMessage] = useState("");
   const [notifications, setNotifications] = useState([]);
-  console.log(favoriteProducts);
 
   // Function to move item to shopping bag
   const moveToShoppingBag = (item) => {

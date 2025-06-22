@@ -26,8 +26,6 @@ function DropdownYourAccount({ user, onClose, onLogout }) {
     onClose();
   };
 
-  console.log(user);
-
   return (
     <div className="absolute right-0 top-12 w-64 bg-white rounded-md shadow-lg border border-gray-100 z-50">
       <div
