@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const FooterColumn = ({ title, links }) => {
   return (
     <div className="footer-column">
@@ -6,7 +8,11 @@ const FooterColumn = ({ title, links }) => {
       <ul>
         {links.map((link, index) => (
           <li key={index} className="ml-2">
-            <a href="#">{link}</a>
+            {title === "Brand Lineup" ? (
+              <p className="text-gray-300">{link}</p>
+            ) : (
+              <Link to={"/about-us"}>{link}</Link>
+            )}
           </li>
         ))}
       </ul>

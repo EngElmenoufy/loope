@@ -95,7 +95,7 @@ export default function ProductItem({
                 : "cards/card1.png"
             }
             alt={data.name}
-            className="h-full object-cover object-center rounded-t-lg"
+            className="h-full object-contain object-center rounded-t-lg"
           />
         </div>
         <div className="flex flex-col" title={data.name}>

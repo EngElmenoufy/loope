@@ -1,27 +1,13 @@
-import React, { useState, useEffect } from "react";
-import CounterOffer from "../../../../components/CounterOffer";
 import { Link } from "react-router-dom";
 
-function SingleRejectedSalesRequests({ request, isSeller, selectedOrder }) {
+function SingleCounteredSalesRequests({
+  request,
+  isSeller,
+  // setSelectedOrder,
+  // selectedOrder,
+}) {
   const showDetailsAbout = isSeller ? "buyer" : "seller";
-  // const [showCounterOfferModal, setShowCounterOfferModal] = useState(false);
-  // const [customerOfferPrice, setCustomerOfferPrice] = useState("");
-  // const [sellerOfferPrice, setSellerOfferPrice] = useState("");
 
-  // const handleAccept = () => {
-  //   setSellerOfferPrice(customerOfferPrice);
-  // };
-
-  // const handleReject = () => {
-  //   setSellerOfferPrice(null);
-  // };
-  // const handleCounterOffer = () => {
-  //   setSelectedOrder(order);
-  //   setShowCounterOfferModal(true);
-  // };
-  // const handleSubmitCounterOffer = () => {
-  //   setShowCounterOfferModal(false);
-  // };
   return (
     <div key={request.id} className="bg-white p-4 rounded-lg">
       <div className="flex justify-between items-center mb-4">
@@ -85,6 +71,11 @@ function SingleRejectedSalesRequests({ request, isSeller, selectedOrder }) {
               <span className="font-bold">Offered Price:</span>{" "}
               <span className="text-xl">{request.offeredPrice} EGP</span>
             </p>
+
+            <p className="text-lg mb-2">
+              <span className="font-bold">Countered Price:</span>{" "}
+              <span className="text-xl">{request.counterPrice} EGP</span>
+            </p>
           </div>
         </div>
       </div>
@@ -92,4 +83,4 @@ function SingleRejectedSalesRequests({ request, isSeller, selectedOrder }) {
   );
 }
 
-export default SingleRejectedSalesRequests;
+export default SingleCounteredSalesRequests;

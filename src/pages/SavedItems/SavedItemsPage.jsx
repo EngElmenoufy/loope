@@ -208,9 +208,8 @@ export default function SavedItemsPage({
                   >
                     {item.productId?.name}
                   </Link>
-                  <p className="text-gray-600 text-sm mb-2">Sold by: </p>
                   <p className="font-semibold text-lg mb-4">
-                    ${item.productId?.price}
+                    {item.productId?.price} EGP
                   </p>
 
                   <div className="flex flex-col gap-2 mt-auto">

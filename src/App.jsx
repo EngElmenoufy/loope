@@ -28,6 +28,8 @@ import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./pages/NotFound/NotFound";
 import SellerProductsList from "./pages/SellerProducts/SellerProductsList";
+import SalesRequests from "./pages/Profile/SalesRequists/SalesRequests";
+import AboutUs from "./pages/AboutUs/AboutUs";
 
 const URL = "http://localhost:3000";
 
@@ -50,7 +52,8 @@ function AppContent() {
     "/mysales",
     "/sales-requests",
     "/saved-items",
-    "/seller-products"
+    "/seller-products",
+    "/about-us",
   ];
 
   // Check if current path matches any defined route
@@ -884,7 +887,10 @@ function AppContent() {
           path="/mysales"
           element={<MySalesPage token={token} user={user} />}
         />
-        <Route path="/sales-requests" element={<PendingSalesRequests />} />
+        <Route
+          path="/sales-requests"
+          element={<SalesRequests token={token} user={user} />}
+        />
         {/* <Route path="/sales-requests" element={<SalesRequests />} /> */}
         {/* <ProductPage
               categories={categories}
@@ -908,6 +914,8 @@ function AppContent() {
           }
         />
         <Route path="/seller-products" element={ <SellerProductsList updateSellerProduct={updateSellerProduct} token={token}/> }/>
+
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
