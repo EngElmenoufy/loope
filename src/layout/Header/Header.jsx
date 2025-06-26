@@ -119,7 +119,7 @@ export default function Header({ user, onLogout, cartItemCount, categories }) {
         className="text-2xl font-semibold text-white hover:cursor-pointer flex items-center gap-1"
         onClick={handleLogoClick}
       >
-        <span>SmartCart</span>
+        <span>Loope</span>
       </h1>
       <div className="flex items-center gap-3 md:gap-5 max-lg:order-2 max-lg:mt-2 max-lg:w-full lg:flex-1 lg:mx-7">
         <div className="relative" ref={dropdownCategoriesRef}>

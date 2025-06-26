@@ -85,7 +85,7 @@ export default function Login({ onLogin, isLoading, error, onSignWithGoogle }) {
       {/* Header */}
       <header className="w-full bg-[#18403C] py-4 px-6 text-white text-center">
         <h1 className="text-2xl font-bold">
-          <Link to="/">SmartCart</Link>
+          <Link to="/">Loope</Link>
         </h1>
       </header>
 
@@ -104,7 +104,7 @@ export default function Login({ onLogin, isLoading, error, onSignWithGoogle }) {
 
         {/* Login Form Section */}
         <div className="w-full lg:p-6">
-          <h2 className="text-2xl font-bold mb-2">Log in to SmartCart</h2>
+          <h2 className="text-2xl font-bold mb-2">Log in to Loope</h2>
           <p className="text-gray-600 mb-4">Enter your details below</p>
 
           <form onSubmit={handleSubmit}>

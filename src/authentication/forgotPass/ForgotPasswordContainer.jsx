@@ -74,7 +74,7 @@ export default function ForgotPasswordContainer({ onClose }) {
       {/* Header */}
       <header className="w-full bg-[#18403C] py-4 px-6 text-white text-center">
         <h1 className="text-2xl font-bold">
-          <Link to="/">SmartCart</Link>
+          <Link to="/">Loope</Link>
         </h1>
       </header>
 

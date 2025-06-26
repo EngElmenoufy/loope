@@ -37,7 +37,7 @@ const FooterBottom = () => {
   return (
     <div className="footer-bottom">
       <div className="footer-logo">
-        <h3>SmartCart</h3>
+        <h3>Loope</h3>
       </div>
       <ul className="social-icons">
         {socialMedia.map((icon) => (

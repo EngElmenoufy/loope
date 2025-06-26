@@ -33,15 +33,14 @@ function AboutUs() {
               </h2>
               <div className="space-y-6 text-gray-700 text-lg leading-relaxed">
                 <p>
-                  SmartCart was born from a simple frustration: why should
-                  online shopping be so rigid? In 2023, our founders realized
-                  that the human element of negotiation—the back-and-forth that
-                  makes shopping personal and fair—had been lost in the digital
-                  age.
+                  Loope was born from a simple frustration: why should online
+                  shopping be so rigid? In 2023, our founders realized that the
+                  human element of negotiation—the back-and-forth that makes
+                  shopping personal and fair—had been lost in the digital age.
                 </p>
                 <p>
-                  We built SmartCart to bring back the art of the deal. Our
-                  platform uses intelligent algorithms to facilitate real-time
+                  We built Loope to bring back the art of the deal. Our platform
+                  uses intelligent algorithms to facilitate real-time
                   negotiations between buyers and sellers, creating win-win
                   scenarios where customers save money and sellers build lasting
                   relationships.
@@ -59,7 +58,7 @@ function AboutUs() {
                   <MessageCircle className="w-12 h-12 mr-4" />
                   <div>
                     <h3 className="text-2xl font-bold">How It Works</h3>
-                    <p className="text-blue-100">The SmartCart Difference</p>
+                    <p className="text-blue-100">The Loope Difference</p>
                   </div>
                 </div>
                 <div className="space-y-4">

@@ -22,7 +22,7 @@ const OngoingSales = ({ activeTab, setActiveTab, orders, user }) => {
   useEffect(() => {
     setTimeout(() => {
       setIsEmpty(true);
-    }, 2000);
+    }, 1000);
   });
 
   return (
